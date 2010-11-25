@@ -29,7 +29,7 @@ namespace YAMS
         {
             DataSet ds = new DataSet();
             SqlCeCommand command = connLocal.CreateCommand();
-            command.CommandText = "SELECT * FROM Log";
+            command.CommandText = "SELECT * FROM Log ORDER BY LogDateTime DESC";
             SqlCeDataAdapter adapter = new SqlCeDataAdapter(command);
             adapter.Fill(ds);
             return ds;
@@ -47,6 +47,7 @@ namespace YAMS
                 cmdIns.ExecuteNonQuery();
                 cmdIns.Dispose();
                 cmdIns = null;
+                
             }
             catch (Exception ex)
             {
