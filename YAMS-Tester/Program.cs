@@ -17,6 +17,7 @@ namespace YAMS_Gui
             
             YAMS.Database.init();
             YAMS.Database.AddLog("tester started");
+
         
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
