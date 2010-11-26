@@ -2,6 +2,10 @@
 
 YAMS is a vanilla server wrapper designed to make running a Minecraft server easier without changing the overall experience of playing Survival Multiplayer.
 
+## Current Status
+
+YAMS is currently in development and not ready for deployment anywhere, there are no binary releases.  Source code contained here should always compile but may not do what you expect it to.  Local commits are made more frequently than they are pushed to this remote.
+
 ## Planned Features
 
 * Installer, checks pre-requisites and installs 3rd party tools if requested
@@ -9,6 +13,14 @@ YAMS is a vanilla server wrapper designed to make running a Minecraft server eas
 * Provide multiple interfaces, web, console, gui, mobile etc
 * Keep itself and your Minecraft server up to date
 * Integrate and automate various 3rd party tools such as c10t and Minecraft Overviewer
+
+## Repository Guide
+
+* __Binaries__ - Contains Release versions of all projects, used for auto updating
+* __Source__ - The Visual Studio 2010 Solution and sub-projects
+    * __YAMS-Library__ - Core DLL that contains any functions that actually do something
+    * __YAMS-Service__ - The Windows service that keeps YAMS going 24/7
+    * __YAMS-Tester__ - A throw-away app for checking various functions before they go into the service
 
 ## License
 
