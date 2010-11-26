@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Data;
 using System.Data.SqlServerCe;
 
@@ -53,6 +50,49 @@ namespace YAMS
             {
                 throw new Exception(ex.ToString(), ex);
             }
+        }
+
+        public static string GetMCSetting(string strSetting)
+        {
+            return "";
+        }
+
+        // Returns the stored etag for the specified URL or blank string if no etag saved
+        public static string GetEtag(string strURL)
+        {
+            try
+            {
+                SqlCeCommand cmd = new SqlCeCommand("SELECT VersionETag FROM FileVersions WHERE VersionURL = @url", connLocal);
+                cmd.Parameters.Add("@url", strURL);
+                string eTag = (string)cmd.ExecuteScalar();
+                return eTag;
+            }
+            catch (Exception ex)
+            {
+                AddLog("YAMS.Database.GetEtag Exception: " + ex.Message, "database", "error");
+                return "";
+            }
+        }
+
+        //Sets the Etag for a URL, replacing or adding the URL as needed
+        public static bool SaveEtag(string strUrl, string strEtag)
+        {
+            SqlCeCommand cmd = new SqlCeCommand();
+            cmd.Connection = connLocal;
+            if (GetEtag(strUrl) == null)
+            {
+                //Doesn't exist in DB already, so insert
+                cmd.CommandText = "INSERT INTO FileVersions (VersionURL, VersionETag) VALUES (@url, @etag);";
+            }
+            else
+            {
+                //Exists, so need to update
+                cmd.CommandText = "UPDATE FileVersions SET VersionETag=@etag WHERE VersionURL=@url;";
+            }
+            cmd.Parameters.Add("@url", strUrl);
+            cmd.Parameters.Add("@etag", strEtag);
+            cmd.ExecuteNonQuery();
+            return true;
         }
 
         ~Database()
