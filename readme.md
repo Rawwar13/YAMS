@@ -2,10 +2,18 @@
 
 YAMS is a vanilla server wrapper designed to make running a Minecraft server easier without changing the overall experience of playing Survival Multiplayer.
 
-# Planned Features
+## Planned Features
 
 * Installer, checks pre-requisites and installs 3rd party tools if requested
 * Run as windows service
 * Provide multiple interfaces, web, console, gui, mobile etc
 * Keep itself and your Minecraft server up to date
 * Integrate and automate various 3rd party tools such as c10t and Minecraft Overviewer
+
+## License
+
+Commercial use of this software is strictly prohibited without contacting the owner for permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/"><img alt="Creative Commons Licence" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">Yet Another Minecraft Server</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://github.com/richardbenson/YAMS" property="cc:attributionName" rel="cc:attributionURL">Richard Benson</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.
