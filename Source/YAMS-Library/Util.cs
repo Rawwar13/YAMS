@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Win32;
+using System.IO;
 
 namespace YAMS
 {
@@ -78,6 +79,22 @@ namespace YAMS
             RegistryKey subKey = rk.OpenSubKey(strKey);
             if (subKey != null) return subKey.GetValue("JavaHome").ToString() + "\\bin\\";
             else return "";
+        }
+
+        public static bool ReplaceFile(string strFileOriginal, string strFileReplacement) {
+            try
+            {
+                if (File.Exists(strFileReplacement))
+                {
+                    if (File.Exists(strFileOriginal)) File.Delete(strFileOriginal);
+                    File.Move(strFileReplacement, strFileOriginal);
+                }
+                return true;
+           }
+            catch {
+                YAMS.Database.AddLog("Unable to update " + strFileOriginal, "updater", "error");
+                return false;
+            }
         }
     }
 }
