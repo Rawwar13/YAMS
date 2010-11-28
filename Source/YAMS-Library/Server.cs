@@ -31,14 +31,14 @@ namespace YAMS
             if (!YAMS.Util.ReplaceFile(strRootFolder + "\\lib\\minecraft_server.jar", strRootFolder + "\\lib\\minecraft_server.jar.UPDATE")) return;
 
             //Also check if a new properties file is to be applied
-            if (!YAMS.Util.ReplaceFile(strRootFolder + "\\server\\server.properties", strRootFolder + "\\server\\server.properties.UPDATE")) return;
+            if (!YAMS.Util.ReplaceFile(strRootFolder + "\\config\\server.properties", strRootFolder + "\\config\\server.properties.UPDATE")) return;
 
             prcMinecraft = new Process();
 
             try
             {
                 //Basic arguments in all circumstances
-                var strArgs = "-Xmx" + intAssignedMem + "M -Xms" + intAssignedMem + "M -jar ..\\lib\\minecraft_server.jar nogui";
+                var strArgs = "-Xmx" + intAssignedMem + "M -Xms" + intAssignedMem + @"M -jar ..\lib\minecraft_server.jar nogui";
 
                 //If we have enabled the java optimisations add the additional
                 //arguments. See http://www.minecraftforum.net/viewtopic.php?f=1012&t=68128
@@ -55,7 +55,7 @@ namespace YAMS
                 prcMinecraft.StartInfo.RedirectStandardError = true;
                 prcMinecraft.StartInfo.RedirectStandardInput = true;
                 prcMinecraft.StartInfo.RedirectStandardOutput = true;
-                prcMinecraft.StartInfo.WorkingDirectory = Directory.GetCurrentDirectory() + "\\server\\";
+                prcMinecraft.StartInfo.WorkingDirectory = Directory.GetCurrentDirectory() + @"\config\";
 
                 //Set up events
                 prcMinecraft.OutputDataReceived += new DataReceivedEventHandler(ServerOutput);
@@ -127,6 +127,12 @@ namespace YAMS
             }
 
             intRestartSeconds--;
+        }
+        public static void CancelDelayedRestart()
+        {
+            timRestarter.Enabled = false;
+            intRestartSeconds = 0;
+            YAMS.Database.AddLog("Delayed restart cancelled", "server");
         }
 
         //Send command to stdin on the server process
