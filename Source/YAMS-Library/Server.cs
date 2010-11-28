@@ -16,6 +16,7 @@ namespace YAMS
 
         private static Regex regRemoveDateStamp = new Regex(@"([0-9]+\-[0-9]+\-[0-9]+ [0-9]+:[0-9]+:[0-9]+ ){1}");
         private static Regex regErrorLevel = new Regex(@"\[([A-Z])+\]{1}");
+        private static Regex regPlayerChat = new Regex(@"(\<([A-Za-z0-9])+\>){1}");
 
         public static Process prcMinecraft;
 
@@ -150,14 +151,17 @@ namespace YAMS
 
             //Work out the error level then remove it from the string
             Match regMatch = regErrorLevel.Match(strMessage);
-            //strMessage = regErrorLevel.Replace(strMessage, "").Trim();
+            strMessage = regErrorLevel.Replace(strMessage, "").Trim();
 
             if (regMatch.Success)
             {
                 switch (regMatch.Groups[0].Value)
                 {
                     case "[INFO]":
-                        strLevel = "info";
+                        //Check if it's player chat
+                        Match regChat = regPlayerChat.Match(strMessage);
+                        if (regChat.Success) strLevel = "chat";
+                        else strLevel = "info";
                         break;
                     case "[WARNING]":
                         strLevel = "warn";
