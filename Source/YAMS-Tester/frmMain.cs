@@ -80,5 +80,15 @@ namespace YAMS_Gui
         {
             MessageBox.Show(YAMS.AutoUpdate.UpdateIfNeeded(YAMS.AutoUpdate.strMCServerURL, new System.IO.FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).DirectoryName + "\\lib\\minecraft_server.jar.UPDATE").ToString());
         }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            YAMS.Server.Restart();
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            YAMS.Server.DelayedRestart(Convert.ToInt32(textBox3.Text));
+        }
     }
 }
