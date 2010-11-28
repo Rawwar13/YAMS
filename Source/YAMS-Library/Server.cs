@@ -55,7 +55,7 @@ namespace YAMS
                 prcMinecraft.StartInfo.RedirectStandardError = true;
                 prcMinecraft.StartInfo.RedirectStandardInput = true;
                 prcMinecraft.StartInfo.RedirectStandardOutput = true;
-                prcMinecraft.StartInfo.WorkingDirectory = Directory.GetCurrentDirectory() + @"\config\";
+                prcMinecraft.StartInfo.WorkingDirectory = strRootFolder + @"\config\";
 
                 //Set up events
                 prcMinecraft.OutputDataReceived += new DataReceivedEventHandler(ServerOutput);
