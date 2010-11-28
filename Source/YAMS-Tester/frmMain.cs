@@ -90,5 +90,10 @@ namespace YAMS_Gui
         {
             YAMS.Server.DelayedRestart(Convert.ToInt32(textBox3.Text));
         }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            YAMS.Database.BuildServerProperties();
+        }
     }
 }
