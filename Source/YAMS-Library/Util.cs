@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.IO;
 using Microsoft.Win32;
-using System.IO;
 
 namespace YAMS
 {
@@ -13,6 +9,7 @@ namespace YAMS
         private static string strJRERegKey = "SOFTWARE\\JavaSoft\\Java Runtime Environment";
         private static string strJDKRegKey = "SOFTWARE\\JavaSoft\\Java Development Kit";
 
+        //Check for the existence to the two JVMs
         public static bool HasJRE()
         {
             try
@@ -27,7 +24,6 @@ namespace YAMS
                 return false;
             }
         }
-
         public static bool HasJDK()
         {
             try
@@ -44,6 +40,7 @@ namespace YAMS
         
         }
 
+        //Get the Java version from the registry
         public static string JavaVersion(string strType = "jre")
         {
             string strKey = "";
@@ -62,6 +59,7 @@ namespace YAMS
             else return "";
         }
 
+        //Calculate the path to the Java executable
         public static string JavaPath(string strType = "jre")
         {
             string strKey = "";
@@ -81,6 +79,7 @@ namespace YAMS
             else return "";
         }
 
+        //Replaces file 1 with file 2
         public static bool ReplaceFile(string strFileOriginal, string strFileReplacement) {
             try
             {
