@@ -34,6 +34,8 @@ namespace YAMS
 
         public static void AddLog(string strMessage, string strSource = "app", string strLevel = "info", bool bolSendToAdmin = false)
         {
+            if (strMessage == null) strMessage = "Null message received";
+
             string sqlIns = "INSERT INTO Log (LogSource, LogMessage, LogLevel) VALUES (@source, @msg, @level)";
             try
             {
