@@ -5,6 +5,7 @@ namespace YAMS
 {
     public static class Util
     {
+        private static string strRootFolder = new System.IO.FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).DirectoryName;
 
         private static string strJRERegKey = "SOFTWARE\\JavaSoft\\Java Runtime Environment";
         private static string strJDKRegKey = "SOFTWARE\\JavaSoft\\Java Development Kit";
@@ -94,6 +95,28 @@ namespace YAMS
                 YAMS.Database.AddLog("Unable to update " + strFileOriginal, "updater", "error");
                 return false;
             }
+        }
+
+        //Initial Set-up for first run only
+        public static void FirstRun()
+        {
+            //Create directory structure
+            if (!Directory.Exists(strRootFolder + @"\config\")) Directory.CreateDirectory(strRootFolder + @"\config\");
+            if (!Directory.Exists(strRootFolder + @"\lib\")) Directory.CreateDirectory(strRootFolder + @"\lib\");
+            if (!Directory.Exists(strRootFolder + @"\worlds\")) Directory.CreateDirectory(strRootFolder + @"\worlds\");
+
+            //Create default config files
+            YAMS.Database.BuildServerProperties();
+            if (!File.Exists(strRootFolder + @"\config\banned-ips.txt")) File.Create(strRootFolder + @"\config\banned-ips.txt");
+            if (!File.Exists(strRootFolder + @"\config\banned-players.txt")) File.Create(strRootFolder + @"\config\banned-players.txt");
+            if (!File.Exists(strRootFolder + @"\config\ops.txt")) File.Create(strRootFolder + @"\config\ops.txt");
+
+            //Grab latest server jar
+            YAMS.AutoUpdate.UpdateIfNeeded(YAMS.AutoUpdate.strMCServerURL, strRootFolder + @"\lib\minecraft_server.jar.UPDATE");
+
+            //Tell the DB that we've run this
+            YAMS.Database.SaveSetting("FirstRun", "true", "YAMS");
+
         }
     }
 }
