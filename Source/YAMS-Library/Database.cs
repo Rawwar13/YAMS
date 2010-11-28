@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlServerCe;
+using System.Text;
+using System.IO;
 
 namespace YAMS
 {
@@ -95,6 +97,26 @@ namespace YAMS
             cmd.Parameters.Add("@etag", strEtag);
             cmd.ExecuteNonQuery();
             return true;
+        }
+
+        //Builds the server.properties file from current settings
+        public static void BuildServerProperties()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("#Minecraft server properties: built by YAMS\n");
+            //sb.Append("#Sun Nov 28 19:26:26 GMT 2010\n");
+
+            SqlCeCommand comProperties = new SqlCeCommand("SELECT * FROM MCSettings", connLocal);
+            SqlCeDataReader readerProperties = null;
+            readerProperties = comProperties.ExecuteReader();
+            while (readerProperties.Read())
+            {
+                sb.Append(readerProperties["MCSettingName"].ToString() + "=" + readerProperties["MCSettingValue"].ToString() + "\n");
+            }
+
+            //Save it as our update file in case the current is in use
+            File.WriteAllText(Directory.GetCurrentDirectory() + @"\config\server.properties.UPDATE", sb.ToString());
+
         }
 
         ~Database()
