@@ -56,11 +56,6 @@ namespace YAMS
             }
         }
 
-        public static string GetMCSetting(string strSetting)
-        {
-            return "";
-        }
-
         // Returns the stored etag for the specified URL or blank string if no etag saved
         public static string GetEtag(string strURL)
         {
@@ -111,12 +106,74 @@ namespace YAMS
             readerProperties = comProperties.ExecuteReader();
             while (readerProperties.Read())
             {
-                sb.Append(readerProperties["MCSettingName"].ToString() + "=" + readerProperties["MCSettingValue"].ToString() + "\n");
+                sb.Append(readerProperties["SettingName"].ToString() + "=" + readerProperties["SettingValue"].ToString() + "\n");
             }
 
             //Save it as our update file in case the current is in use
             File.WriteAllText(Directory.GetCurrentDirectory() + @"\config\server.properties.UPDATE", sb.ToString());
 
+        }
+
+        //Get and set settings
+        public static bool SaveSetting(string strSettingName, string strSettingValue, string strType = "YAMS")
+        {
+            SqlCeCommand cmd = new SqlCeCommand();
+            cmd.Connection = connLocal;
+
+            String strTableName = "";
+
+            switch (strType)
+            {
+                case "YAMS":
+                    strTableName = "YAMS";
+                    break;
+                case "MC":
+                    strTableName = "MC";
+                    break;
+            }
+
+            if (GetSetting(strSettingName, strType) == null)
+            {
+                //Doesn't exist in DB already, so insert
+                cmd.CommandText = "INSERT INTO " + strTableName + " (SettingName, SettingValue) VALUES (@name, @value);";
+            }
+            else
+            {
+                //Exists, so need to update
+                cmd.CommandText = "UPDATE " + strTableName + " SET SettingValue=@value WHERE SettingName=@name;";
+            }
+            cmd.Parameters.Add("@name", strSettingName);
+            cmd.Parameters.Add("@value", strSettingValue);
+            cmd.ExecuteNonQuery();
+            return true;
+        }
+
+        public static string GetSetting(string strSettingName, string strType)
+        {
+            String strTableName = "";
+
+            switch (strType)
+            {
+                case "YAMS":
+                    strTableName = "YAMS";
+                    break;
+                case "MC":
+                    strTableName = "MC";
+                    break;
+            }
+
+            try
+            {
+                SqlCeCommand cmd = new SqlCeCommand("SELECT SettingValue FROM " + strTableName + " WHERE SettingName = @name", connLocal);
+                cmd.Parameters.Add("@name", strSettingName);
+                string strSettingValue = (string)cmd.ExecuteScalar();
+                return strSettingValue;
+            }
+            catch (Exception ex)
+            {
+                AddLog("YAMS.Database.GetSetting Exception: " + ex.Message, "database", "error");
+                return "";
+            }
         }
 
         ~Database()
