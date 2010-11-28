@@ -95,5 +95,10 @@ namespace YAMS_Gui
         {
             YAMS.Database.BuildServerProperties();
         }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            YAMS.Util.FirstRun();
+        }
     }
 }
