@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
+using YAMS;
 
 namespace YAMS_Gui
 {
@@ -49,12 +50,6 @@ namespace YAMS_Gui
             dataGridView1.DataSource = ds.Tables[0];
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            YAMS.Database.AddLog("button press", "tester", "warn");
-        }
-
-
         private void OnChanged(object source, FileSystemEventArgs e)
         {
             if (this.InvokeRequired) {
@@ -68,12 +63,18 @@ namespace YAMS_Gui
 
         private void button4_Click(object sender, EventArgs e)
         {
-            YAMS.Server.Stop();
+            YAMS.Core.Servers.ForEach(delegate(MCServer myServer)
+            {
+                myServer.Stop();
+            });
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            YAMS.Server.Start();
+            YAMS.Core.Servers.ForEach(delegate(MCServer myServer)
+            {
+                myServer.Start();
+            });
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -83,22 +84,44 @@ namespace YAMS_Gui
 
         private void button6_Click(object sender, EventArgs e)
         {
-            YAMS.Server.Restart();
+            YAMS.Core.Servers.ForEach(delegate(MCServer myServer)
+            {
+                myServer.Restart();
+            });
         }
 
         private void button7_Click(object sender, EventArgs e)
         {
-            YAMS.Server.DelayedRestart(Convert.ToInt32(textBox3.Text));
+            YAMS.Core.Servers.ForEach(delegate(MCServer myServer)
+            {
+                myServer.DelayedRestart(Convert.ToInt32(textBox3.Text));
+            });
         }
 
         private void button8_Click(object sender, EventArgs e)
         {
-            YAMS.Database.BuildServerProperties();
+            YAMS.Database.BuildServerProperties(1);
         }
 
         private void button9_Click(object sender, EventArgs e)
         {
             YAMS.Util.FirstRun();
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            YAMS.WebServer.Start();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            YAMS.Core.Servers.ForEach(delegate(MCServer myServer)
+            {
+                myServer.Players.ForEach(delegate(String name)
+                {
+                    MessageBox.Show(name);
+                });
+            });
         }
     }
 }

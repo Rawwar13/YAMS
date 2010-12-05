@@ -6,18 +6,17 @@ using YAMS;
 
 namespace YAMS_Gui
 {
-    static class Program
+    public static class Program
     {
+        public static YAMS.MCServer myServer;
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
         static void Main()
         {
-            
-            YAMS.Database.init();
-            YAMS.Database.AddLog("tester started");
-
+            YAMS.Core.StartUp();
         
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
