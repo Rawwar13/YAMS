@@ -117,6 +117,11 @@ namespace YAMS
             this.Start();
         }
 
+        public void RestartIfEmpty()
+        {
+            if (this.Players.Count == 0) this.Restart();
+        }
+
         //Restart the server after specified number of seconds and warn users it's going to happen
         public void DelayedRestart(int intSeconds)
         {
