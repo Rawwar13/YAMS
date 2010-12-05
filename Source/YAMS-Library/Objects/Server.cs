@@ -20,12 +20,15 @@ namespace YAMS
         private Regex regErrorLevel = new Regex(@"\[([A-Z])+\]{1}");
         private Regex regPlayerChat = new Regex(@"(\<([A-Za-z0-9])+\>){1}");
         private Regex regPlayerLoggedIn = new Regex(@"([\w]+)(?: \[\/[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+\:[0-9]+\] logged in with entity id)");
-        private Regex regPlayerLoggedOut = new Regex(@"([a-zA-Z0-9]+) ?(lost connection)");
+        private Regex regPlayerLoggedOut = new Regex(@"([\w]+) ?(lost connection)");
+        private Regex regServerVersion = new Regex(@"(?:Starting minecraft server version )([0-9\.\_])+");
 
         public Process prcMinecraft;
 
         private int intRestartSeconds = 0;
         private Timer timRestarter;
+
+        public string ServerVersion = "";
 
         public List<string> Players = new List<string> { };
 
@@ -202,6 +205,10 @@ namespace YAMS
                         Match regLogOut = this.regPlayerLoggedOut.Match(strMessage);
                         if (regLogIn.Success) Players.Add(regLogIn.Groups[1].Value); //is a login event
                         if (regLogOut.Success) Players.Remove(regLogOut.Groups[1].Value); //logout event
+
+                        //See if it's the server version tag
+                        Match regVersion = this.regServerVersion.Match(strMessage);
+                        if (regVersion.Success) this.ServerVersion = strMessage.Replace("Starting minecraft server version ", "");
                         break;
                     case "[WARNING]":
                         strLevel = "warn";
