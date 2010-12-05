@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Net;
 using System.IO;
+using Newtonsoft.Json;
+using ICSharpCode.SharpZipLib.Zip;
+using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 
 namespace YAMS
 {
@@ -31,7 +34,7 @@ namespace YAMS
         public static string strYAMSDLLURL = "http://richardbenson.github.com/YAMS/download/YAMS-Library.dll";
         public static string strYAMSServiceURL = "http://richardbenson.github.com/YAMS/download/YAMS-Service.exe";
         public static string strYAMSWebURL = "http://richardbenson.github.com/YAMS/download/web.zip";
-        public static string strYAMSVersionsURL = "http://richardbenson.githib.com/YAMS/versions.json";
+        public static string strYAMSVersionsURL = "https://github.com/richardbenson/YAMS/raw/master/Binaries/versions.json";
 
         //Third party URLS
         public static string strOverviewerURL = "https://github.com/downloads/brownan/Minecraft-Overviewer/Overviewer-xxx.zip";
@@ -39,8 +42,8 @@ namespace YAMS
         public static string strC10tx64URL = "https://github.com/downloads/udoprog/c10t/c10t-xxx-windows-x86_64.zip";
 
         //Default versions
-        private static string strOverviewerVer = "0.0.4";
-        private static string strC10tVer = "1.3";
+        private static string strOverviewerVer = "0.0.3";
+        private static string strC10tVer = "1.2";
 
         //Checks for available updates
         public static void CheckUpdates()
@@ -60,9 +63,77 @@ namespace YAMS
             if (bolUpdateAddons && UpdateIfNeeded(strYAMSVersionsURL, YAMS.Core.RootFolder + @"\lib\versions.json"))
             {
                 //There is an update somewhere, extract versions and compare
+                string json = File.ReadAllText(YAMS.Core.RootFolder + @"\lib\versions.json");
+                Dictionary<string, string> dicVers = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+
+                strOverviewerVer = dicVers["overviewer"];
+                if (UpdateIfNeeded(GetExternalURL("overviewer", strOverviewerVer), YAMS.Core.RootFolder + @"\apps\overviewer.zip"))
+                {
+                    bolOverviewerUpdateAvailable = true;
+                    ExtractZip(YAMS.Core.RootFolder + @"\apps\overviewer.zip", YAMS.Core.RootFolder + @"\apps\");
+                    File.Delete(YAMS.Core.RootFolder + @"\apps\overviewer.zip");
+                    if (Directory.Exists(YAMS.Core.RootFolder + @"\apps\overviewer\")) Directory.Delete(YAMS.Core.RootFolder + @"\apps\overviewer\");
+                    Directory.Move(YAMS.Core.RootFolder + @"\apps\Overviewer-" + strOverviewerVer, YAMS.Core.RootFolder + @"\apps\overviewer");
+                }
+
+                strC10tVer = dicVers["c10t"];
+                if (UpdateIfNeeded(GetExternalURL("c10t", strC10tVer), YAMS.Core.RootFolder + @"\apps\c10t.zip"))
+                {
+                    bolC10tUpdateAvailable = true;
+                    ExtractZip(YAMS.Core.RootFolder + @"\apps\c10t.zip", YAMS.Core.RootFolder + @"\apps\");
+                    File.Delete(YAMS.Core.RootFolder + @"\apps\c10t.zip");
+                    if (Directory.Exists(YAMS.Core.RootFolder + @"\apps\c10t\")) Directory.Delete(YAMS.Core.RootFolder + @"\apps\c10t\");
+                    Directory.Move(YAMS.Core.RootFolder + @"\apps\c10t-" + strC10tVer, YAMS.Core.RootFolder + @"\apps\c10t");
+                }
 
 
             }
+        }
+
+        public static void ExtractZip(string strZipFile, string strPath)
+        {
+            using (ZipInputStream s = new ZipInputStream(File.OpenRead(strZipFile)))
+            {
+
+                ZipEntry theEntry;
+                while ((theEntry = s.GetNextEntry()) != null)
+                {
+
+                    Console.WriteLine(theEntry.Name);
+
+                    string directoryName = Path.GetDirectoryName(theEntry.Name);
+                    string fileName = Path.GetFileName(theEntry.Name);
+
+                    // create directory
+                    if (directoryName.Length > 0)
+                    {
+                        Directory.CreateDirectory(strPath + directoryName);
+                    }
+
+                    if (fileName != String.Empty)
+                    {
+                        using (FileStream streamWriter = File.Create(strPath + theEntry.Name))
+                        {
+
+                            int size = 2048;
+                            byte[] data = new byte[2048];
+                            while (true)
+                            {
+                                size = s.Read(data, 0, data.Length);
+                                if (size > 0)
+                                {
+                                    streamWriter.Write(data, 0, size);
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
         }
 
         //Swaps out the version number from the third party URLs where needed
