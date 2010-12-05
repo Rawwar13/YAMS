@@ -107,6 +107,7 @@ namespace YAMS
             //Create directory structure
             if (!Directory.Exists(YAMS.Core.RootFolder + @"\servers\")) Directory.CreateDirectory(YAMS.Core.RootFolder + @"\servers\");
             if (!Directory.Exists(YAMS.Core.RootFolder + @"\lib\")) Directory.CreateDirectory(YAMS.Core.RootFolder + @"\lib\");
+            if (!Directory.Exists(YAMS.Core.RootFolder + @"\apps\")) Directory.CreateDirectory(YAMS.Core.RootFolder + @"\apps\");
 
             //Download and extract latest web files
             if (!Directory.Exists(YAMS.Core.RootFolder + @"\web\")) Directory.CreateDirectory(YAMS.Core.RootFolder + @"\web\");
