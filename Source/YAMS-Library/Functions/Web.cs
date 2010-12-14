@@ -4,12 +4,15 @@ using System.Text;
 using System.Net;
 using System.IO;
 using System.Threading;
+using System.Data;
 using HttpServer;
 using HttpServer.Authentication;
 using HttpServer.Modules;
 using HttpServer.Resources;
 using HttpServer.Tools;
+using HttpServer.Headers;
 using HttpListener = HttpServer.HttpListener;
+using Newtonsoft.Json;
 
 namespace YAMS
 {
@@ -32,10 +35,7 @@ namespace YAMS
             //Handle requests to API
             myServer.Add(new API());
 
-            //Handle page requests
-            myServer.Add(new Page());
-
-            myServer.Add(HttpListener.Create(IPAddress.Any, 8085));
+            myServer.Add(HttpListener.Create(IPAddress.Any, Convert.ToInt32(YAMS.Database.GetSetting("ListenPort", "YAMS"))));
             //myServer.RequestReceived += new EventHandler<RequestEventArgs>(RequestReceived);
 
             serverThread = new Thread(new ThreadStart(Start));
@@ -46,7 +46,7 @@ namespace YAMS
             myServer.Start(5);
 
             //Start our session provider
-            WebSession.Start(myServer);
+            //WebSession.Start(myServer);
         }
 
         public static void Stop()
@@ -54,10 +54,74 @@ namespace YAMS
             serverThread.Abort();
         }
 
-        public static void RequestReceived(object sender, RequestEventArgs e)
-        {
-        }
+    }
 
+
+    public class API : IModule
+    {
+        public ProcessingResult Process(RequestContext context)
+        {
+            if (context.Request.Uri.AbsoluteUri.Contains(@"/api/"))
+            {
+                //what is the action?
+                if (context.Request.Method == Method.Post)
+                {
+                    String strResponse = "";
+                    switch (context.Request.Parameters["action"])
+                    {
+                        case "log":
+                            //grabs lines from the log.
+                            int intStartID = Convert.ToInt32(context.Request.Parameters["start"]);
+                            int intNumRows = Convert.ToInt32(context.Request.Parameters["rows"]);
+
+                            DataSet ds = YAMS.Database.ReturnLogRows(intStartID, intNumRows, "all", -1);
+                            StringBuilder sb = new StringBuilder();
+
+                            strResponse = JsonConvert.SerializeObject(ds, Formatting.Indented);
+
+                            //sb.Append("{");
+                            //sb.Append("\"ResultsReturned\" : " + ds.Tables[0].Rows.Count + ",");
+                            //sb.Append("\"StartID\" : " + intStartID + ",");
+                            //sb.Append("\"log\" : [ ");
+                            //foreach (DataRow dr in ds.Tables[0].Rows)
+                            //{
+                            //    sb.Append("{ \"id\" : " + dr["LogID"].ToString() + ", ");
+                            //    sb.Append("{ \"date\" : \"" + dr["LogDateTime"].ToString() + "\", ");
+                            //    sb.Append("{ \"source\" : \"" + dr["LogSource"].ToString() + "\", ");
+                            //    sb.Append("{ \"message\" : \"" + dr["LogMessage"].ToString() + "\", ");
+                            //    sb.Append("{ \"level\" : \"" + dr["LogLevel"].ToString() + "\", ");
+                            //    sb.Append("{ \"server\" : " + dr["ServerID"].ToString());
+                            //}
+                            //sb.Append("}");
+                            //strResponse = sb.ToString();
+                            break;
+                        default:
+                            return ProcessingResult.Abort;
+                    }
+
+                    context.Response.Connection.Type = ConnectionType.Close;
+                    byte[] buffer = Encoding.UTF8.GetBytes(strResponse);
+                    context.Response.Body.Write(buffer, 0, buffer.Length);
+                }
+                else
+                {
+                    // not a post, so say bye bye!
+                    return ProcessingResult.Abort;
+                }
+                
+                return ProcessingResult.SendResponse;
+            }
+            else
+            {
+                context.Response.Connection.Type = ConnectionType.Close;
+                byte[] buffer = Encoding.UTF8.GetBytes("<html><body>Page!</body></html>");
+                context.Response.Body.Write(buffer, 0, buffer.Length);
+                return ProcessingResult.SendResponse;
+            }
+
+
+        }
+           
     }
 
     [Serializable]
@@ -117,19 +181,5 @@ namespace YAMS
         }
     }
 
-    public class API : IModule
-    {
-        public ProcessingResult Process(RequestContext context)
-        {
-            return ProcessingResult.Abort;
-        }
-    }
 
-    public class Page : IModule
-    {
-        public ProcessingResult Process(RequestContext context)
-        {
-            return ProcessingResult.Abort;
-        }
-    }
 }
