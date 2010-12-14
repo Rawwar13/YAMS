@@ -16,7 +16,7 @@ namespace YAMS
         public static bool bolUpdateApp = true;
         public static bool bolUpdateServer = true;
         public static bool bolUpdateClient = true;
-        public static bool bolUpdateAddons = true;
+        public static bool bolUpdateAddons = false;
 
         //Update booleans
         public static bool bolServerUpdateAvailable = false;
@@ -31,9 +31,9 @@ namespace YAMS
         public static string strMCClientURL = "http://minecraft.net/download/Minecraft.jar";
 
         //YAMS URLs
-        public static string strYAMSDLLURL = "http://richardbenson.github.com/YAMS/download/YAMS-Library.dll";
-        public static string strYAMSServiceURL = "http://richardbenson.github.com/YAMS/download/YAMS-Service.exe";
-        public static string strYAMSWebURL = "http://richardbenson.github.com/YAMS/download/web.zip";
+        public static string strYAMSDLLURL = "https://github.com/richardbenson/YAMS/raw/master/Binaries/YAMS-Library.dll";
+        public static string strYAMSServiceURL = "https://github.com/richardbenson/YAMS/raw/master/Binaries/YAMS-Service.exe";
+        public static string strYAMSWebURL = "https://github.com/richardbenson/YAMS/raw/master/Binaries/web.zip";
         public static string strYAMSVersionsURL = "https://github.com/richardbenson/YAMS/raw/master/Binaries/versions.json";
 
         //Third party URLS
