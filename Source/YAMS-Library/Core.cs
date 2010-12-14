@@ -32,6 +32,10 @@ namespace YAMS
                 Servers.Add(myServer);
             }
 
+            //Start Webserver
+            WebServer.Init();
+            WebServer.Start();
+
         }
     }
 }
