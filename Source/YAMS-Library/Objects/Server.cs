@@ -21,7 +21,7 @@ namespace YAMS
         private Regex regPlayerChat = new Regex(@"(\<([A-Za-z0-9])+\>){1}");
         private Regex regPlayerLoggedIn = new Regex(@"([\w]+)(?: \[\/[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+\:[0-9]+\] logged in with entity id)");
         private Regex regPlayerLoggedOut = new Regex(@"([\w]+) ?(lost connection)");
-        private Regex regServerVersion = new Regex(@"(?:Starting minecraft server version )([0-9\.\_])+");
+        private Regex regServerVersion = new Regex(@"(?:Starting minecraft server version )([0-9\._])+");
 
         public Process prcMinecraft;
 
