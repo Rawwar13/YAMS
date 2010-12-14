@@ -25,11 +25,23 @@ namespace YAMS
             return connection;
         }
 
-        public static DataSet ReturnLogRows(int intStartID = 0, int intNumRows = 0, string strLevels = "all")
+        public static DataSet ReturnLogRows(int intStartID = 0, int intNumRows = 0, string strLevels = "all", int intServerID = -1)
         {
             DataSet ds = new DataSet();
             SqlCeCommand command = connLocal.CreateCommand();
-            command.CommandText = "SELECT * FROM Log ORDER BY LogDateTime DESC";
+
+            //Build our SQL
+            StringBuilder strSQL = new StringBuilder();
+            strSQL.Append("SELECT ");
+            if (intNumRows > 0) strSQL.Append("TOP " + intNumRows.ToString() + " ");
+            strSQL.Append("* FROM Log ");
+            strSQL.Append("WHERE 1=1 ");
+            if (intStartID > 0) strSQL.Append("AND LogID > " + intStartID.ToString() + " ");
+            if (strLevels != "all") strSQL.Append("AND LogLevel = '" + strLevels + "' ");
+            if (intServerID > -1) strSQL.Append("AND ServerID = " + intServerID.ToString() + " ");
+            strSQL.Append("ORDER BY LogDateTime DESC");
+
+            command.CommandText = strSQL.ToString();
             SqlCeDataAdapter adapter = new SqlCeDataAdapter(command);
             adapter.Fill(ds);
             return ds;
