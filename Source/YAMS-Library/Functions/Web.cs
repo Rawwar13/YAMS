@@ -61,6 +61,8 @@ namespace YAMS
     {
         public ProcessingResult Process(RequestContext context)
         {
+            int intServerID = 0;
+            
             if (context.Request.Uri.AbsoluteUri.Contains(@"/api/"))
             {
                 //what is the action?
@@ -73,27 +75,46 @@ namespace YAMS
                             //grabs lines from the log.
                             int intStartID = Convert.ToInt32(context.Request.Parameters["start"]);
                             int intNumRows = Convert.ToInt32(context.Request.Parameters["rows"]);
+                            int intServer = Convert.ToInt32(context.Request.Parameters["serverid"]);
+                            string strLevel = context.Request.Parameters["level"];
 
-                            DataSet ds = YAMS.Database.ReturnLogRows(intStartID, intNumRows, "all", -1);
+                            DataSet ds = YAMS.Database.ReturnLogRows(intStartID, intNumRows, strLevel, intServer);
                             StringBuilder sb = new StringBuilder();
 
                             strResponse = JsonConvert.SerializeObject(ds, Formatting.Indented);
-
-                            //sb.Append("{");
-                            //sb.Append("\"ResultsReturned\" : " + ds.Tables[0].Rows.Count + ",");
-                            //sb.Append("\"StartID\" : " + intStartID + ",");
-                            //sb.Append("\"log\" : [ ");
-                            //foreach (DataRow dr in ds.Tables[0].Rows)
-                            //{
-                            //    sb.Append("{ \"id\" : " + dr["LogID"].ToString() + ", ");
-                            //    sb.Append("{ \"date\" : \"" + dr["LogDateTime"].ToString() + "\", ");
-                            //    sb.Append("{ \"source\" : \"" + dr["LogSource"].ToString() + "\", ");
-                            //    sb.Append("{ \"message\" : \"" + dr["LogMessage"].ToString() + "\", ");
-                            //    sb.Append("{ \"level\" : \"" + dr["LogLevel"].ToString() + "\", ");
-                            //    sb.Append("{ \"server\" : " + dr["ServerID"].ToString());
-                            //}
-                            //sb.Append("}");
-                            //strResponse = sb.ToString();
+                            break;
+                        case "list":
+                            //List available servers
+                            strResponse = "{ \"servers\" : [";
+                            Core.Servers.ForEach(delegate(MCServer s)
+                            {
+                                strResponse += "{ \"id\" : " + s.ServerID + ", " +
+                                                 "\"title\" : \"" + s.ServerTitle + "\", " +
+                                                 "\"ver\" : \"" + s.ServerVersion + "\" } ,";
+                            });
+                            strResponse = strResponse.Remove(strResponse.Length - 1);
+                            strResponse += "]}";
+                            break;
+                        case "status":
+                            //Get status of a server
+                            intServerID = Convert.ToInt32(context.Request.Parameters["server"]);
+                            Core.Servers.ForEach(delegate(MCServer s)
+                            {
+                                if (s.ServerID == intServerID)
+                                {
+                                    strResponse = "{ \"serverid\" : " + intServerID + "," +
+                                                    "\"status\" : \"" + s.Running + "\" }";
+                                };
+                            });
+                            break;
+                        case "start":
+                            //Starts a server
+                            intServerID = Convert.ToInt32(context.Request.Parameters["server"]);
+                            Core.Servers.ForEach(delegate(MCServer s)
+                            {
+                                if (s.ServerID == intServerID) s.Start();
+                            });
+                            strResponse = "{ \"result\" : \"sentstart\" }";
                             break;
                         default:
                             return ProcessingResult.Abort;
@@ -114,7 +135,7 @@ namespace YAMS
             else
             {
                 context.Response.Connection.Type = ConnectionType.Close;
-                byte[] buffer = Encoding.UTF8.GetBytes("<html><body>Page!</body></html>");
+                byte[] buffer = Encoding.UTF8.GetBytes(File.ReadAllText(YAMS.Core.RootFolder + "\\web\\index.html"));
                 context.Response.Body.Write(buffer, 0, buffer.Length);
                 return ProcessingResult.SendResponse;
             }
