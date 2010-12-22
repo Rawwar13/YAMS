@@ -16,6 +16,7 @@ namespace YAMS
         {
             //Start DB Connection
             YAMS.Database.init();
+            YAMS.Database.AddLog("Starting Up");
 
             //Is this the first run?
             if (YAMS.Database.GetSetting("FirstRun", "YAMS") != "true") YAMS.Util.FirstRun();
@@ -36,6 +37,15 @@ namespace YAMS
             WebServer.Init();
             WebServer.Start();
 
+        }
+
+        public static void ShutDown()
+        {
+            Core.Servers.ForEach(delegate(MCServer s)
+            {
+               s.Stop();
+            });
+            YAMS.Database.AddLog("Shutting Down");
         }
     }
 }
