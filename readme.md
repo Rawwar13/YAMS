@@ -1,6 +1,6 @@
 # Yet Another Minecraft Server (YAMS)
 
-YAMS is a vanilla server wrapper designed to make running a Minecraft server easier without changing the overall experience of playing Survival Multiplayer.
+YAMS is a vanilla server wrapper designed to make running a Minecraft server easier without changing the overall experience of playing Survival Multiplayer.  As it is not a wrapper, you won't have to wait for YAMS to be updated when a new Minecraft server version comes out.  Eventually I am hoping to code in an optional wrapper mode per server which can be disabled if an update breaks it.
 
 ## Current Status
 
@@ -10,9 +10,10 @@ YAMS is currently in development and not ready for deployment anywhere, there ar
 
 * Installer, checks pre-requisites and installs 3rd party tools if requested
 * Run as windows service
-* Provide multiple interfaces, web, console, gui, mobile etc
+* Provide web interface for controlling all servers
 * Keep itself and your Minecraft server up to date
 * Integrate and automate various 3rd party tools such as c10t and Minecraft Overviewer
+* Store all output in a database for properly persistent logs of server activity and chat
 
 ## Repository Guide
 
@@ -20,7 +21,10 @@ YAMS is currently in development and not ready for deployment anywhere, there ar
 * __Source__ - The Visual Studio 2010 Solution and sub-projects
     * __YAMS-Library__ - Core DLL that contains any functions that actually do something
     * __YAMS-Service__ - The Windows service that keeps YAMS going 24/7
+    * __YAMS-Setup__ - Visual Studio setup project for creating the MSI to distribute
     * __YAMS-Tester__ - A throw-away app for checking various functions before they go into the service
+    * __YAMS-Updater__ - Small app to restart the service and apply updates to core files
+    * __YAMS-Web__ - Apatana project for web files
 
 ## License
 
