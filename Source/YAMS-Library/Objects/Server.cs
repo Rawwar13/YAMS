@@ -21,18 +21,18 @@ namespace YAMS
         private Regex regPlayerChat = new Regex(@"(\<([A-Za-z0-9])+\>){1}");
         private Regex regPlayerLoggedIn = new Regex(@"([\w]+)(?: \[\/[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+\:[0-9]+\] logged in with entity id)");
         private Regex regPlayerLoggedOut = new Regex(@"([\w]+) ?(lost connection)");
-        private Regex regServerVersion = new Regex(@"(?:Starting minecraft server version )([0-9\._])+");
+        private Regex regServerVersion = new Regex(@"(?:Starting minecraft server version )");
 
         public Process prcMinecraft;
 
         private int intRestartSeconds = 0;
         private Timer timRestarter;
 
+        public int ServerID;
         public string ServerVersion = "";
+        public string ServerTitle = "";
 
         public List<string> Players = new List<string> { };
-
-        public int ServerID;
 
         public MCServer(int intServerID)
         {
@@ -41,6 +41,7 @@ namespace YAMS
 
             this.bolEnableJavaOptimisations = Convert.ToBoolean(YAMS.Database.GetSetting(this.ServerID, "ServerEnableOptimisations"));
             this.intAssignedMem = Convert.ToInt32(YAMS.Database.GetSetting(this.ServerID, "ServerAssignedMemory"));
+            this.ServerTitle = Convert.ToString(YAMS.Database.GetSetting(this.ServerID, "ServerTitle"));
         }
 
         public void Start()
@@ -174,9 +175,11 @@ namespace YAMS
         }
 
         //Catch the output from the server process
-        private void ServerOutput(object sender, DataReceivedEventArgs e) { if (e.Data != null) YAMS.Database.AddLog(e.Data, "server", "out", false, this.ServerID); }
+        private void ServerOutput(object sender, DataReceivedEventArgs e) { if (e.Data != null) YAMS.Database.AddLog(DateTime.Now, e.Data, "server", "out", false, this.ServerID); }
         private void ServerError(object sender, DataReceivedEventArgs e)
         {
+            DateTime datTimeStamp = DateTime.Now;
+
             //Catch null messages (usually as server is going down)
             if (e.Data == null) return;
            
@@ -220,7 +223,7 @@ namespace YAMS
             }
             else { strLevel = "error"; }
 
-            YAMS.Database.AddLog(strMessage, "server", strLevel, false, this.ServerID);
+            YAMS.Database.AddLog(datTimeStamp, strMessage, "server", strLevel, false, this.ServerID);
         }
     }
 }
