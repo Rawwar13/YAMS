@@ -11,6 +11,8 @@ namespace YAMS
     {
         private static SqlCeConnection connLocal;
 
+        private static DateTime defaultDateTime = new DateTime(1900, 1, 1);
+
         public static void init()
         {
             //Open our DB connection for use all over the place
@@ -33,7 +35,7 @@ namespace YAMS
             //Build our SQL
             StringBuilder strSQL = new StringBuilder();
             strSQL.Append("SELECT ");
-            if (intNumRows > 0) strSQL.Append("TOP " + intNumRows.ToString() + " ");
+            if (intNumRows > 0) strSQL.Append("TOP(" + intNumRows.ToString() + ") ");
             strSQL.Append("* FROM Log ");
             strSQL.Append("WHERE 1=1 ");
             if (intStartID > 0) strSQL.Append("AND LogID > " + intStartID.ToString() + " ");
@@ -63,6 +65,30 @@ namespace YAMS
                 cmdIns.Dispose();
                 cmdIns = null;
                 
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString(), ex);
+            }
+        }
+        public static void AddLog(DateTime datTimeStamp, string strMessage, string strSource = "app", string strLevel = "info", bool bolSendToAdmin = false, int intServerID = 0)
+        {
+            if (strMessage == null) strMessage = "Null message received";
+
+            string sqlIns = "INSERT INTO Log (LogSource, LogMessage, LogLevel, ServerID, LogDateTime) VALUES (@source, @msg, @level, @serverid, @timestamp)";
+            try
+            {
+                SqlCeCommand cmdIns = new SqlCeCommand(sqlIns, connLocal);
+                cmdIns.Parameters.Add("@source", strSource);
+                cmdIns.Parameters.Add("@msg", strMessage);
+                cmdIns.Parameters.Add("@level", strLevel);
+                cmdIns.Parameters.Add("@serverid", intServerID);
+                cmdIns.Parameters.Add("@timestamp", datTimeStamp);
+
+                cmdIns.ExecuteNonQuery();
+                cmdIns.Dispose();
+                cmdIns = null;
+
             }
             catch (Exception ex)
             {
@@ -247,7 +273,7 @@ namespace YAMS
             if (!Directory.Exists(YAMS.Core.RootFolder + @"\servers\" + intNewID.ToString() + @"\world\")) Directory.CreateDirectory(YAMS.Core.RootFolder + @"\servers\" + intNewID.ToString() + @"\world\");
             if (!Directory.Exists(YAMS.Core.RootFolder + @"\servers\" + intNewID.ToString() + @"\renders\")) Directory.CreateDirectory(YAMS.Core.RootFolder + @"\servers\" + intNewID.ToString() + @"\renders\");
             if (!Directory.Exists(YAMS.Core.RootFolder + @"\servers\" + intNewID.ToString() + @"\renders\gmap\")) Directory.CreateDirectory(YAMS.Core.RootFolder + @"\servers\" + intNewID.ToString() + @"\renders\gmap\");
-            if (!File.Exists(YAMS.Core.RootFolder + @"\servers\" + intNewID.ToString() + @"\config\intbanned-ips.txt")) File.Create(YAMS.Core.RootFolder + @"\servers\" + intNewID.ToString() + @"\config\banned-ips.txt");
+            if (!File.Exists(YAMS.Core.RootFolder + @"\servers\" + intNewID.ToString() + @"\config\banned-ips.txt")) File.Create(YAMS.Core.RootFolder + @"\servers\" + intNewID.ToString() + @"\config\banned-ips.txt");
             if (!File.Exists(YAMS.Core.RootFolder + @"\servers\" + intNewID.ToString() + @"\config\banned-players.txt")) File.Create(YAMS.Core.RootFolder + @"\servers\" + intNewID.ToString() + @"\config\banned-players.txt");
             if (!File.Exists(YAMS.Core.RootFolder + @"\servers\" + intNewID.ToString() + @"\config\ops.txt")) File.Create(YAMS.Core.RootFolder + @"\servers\" + intNewID.ToString() + @"\config\ops.txt");
 
