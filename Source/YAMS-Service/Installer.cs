@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Configuration.Install;
-using System.Linq;
+﻿using System.ComponentModel;
 using System.ServiceProcess;
 
 
 namespace YAMS_Service
 {
     [RunInstaller(true)]
-    public partial class Installer1 : System.Configuration.Install.Installer
+    public partial class Installer : System.Configuration.Install.Installer
     {
-        public Installer1()
+        public Installer()
         {
             ServiceProcessInstaller serviceProcessInstaller =
                                new ServiceProcessInstaller();
@@ -27,11 +22,8 @@ namespace YAMS_Service
             //# Service Information
 
             serviceInstaller.DisplayName = "YAMS";
+            serviceInstaller.Description = "Allows running multiple Minecraft Servers as a Windows Service";
             serviceInstaller.StartType = ServiceStartMode.Automatic;
-
-            //# This must be identical to the WindowsService.ServiceBase name
-
-            //# set in the constructor of WindowsService.cs
 
             serviceInstaller.ServiceName = "YAMS_Service";
 
