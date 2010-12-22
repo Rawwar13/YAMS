@@ -51,17 +51,7 @@ namespace YAMS_Updater
                 Environment.Exit(0);
             }
 
-            //Otherwise we're here to get the files needed to install the app
-            DownloadURLToFile(strYAMSDLLURL, RootFolder + @"\YAMS-Library.dll");
-            DownloadURLToFile(strYAMSServiceURL, RootFolder + @"\YAMS-Service.exe");
-
-            DownloadURLToFile(strHttpURL, RootFolder + @"\HttpServer.dll");
-            DownloadURLToFile(strZipURL, RootFolder + @"\ICSharpCode.SharpZipLib.dll");
-            DownloadURLToFile(strJsonURL, RootFolder + @"\Newtonsoft.Json.dll");
-
-            //Install and start the service
-
-            
+            // start the service
             ServiceController scYAMS2 = new ServiceController("YAMS-Service");
             scYAMS2.Start();
             Console.WriteLine("Service started");
