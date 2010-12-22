@@ -136,6 +136,27 @@ namespace YAMS
             NewServer.Add(new KeyValuePair<string, string>("verify-names", "true"));
             YAMS.Database.NewServer(NewServer, "My First YAMS Server");
 
+            //Create a new Nether server as well (for testing NetherLink)
+            NewServer.Clear();
+            NewServer.Add(new KeyValuePair<string, string>("admin-slot", "true"));
+            NewServer.Add(new KeyValuePair<string, string>("enable-health", "true"));
+            NewServer.Add(new KeyValuePair<string, string>("hellworld", "true"));
+            NewServer.Add(new KeyValuePair<string, string>("level-name", @"..\\world"));
+            NewServer.Add(new KeyValuePair<string, string>("max-connections", "1"));
+            NewServer.Add(new KeyValuePair<string, string>("max-players", "20"));
+            NewServer.Add(new KeyValuePair<string, string>("motd", "Welcome to Hell!"));
+            NewServer.Add(new KeyValuePair<string, string>("online-mode", "true"));
+            NewServer.Add(new KeyValuePair<string, string>("public", "false"));
+            NewServer.Add(new KeyValuePair<string, string>("pvp", "true"));
+            NewServer.Add(new KeyValuePair<string, string>("server-ip", ""));
+            NewServer.Add(new KeyValuePair<string, string>("server-name", "My YAMS Nether Server"));
+            NewServer.Add(new KeyValuePair<string, string>("server-port", "25566"));
+            NewServer.Add(new KeyValuePair<string, string>("spawn-animals", "true"));
+            NewServer.Add(new KeyValuePair<string, string>("spawn-monsters", "true"));
+            NewServer.Add(new KeyValuePair<string, string>("verify-names", "true"));
+            YAMS.Database.NewServer(NewServer, "My First Nether Server");
+
+
             //Set our YAMS Defaults
             YAMS.Database.SaveSetting("UpdateJAR", "true");
             YAMS.Database.SaveSetting("UpdateSVC", "false");
