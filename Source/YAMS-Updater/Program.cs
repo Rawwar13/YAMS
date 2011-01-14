@@ -4,6 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.ServiceProcess;
+using System.Windows.Forms;
+using System.Runtime.InteropServices;
+using YAMS;
 
 namespace YAMS_Updater
 {
@@ -17,17 +20,26 @@ namespace YAMS_Updater
         private static string strZipURL = "https://github.com/richardbenson/YAMS/raw/master/Binaries/ICSharpCode.SharpZipLib.dll";
         private static string strJsonURL = "https://github.com/richardbenson/YAMS/raw/master/Binaries/Newtonsoft.Json.dll";
 
+        [DllImport("kernel32")]
+        public static extern IntPtr GetConsoleWindow();
 
+        [DllImport("user32.dll")]
+        public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+        
         static void Main(string[] args)
         {
             Console.WriteLine("*** YAMS Updater ***");
 
-            if (args.Contains<string>("restart"))
+            if (args.Contains<string>("/restart"))
             {
                 //We're just here to restart the service safely after some updates
                 Console.WriteLine("Restarting service...");
-                ServiceController scYAMS = new ServiceController("YAMS-Service");
+                ServiceController scYAMS = new ServiceController("YAMS_Service");
                 scYAMS.Stop();
+                while (!scYAMS.Status.Equals(ServiceControllerStatus.Stopped))
+                {
+                    scYAMS.Refresh();
+                }
                 Console.WriteLine("Service stopped");
 
                 //Apply any updates to core files, these should cope with any other updates
@@ -50,16 +62,74 @@ namespace YAMS_Updater
 
                 Environment.Exit(0);
             }
+            else if (args.Contains<string>("/start"))
+            {
+                ServiceController scYAMS = new ServiceController("YAMS_Service");
+                if (!scYAMS.Status.Equals(ServiceControllerStatus.Stopped))
+                {
+                    Console.WriteLine("Service already running");
+                }
+                else
+                {
+                    //Apply any updates to core files, these should cope with any other updates
+                    if (File.Exists(RootFolder + @"\YAMS-Library.dll.UPDATE"))
+                    {
+                        File.Move(RootFolder + @"\YAMS-Library.dll", RootFolder + @"\YAMS-Library.dll.OLD");
+                        File.Move(RootFolder + @"\YAMS-Library.dll.UPDATE", RootFolder + @"\YAMS-Library.dll");
+                        File.Delete(RootFolder + @"\YAMS-Library.dll.OLD");
+                    }
+                    if (File.Exists(RootFolder + @"\YAMS-Service.exe.UPDATE"))
+                    {
+                        File.Move(RootFolder + @"\YAMS-Service.exe", RootFolder + @"\YAMS-Service.exe.OLD");
+                        File.Move(RootFolder + @"\YAMS-Service.exe.UPDATE", RootFolder + @"\YAMS-Service.exe");
+                        File.Delete(RootFolder + @"\Service.exe.OLD");
+                    }
 
-            // start the service
-            ServiceController scYAMS2 = new ServiceController("YAMS-Service");
-            scYAMS2.Start();
-            Console.WriteLine("Service started");
+                    //Restart the service
+                    scYAMS.Start();
+                    Console.WriteLine("Service started");
+                }
+                Environment.Exit(0);
+            }
+            else if (args.Contains<string>("/stop"))
+            {
+                ServiceController scYAMS = new ServiceController("YAMS_Service");
+                if (scYAMS.Status.Equals(ServiceControllerStatus.Stopped))
+                {
+                    Console.WriteLine("Service not running");
+                }
+                else
+                {
+                    scYAMS.Stop();
+                    Console.WriteLine("Service stopped");
+                }
+                Environment.Exit(0);
+            }
+            else
+            {
+                try
+                {
+                    IntPtr conWnd = GetConsoleWindow();
+                    if (conWnd != IntPtr.Zero) ShowWindow(conWnd, 0);
+                }
+                catch { }
 
-            Console.WriteLine("-----------------------------------\nYAMS installed and started, press any key to open a browser and start configuring...");
-            Console.ReadLine();
+                System.Windows.Forms.Application.EnableVisualStyles();
+                //Application.SetCompatibleTextRenderingDefault(false);
 
-            Process.Start("http://localhost:56552/");
+                YAMS.Database.init();
+                YAMS.Database.AddLog("Updater Starting");
+
+                //Have they run the app before?
+                if (YAMS.Database.GetSetting("FirstRun", "YAMS") != "true")
+                {
+                    Application.Run(new frmFirstRun());
+                }
+
+                Application.Run(new frmMain());
+
+                return;
+            }
         
         }
 
