@@ -13,12 +13,6 @@ namespace YAMS_Updater
     class Program
     {
         private static string RootFolder = new System.IO.FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).DirectoryName;
-        private static string strYAMSDLLURL = "https://github.com/richardbenson/YAMS/raw/master/Binaries/YAMS-Library.dll";
-        private static string strYAMSServiceURL = "https://github.com/richardbenson/YAMS/raw/master/Binaries/YAMS-Service.exe";
-
-        private static string strHttpURL = "https://github.com/richardbenson/YAMS/raw/master/Binaries/HttpServer.dll";
-        private static string strZipURL = "https://github.com/richardbenson/YAMS/raw/master/Binaries/ICSharpCode.SharpZipLib.dll";
-        private static string strJsonURL = "https://github.com/richardbenson/YAMS/raw/master/Binaries/Newtonsoft.Json.dll";
 
         [DllImport("kernel32")]
         public static extern IntPtr GetConsoleWindow();

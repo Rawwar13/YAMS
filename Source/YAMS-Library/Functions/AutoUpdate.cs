@@ -38,12 +38,12 @@ namespace YAMS
 
         //Third party URLS
         public static string strOverviewerURL = "https://github.com/downloads/brownan/Minecraft-Overviewer/Overviewer-xxx.zip";
-        public static string strC10tx86URL = "https://github.com/downloads/udoprog/c10t/c10t-xxx-windows-x86.zip";
-        public static string strC10tx64URL = "https://github.com/downloads/udoprog/c10t/c10t-xxx-windows-x86_64.zip";
+        public static string strC10tx86URL = "http://toolchain.eu/minecraft/c10t/releases/c10t-xxx-windows-x86.zip";
+        public static string strC10tx64URL = "http://toolchain.eu/minecraft/c10t/releases/c10t-xxx-windows-x86_64.zip";
 
         //Default versions
-        private static string strOverviewerVer = "0.0.3";
-        private static string strC10tVer = "1.2";
+        private static string strOverviewerVer = "0.0.5";
+        private static string strC10tVer = "1.4";
 
         //Checks for available updates
         public static void CheckUpdates()
