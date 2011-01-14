@@ -104,15 +104,6 @@ namespace YAMS
         //Initial Set-up for first run only
         public static void FirstRun()
         {
-            //Create directory structure
-            if (!Directory.Exists(YAMS.Core.RootFolder + @"\servers\")) Directory.CreateDirectory(YAMS.Core.RootFolder + @"\servers\");
-            if (!Directory.Exists(YAMS.Core.RootFolder + @"\lib\")) Directory.CreateDirectory(YAMS.Core.RootFolder + @"\lib\");
-            if (!Directory.Exists(YAMS.Core.RootFolder + @"\apps\")) Directory.CreateDirectory(YAMS.Core.RootFolder + @"\apps\");
-
-            //Download and extract latest web files
-            if (!Directory.Exists(YAMS.Core.RootFolder + @"\web\")) Directory.CreateDirectory(YAMS.Core.RootFolder + @"\web\");
-            //TODO: Something to grab a zip of web files and expand
-
             //Grab latest server jar
             YAMS.AutoUpdate.UpdateIfNeeded(YAMS.AutoUpdate.strMCServerURL, YAMS.Core.RootFolder + @"\lib\minecraft_server.jar.UPDATE");
 
@@ -137,7 +128,7 @@ namespace YAMS
             YAMS.Database.NewServer(NewServer, "My First YAMS Server");
 
             //Create a new Nether server as well (for testing NetherLink)
-            NewServer.Clear();
+            /*NewServer.Clear();
             NewServer.Add(new KeyValuePair<string, string>("admin-slot", "true"));
             NewServer.Add(new KeyValuePair<string, string>("enable-health", "true"));
             NewServer.Add(new KeyValuePair<string, string>("hellworld", "true"));
@@ -154,7 +145,7 @@ namespace YAMS
             NewServer.Add(new KeyValuePair<string, string>("spawn-animals", "true"));
             NewServer.Add(new KeyValuePair<string, string>("spawn-monsters", "true"));
             NewServer.Add(new KeyValuePair<string, string>("verify-names", "true"));
-            YAMS.Database.NewServer(NewServer, "My First Nether Server");
+            YAMS.Database.NewServer(NewServer, "My First Nether Server");*/
 
 
             //Set our YAMS Defaults
