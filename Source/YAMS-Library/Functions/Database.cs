@@ -22,7 +22,7 @@ namespace YAMS
 
         private static SqlCeConnection GetConnection()
         {
-            string dbfile = YAMS.Core.RootFolder + "\\dbYAMS.sdf";
+            string dbfile = YAMS.Core.RootFolder + "\\db\\dbYAMS.sdf";
             SqlCeConnection connection = new SqlCeConnection("datasource=" + dbfile);
             return connection;
         }
@@ -41,7 +41,7 @@ namespace YAMS
             if (intStartID > 0) strSQL.Append("AND LogID > " + intStartID.ToString() + " ");
             if (strLevels != "all") strSQL.Append("AND LogLevel = '" + strLevels + "' ");
             if (intServerID > -1) strSQL.Append("AND ServerID = " + intServerID.ToString() + " ");
-            strSQL.Append("ORDER BY LogDateTime DESC");
+            strSQL.Append("ORDER BY LogDateTime ASC");
 
             command.CommandText = strSQL.ToString();
             SqlCeDataAdapter adapter = new SqlCeDataAdapter(command);
