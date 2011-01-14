@@ -97,7 +97,7 @@ namespace YAMS
                             break;
                         case "status":
                             //Get status of a server
-                            intServerID = Convert.ToInt32(context.Request.Parameters["server"]);
+                            intServerID = Convert.ToInt32(context.Request.Parameters["serverid"]);
                             Core.Servers.ForEach(delegate(MCServer s)
                             {
                                 if (s.ServerID == intServerID)
@@ -109,12 +109,21 @@ namespace YAMS
                             break;
                         case "start":
                             //Starts a server
-                            intServerID = Convert.ToInt32(context.Request.Parameters["server"]);
+                            intServerID = Convert.ToInt32(context.Request.Parameters["serverid"]);
                             Core.Servers.ForEach(delegate(MCServer s)
                             {
                                 if (s.ServerID == intServerID) s.Start();
                             });
                             strResponse = "{ \"result\" : \"sentstart\" }";
+                            break;
+                        case "stop":
+                            //Stops a server
+                            intServerID = Convert.ToInt32(context.Request.Parameters["serverid"]);
+                            Core.Servers.ForEach(delegate(MCServer s)
+                            {
+                                if (s.ServerID == intServerID) s.Stop();
+                            });
+                            strResponse = "{ \"result\" : \"sentstop\" }";
                             break;
                         default:
                             return ProcessingResult.Abort;
