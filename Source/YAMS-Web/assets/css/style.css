@@ -221,17 +221,47 @@ button {  width: auto; overflow: visible; }
 
 
  /* Primary Styles
-    Author: 
+    Author: Richard Benson
  */
 
+body, html {
+  background-color: #111;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #eee;
+}
 
+h1, h2, h3, h4 { font-family: 'Orbitron', arial, serif }
 
+h1 { font-size: 200%; }
+h2 { font-size: 150%; }
+h3 { font-size: 120%; }
+h4 { font-size: 110%; }
 
+#server-template { display: none; }
 
+.server {
+  clear: both;  
+}
 
+.log {
+  height: 250px;
+  float: left;
+  width: 700px;
+  overflow: auto;
+  border: 1px solid #ccc;
+  background-color: #2E2D2D;
+}
 
+.panel {
+  float: left;
+  width: 100px;
+}
 
-
+.info { color: #FFFF99; }
+.out { color: #ccc; }
+.warn { color:#EEEE5C; }
+.error { color:#FF0000; }
+.chat { color:#003366;}
 
 
 

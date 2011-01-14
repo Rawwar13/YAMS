@@ -8,8 +8,31 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YAMS-Service", "YAMS-Service\YAMS-Service.csproj", "{99438F9A-343F-41D2-B65D-C3C625B4E0F9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YAMS-Updater", "YAMS-Updater\YAMS-Updater.csproj", "{8662029F-E31B-4D81-BC5E-9E3EA5F8B55D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{99438F9A-343F-41D2-B65D-C3C625B4E0F9} = {99438F9A-343F-41D2-B65D-C3C625B4E0F9}
+	EndProjectSection
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "YAMS-Setup", "YAMS-Setup\YAMS-Setup.vdproj", "{73208C28-003B-44B0-B4E1-E93C10E93FC9}"
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "YAMS-Web", "YAMS-Web\", "{3B93DE75-7758-4AE8-B940-BE72BC782A5C}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv3.5"
+		Debug.AspNetCompiler.VirtualPath = "/YAMS-Web"
+		Debug.AspNetCompiler.PhysicalPath = "YAMS-Web\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\YAMS-Web\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/YAMS-Web"
+		Release.AspNetCompiler.PhysicalPath = "YAMS-Web\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\YAMS-Web\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "55068"
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -93,13 +116,28 @@ Global
 		{73208C28-003B-44B0-B4E1-E93C10E93FC9}.Release|Any CPU.ActiveCfg = Release
 		{73208C28-003B-44B0-B4E1-E93C10E93FC9}.Release|Mixed Platforms.ActiveCfg = Release
 		{73208C28-003B-44B0-B4E1-E93C10E93FC9}.Release|x86.ActiveCfg = Release
+		{3B93DE75-7758-4AE8-B940-BE72BC782A5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B93DE75-7758-4AE8-B940-BE72BC782A5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B93DE75-7758-4AE8-B940-BE72BC782A5C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{3B93DE75-7758-4AE8-B940-BE72BC782A5C}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{3B93DE75-7758-4AE8-B940-BE72BC782A5C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3B93DE75-7758-4AE8-B940-BE72BC782A5C}.Release 2.0|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B93DE75-7758-4AE8-B940-BE72BC782A5C}.Release 2.0|Any CPU.Build.0 = Debug|Any CPU
+		{3B93DE75-7758-4AE8-B940-BE72BC782A5C}.Release 2.0|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{3B93DE75-7758-4AE8-B940-BE72BC782A5C}.Release 2.0|Mixed Platforms.Build.0 = Debug|Any CPU
+		{3B93DE75-7758-4AE8-B940-BE72BC782A5C}.Release 2.0|x86.ActiveCfg = Debug|Any CPU
+		{3B93DE75-7758-4AE8-B940-BE72BC782A5C}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B93DE75-7758-4AE8-B940-BE72BC782A5C}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{3B93DE75-7758-4AE8-B940-BE72BC782A5C}.Release|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{3B93DE75-7758-4AE8-B940-BE72BC782A5C}.Release|Mixed Platforms.Build.0 = Debug|Any CPU
+		{3B93DE75-7758-4AE8-B940-BE72BC782A5C}.Release|x86.ActiveCfg = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		BuildVersion_BuildVersioningStyle = None.None.None.None
-		BuildVersion_UpdateFileVersion = True
-		BuildVersion_UpdateAssemblyVersion = True
+		BuildVersion_UpdateFileVersion = False
+		BuildVersion_UpdateAssemblyVersion = False
 	EndGlobalSection
 EndGlobal
