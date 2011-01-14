@@ -25,3 +25,5 @@ Thumbs.db
 obj/
 _ReSharper*/
 [Tt]est[Rr]esult*
+Web.config
+Source/YAMS-Web/assets/post-test.html
