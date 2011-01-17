@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Data.SqlServerCe;
+using YAMS;
 
 namespace YAMS
 {
@@ -15,14 +16,21 @@ namespace YAMS
         public static void StartUp()
         {
             //Start DB Connection
-            YAMS.Database.init();
-            YAMS.Database.AddLog("Starting Up");
+            Database.init();
+            Database.AddLog("Starting Up");
 
             //Is this the first run?
-            if (YAMS.Database.GetSetting("FirstRun", "YAMS") != "true") YAMS.Util.FirstRun();
+            if (Database.GetSetting("FirstRun", "YAMS") != "true") YAMS.Util.FirstRun();
+
+            //Fill up some vars
+            AutoUpdate.bolUpdateAddons = Convert.ToBoolean(Database.GetSetting("UpdateAddons", "YAMS"));
+            AutoUpdate.bolUpdateGUI = Convert.ToBoolean(Database.GetSetting("UpdateGUI", "YAMS"));
+            AutoUpdate.bolUpdateJAR = Convert.ToBoolean(Database.GetSetting("UpdateJAR", "YAMS"));
+            AutoUpdate.bolUpdateSVC = Convert.ToBoolean(Database.GetSetting("bolUpdateSVC", "YAMS"));
+            AutoUpdate.bolUpdateWeb = Convert.ToBoolean(Database.GetSetting("UpdateWeb", "YAMS"));
 
             //Check for updates
-            YAMS.AutoUpdate.CheckUpdates();
+            AutoUpdate.CheckUpdates();
 
             //Load any servers
             SqlCeDataReader readerServers = YAMS.Database.GetServers();
