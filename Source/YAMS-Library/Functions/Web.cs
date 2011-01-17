@@ -103,7 +103,9 @@ namespace YAMS
                                 if (s.ServerID == intServerID)
                                 {
                                     strResponse = "{ \"serverid\" : " + intServerID + "," +
-                                                    "\"status\" : \"" + s.Running + "\" }";
+                                                    "\"status\" : \"" + s.Running + "\"," +
+                                                    "\"ram\" : " + s.GetMemory() + "," +
+                                                    "\"vm\" : " + s.GetVMemory() + " }";
                                 };
                             });
                             break;
