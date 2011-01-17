@@ -13,10 +13,12 @@ namespace YAMS
     public static class AutoUpdate
     {
         //Settings
-        public static bool bolUpdateApp = true;
-        public static bool bolUpdateServer = true;
-        public static bool bolUpdateClient = true;
+        public static bool bolUpdateGUI = false;
+        public static bool bolUpdateJAR = false;
+        public static bool bolUpdateClient = false;
         public static bool bolUpdateAddons = false;
+        public static bool bolUpdateSVC = false;
+        public static bool bolUpdateWeb = false;
 
         //Update booleans
         public static bool bolServerUpdateAvailable = false;
@@ -31,10 +33,10 @@ namespace YAMS
         public static string strMCClientURL = "http://minecraft.net/download/Minecraft.jar";
 
         //YAMS URLs
-        public static string strYAMSDLLURL = "https://github.com/richardbenson/YAMS/raw/master/Binaries/YAMS-Library.dll";
-        public static string strYAMSServiceURL = "https://github.com/richardbenson/YAMS/raw/master/Binaries/YAMS-Service.exe";
-        public static string strYAMSWebURL = "https://github.com/richardbenson/YAMS/raw/master/Binaries/web.zip";
-        public static string strYAMSVersionsURL = "https://github.com/richardbenson/YAMS/raw/master/Binaries/versions.json";
+        public static string strYAMSDLLURL = "http://richardbenson.github.com/YAMS/downloads/YAMS-Library.dll";
+        public static string strYAMSServiceURL = "http://richardbenson.github.com/YAMS/downloads/YAMS-Service.exe";
+        public static string strYAMSWebURL = "http://richardbenson.github.com/YAMS/downloads/web.zip";
+        public static string strYAMSVersionsURL = "http://richardbenson.github.com/YAMS/versions.json";
 
         //Third party URLS
         public static string strOverviewerURL = "https://github.com/downloads/brownan/Minecraft-Overviewer/Overviewer-xxx.zip";
@@ -49,10 +51,10 @@ namespace YAMS
         public static void CheckUpdates()
         {
             //Check Minecraft server first
-            if (bolUpdateServer) bolServerUpdateAvailable = UpdateIfNeeded(strMCServerURL, YAMS.Core.RootFolder + @"\lib\minecraft_server.jar.UPDATE");
+            if (bolUpdateJAR) bolServerUpdateAvailable = UpdateIfNeeded(strMCServerURL, YAMS.Core.RootFolder + @"\lib\minecraft_server.jar.UPDATE");
 
             //Now update self
-            if (bolUpdateApp)
+            if (bolUpdateGUI)
             {
                 bolDllUpdateAvailable = UpdateIfNeeded(strYAMSDLLURL, YAMS.Core.RootFolder + @"\YAMS-Library.dll.UPDATE");
                 bolServiceUpdateAvailable = UpdateIfNeeded(strMCServerURL, YAMS.Core.RootFolder + @"\YAMS-Service.exe.UPDATE");
@@ -173,13 +175,13 @@ namespace YAMS
                 //Set up a request and include our eTag
                 HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(strURL);
                 request.Method = "GET";
-                request.Headers[HttpRequestHeader.IfNoneMatch] = strETag;
+                if (strETag != null) request.Headers[HttpRequestHeader.IfModifiedSince] = strETag;
 
                 //Grab the response
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
 
                 //Save the etag
-                YAMS.Database.SaveEtag(strURL, response.Headers[HttpResponseHeader.ETag]);
+                if (response.Headers[HttpResponseHeader.LastModified] != null) YAMS.Database.SaveEtag(strURL, response.Headers[HttpResponseHeader.LastModified]);
 
                 //Stream the file
                 Stream strm = response.GetResponseStream();
