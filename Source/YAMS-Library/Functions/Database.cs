@@ -243,14 +243,15 @@ namespace YAMS
         }
 
 
-        public static int NewServer(List<KeyValuePair<string, string>> listServer, string strServerTitle)
+        public static int NewServer(List<KeyValuePair<string, string>> listServer, string strServerTitle, int intServerMemory = 1024)
         {
             SqlCeCommand cmd = new SqlCeCommand();
             cmd.Connection = connLocal;
 
             //Create the server and get an ID
-            cmd.CommandText = "INSERT INTO MCServers (ServerTitle, ServerWrapperMode) VALUES (@title, 0)";
+            cmd.CommandText = "INSERT INTO MCServers (ServerTitle, ServerWrapperMode, ServerAssignedMemory) VALUES (@title, 0, @mem)";
             cmd.Parameters.Add("@title", strServerTitle);
+            cmd.Parameters.Add("@mem", intServerMemory);
             cmd.ExecuteNonQuery();
             cmd.Parameters.Clear();
             cmd.CommandText = "SELECT @@IDENTITY";
