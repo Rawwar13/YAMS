@@ -209,5 +209,12 @@ namespace YAMS
                     return "x86";
             }
         }
+
+        //Convert Boolean to string
+        public static string BooleanToString(bool bolInput)
+        {
+            if (bolInput) return "true";
+            else return "false";
+        }
     }
 }
