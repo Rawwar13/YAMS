@@ -39,6 +39,10 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.chkOptimisations = new System.Windows.Forms.CheckBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.txtMemory = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.chkAutoStart = new System.Windows.Forms.CheckBox();
             this.label5 = new System.Windows.Forms.Label();
             this.txtServerName = new System.Windows.Forms.TextBox();
@@ -50,15 +54,22 @@
             this.chkUpdateJar = new System.Windows.Forms.CheckBox();
             this.label6 = new System.Windows.Forms.Label();
             this.tipYAMSUpdate = new System.Windows.Forms.ToolTip(this.components);
-            this.label7 = new System.Windows.Forms.Label();
-            this.txtMemory = new System.Windows.Forms.TextBox();
-            this.chkOptimisations = new System.Windows.Forms.CheckBox();
-            this.label8 = new System.Windows.Forms.Label();
+            this.directorySearcher1 = new System.DirectoryServices.DirectorySearcher();
+            this.chkRestartMC = new System.Windows.Forms.CheckBox();
+            this.chkRestartYAMS = new System.Windows.Forms.CheckBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.chkOverviewer = new System.Windows.Forms.CheckBox();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.linkLabel2 = new System.Windows.Forms.LinkLabel();
+            this.chkC10t = new System.Windows.Forms.CheckBox();
+            this.btnComplete = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.icoJDK)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.icoJRE)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -173,6 +184,42 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Your First Server";
             // 
+            // chkOptimisations
+            // 
+            this.chkOptimisations.AutoSize = true;
+            this.chkOptimisations.Enabled = false;
+            this.chkOptimisations.Location = new System.Drawing.Point(156, 136);
+            this.chkOptimisations.Name = "chkOptimisations";
+            this.chkOptimisations.Size = new System.Drawing.Size(15, 14);
+            this.chkOptimisations.TabIndex = 8;
+            this.chkOptimisations.UseVisualStyleBackColor = true;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(13, 136);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(137, 13);
+            this.label8.TabIndex = 7;
+            this.label8.Text = "Enable Java Optimisations?";
+            // 
+            // txtMemory
+            // 
+            this.txtMemory.Location = new System.Drawing.Point(156, 78);
+            this.txtMemory.Name = "txtMemory";
+            this.txtMemory.Size = new System.Drawing.Size(144, 20);
+            this.txtMemory.TabIndex = 6;
+            this.txtMemory.Text = "1024";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(13, 81);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(115, 13);
+            this.label7.TabIndex = 5;
+            this.label7.Text = "Assigned Memory (MB)";
+            // 
             // chkAutoStart
             // 
             this.chkAutoStart.AutoSize = true;
@@ -222,13 +269,15 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.chkRestartYAMS);
+            this.groupBox3.Controls.Add(this.chkRestartMC);
             this.groupBox3.Controls.Add(this.chkUpdateAddons);
             this.groupBox3.Controls.Add(this.chkUpdateYAMS);
             this.groupBox3.Controls.Add(this.chkUpdateJar);
             this.groupBox3.Controls.Add(this.label6);
             this.groupBox3.Location = new System.Drawing.Point(12, 267);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(679, 242);
+            this.groupBox3.Size = new System.Drawing.Size(679, 161);
             this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "YAMS Settings";
@@ -236,6 +285,8 @@
             // chkUpdateAddons
             // 
             this.chkUpdateAddons.AutoSize = true;
+            this.chkUpdateAddons.Checked = true;
+            this.chkUpdateAddons.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkUpdateAddons.Location = new System.Drawing.Point(17, 90);
             this.chkUpdateAddons.Name = "chkUpdateAddons";
             this.chkUpdateAddons.Size = new System.Drawing.Size(149, 17);
@@ -246,6 +297,8 @@
             // chkUpdateYAMS
             // 
             this.chkUpdateYAMS.AutoSize = true;
+            this.chkUpdateYAMS.Checked = true;
+            this.chkUpdateYAMS.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkUpdateYAMS.Location = new System.Drawing.Point(17, 67);
             this.chkUpdateYAMS.Name = "chkUpdateYAMS";
             this.chkUpdateYAMS.Size = new System.Drawing.Size(141, 17);
@@ -256,6 +309,8 @@
             // chkUpdateJar
             // 
             this.chkUpdateJar.AutoSize = true;
+            this.chkUpdateJar.Checked = true;
+            this.chkUpdateJar.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkUpdateJar.Location = new System.Drawing.Point(17, 44);
             this.chkUpdateJar.Name = "chkUpdateJar";
             this.chkUpdateJar.Size = new System.Drawing.Size(155, 17);
@@ -272,47 +327,125 @@
             this.label6.TabIndex = 5;
             this.label6.Text = "These settings control how YAMS works and may affect any or all of your servers";
             // 
-            // label7
+            // directorySearcher1
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(13, 81);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(115, 13);
-            this.label7.TabIndex = 5;
-            this.label7.Text = "Assigned Memory (MB)";
+            this.directorySearcher1.ClientTimeout = System.TimeSpan.Parse("-00:00:01");
+            this.directorySearcher1.ServerPageTimeLimit = System.TimeSpan.Parse("-00:00:01");
+            this.directorySearcher1.ServerTimeLimit = System.TimeSpan.Parse("-00:00:01");
             // 
-            // txtMemory
+            // chkRestartMC
             // 
-            this.txtMemory.Location = new System.Drawing.Point(156, 78);
-            this.txtMemory.Name = "txtMemory";
-            this.txtMemory.Size = new System.Drawing.Size(144, 20);
-            this.txtMemory.TabIndex = 6;
-            this.txtMemory.Text = "1024";
+            this.chkRestartMC.AutoSize = true;
+            this.chkRestartMC.Checked = true;
+            this.chkRestartMC.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkRestartMC.Location = new System.Drawing.Point(17, 113);
+            this.chkRestartMC.Name = "chkRestartMC";
+            this.chkRestartMC.Size = new System.Drawing.Size(420, 17);
+            this.chkRestartMC.TabIndex = 9;
+            this.chkRestartMC.Text = "Restart Minecraft automatically when update is available? (only when no players o" +
+                "n)";
+            this.chkRestartMC.UseVisualStyleBackColor = true;
             // 
-            // chkOptimisations
+            // chkRestartYAMS
             // 
-            this.chkOptimisations.AutoSize = true;
-            this.chkOptimisations.Enabled = false;
-            this.chkOptimisations.Location = new System.Drawing.Point(156, 136);
-            this.chkOptimisations.Name = "chkOptimisations";
-            this.chkOptimisations.Size = new System.Drawing.Size(15, 14);
-            this.chkOptimisations.TabIndex = 8;
-            this.chkOptimisations.UseVisualStyleBackColor = true;
+            this.chkRestartYAMS.AutoSize = true;
+            this.chkRestartYAMS.Checked = true;
+            this.chkRestartYAMS.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkRestartYAMS.Location = new System.Drawing.Point(17, 136);
+            this.chkRestartYAMS.Name = "chkRestartYAMS";
+            this.chkRestartYAMS.Size = new System.Drawing.Size(406, 17);
+            this.chkRestartYAMS.TabIndex = 10;
+            this.chkRestartYAMS.Text = "Restart YAMS automatically when update is available? (only when no players on)";
+            this.chkRestartYAMS.UseVisualStyleBackColor = true;
             // 
-            // label8
+            // groupBox4
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(13, 136);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(137, 13);
-            this.label8.TabIndex = 7;
-            this.label8.Text = "Enable Java Optimisations?";
+            this.groupBox4.Controls.Add(this.linkLabel2);
+            this.groupBox4.Controls.Add(this.chkC10t);
+            this.groupBox4.Controls.Add(this.linkLabel1);
+            this.groupBox4.Controls.Add(this.chkOverviewer);
+            this.groupBox4.Controls.Add(this.label9);
+            this.groupBox4.Location = new System.Drawing.Point(13, 434);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(678, 94);
+            this.groupBox4.TabIndex = 3;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Third-party Add-Ons";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(13, 16);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(143, 13);
+            this.label9.TabIndex = 11;
+            this.label9.Text = "Install these additional apps?";
+            // 
+            // chkOverviewer
+            // 
+            this.chkOverviewer.AutoSize = true;
+            this.chkOverviewer.Checked = true;
+            this.chkOverviewer.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkOverviewer.Location = new System.Drawing.Point(16, 41);
+            this.chkOverviewer.Name = "chkOverviewer";
+            this.chkOverviewer.Size = new System.Drawing.Size(192, 17);
+            this.chkOverviewer.TabIndex = 11;
+            this.chkOverviewer.Text = "Minecraft Overviewer (by Brownan)";
+            this.chkOverviewer.UseVisualStyleBackColor = true;
+            // 
+            // linkLabel1
+            // 
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.Location = new System.Drawing.Point(214, 42);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(247, 13);
+            this.linkLabel1.TabIndex = 12;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "https://github.com/brownan/Minecraft-Overviewer";
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            // 
+            // linkLabel2
+            // 
+            this.linkLabel2.AutoSize = true;
+            this.linkLabel2.Location = new System.Drawing.Point(279, 65);
+            this.linkLabel2.Name = "linkLabel2";
+            this.linkLabel2.Size = new System.Drawing.Size(175, 13);
+            this.linkLabel2.TabIndex = 14;
+            this.linkLabel2.TabStop = true;
+            this.linkLabel2.Text = "http://toolchain.eu/minecraft/c10t/";
+            this.linkLabel2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
+            // 
+            // chkC10t
+            // 
+            this.chkC10t.AutoSize = true;
+            this.chkC10t.Checked = true;
+            this.chkC10t.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkC10t.Location = new System.Drawing.Point(16, 64);
+            this.chkC10t.Name = "chkC10t";
+            this.chkC10t.Size = new System.Drawing.Size(257, 17);
+            this.chkC10t.TabIndex = 13;
+            this.chkC10t.Text = "c10t: Minecraft (C)artography (T)ool (by Udoprog)";
+            this.chkC10t.UseVisualStyleBackColor = true;
+            // 
+            // btnComplete
+            // 
+            this.btnComplete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.btnComplete.Enabled = false;
+            this.btnComplete.Location = new System.Drawing.Point(572, 534);
+            this.btnComplete.Name = "btnComplete";
+            this.btnComplete.Size = new System.Drawing.Size(119, 23);
+            this.btnComplete.TabIndex = 4;
+            this.btnComplete.Text = "Complete Setup";
+            this.btnComplete.UseVisualStyleBackColor = true;
+            this.btnComplete.Click += new System.EventHandler(this.btnComplete_Click);
             // 
             // frmFirstRun
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(703, 521);
+            this.ClientSize = new System.Drawing.Size(703, 568);
+            this.Controls.Add(this.btnComplete);
+            this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -329,6 +462,8 @@
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -360,6 +495,16 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox txtMemory;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.CheckBox chkRestartYAMS;
+        private System.Windows.Forms.CheckBox chkRestartMC;
+        private System.DirectoryServices.DirectorySearcher directorySearcher1;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.CheckBox chkOverviewer;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.LinkLabel linkLabel2;
+        private System.Windows.Forms.CheckBox chkC10t;
+        private System.Windows.Forms.Button btnComplete;
 
     }
 }
