@@ -51,6 +51,7 @@
             this.lblCurrentItem.Size = new System.Drawing.Size(16, 13);
             this.lblCurrentItem.TabIndex = 2;
             this.lblCurrentItem.Text = "...";
+            this.lblCurrentItem.UseWaitCursor = true;
             // 
             // frmWorking
             // 
