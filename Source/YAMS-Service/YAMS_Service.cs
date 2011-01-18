@@ -16,12 +16,14 @@ namespace YAMS_Service
 
         protected override void OnStart(string[] args)
         {
+            EventLog.WriteEntry("YAMS Startup", EventLogEntryType.Information);
             YAMS.Core.StartUp();
         }
 
         protected override void OnStop()
         {
             YAMS.Core.ShutDown();
+            EventLog.WriteEntry("YAMS Shutdown", EventLogEntryType.Information);
         }
     }
 }
