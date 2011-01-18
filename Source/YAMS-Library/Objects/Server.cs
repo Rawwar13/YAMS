@@ -60,7 +60,7 @@ namespace YAMS
             {
                 //Basic arguments in all circumstances
                 var strArgs = "-Xmx" + intAssignedMem + "M -Xms" + intAssignedMem + @"M -jar ..\..\..\lib\minecraft_server.jar nogui";
-                var strFileName = YAMS.Util.JavaPath() + "javaw.exe";
+                var strFileName = YAMS.Util.JavaPath() + "java.exe";
 
                 //If we have enabled the java optimisations add the additional
                 //arguments. See http://www.minecraftforum.net/viewtopic.php?f=1012&t=68128
@@ -69,7 +69,7 @@ namespace YAMS
                     var intGCCores = Environment.ProcessorCount - 1;
                     if (intGCCores == 0) intGCCores = 1;
                     strArgs = "-server -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+CMSIncrementalPacing -XX:ParallelGCThreads=" + intGCCores + " -XX:+AggressiveOpts " + strArgs;
-                    strFileName = YAMS.Util.JavaPath("jdk") + "javaw.exe";
+                    strFileName = YAMS.Util.JavaPath("jdk") + "java.exe";
                 }
                 this.prcMinecraft.StartInfo.UseShellExecute = false;
                 this.prcMinecraft.StartInfo.FileName = strFileName;
