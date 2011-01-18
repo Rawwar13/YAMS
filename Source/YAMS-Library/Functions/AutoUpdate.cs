@@ -175,7 +175,8 @@ namespace YAMS
                 //Set up a request and include our eTag
                 HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(strURL);
                 request.Method = "GET";
-                if (strETag != null) request.Headers[HttpRequestHeader.IfModifiedSince] = strETag;
+                if (strETag != "") request.IfModifiedSince = Convert.ToDateTime(strETag);
+                //if (strETag != null) request.Headers[HttpRequestHeader.IfModifiedSince] = strETag;
 
                 //Grab the response
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
