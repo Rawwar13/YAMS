@@ -289,13 +289,13 @@
             "InstallerClass" = "11:TRUE"
             "CustomActionData" = "8:"
             }
-            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_4F1587B6C5F74429B6361DB7CF35764C"
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_48550A371D6F48B8803B3D0C5E1D22BB"
             {
             "Name" = "8:Primary output from YAMS-Updater (Active)"
             "Condition" = "8:"
             "Object" = "8:_B19853C2C38C491EBFC3DC477FF2539B"
             "FileType" = "3:2"
-            "InstallAction" = "3:1"
+            "InstallAction" = "3:2"
             "Arguments" = "8:"
             "EntryPoint" = "8:"
             "Sequence" = "3:2"
@@ -423,7 +423,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:YAMS-Library, Version=1.0.144.2153, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:YAMS-Library, Version=1.0.147.2039, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_7FEF75E8895E2E0B967E5F783ABF10DC"
@@ -666,7 +666,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Yet Another Minecraft Server"
         "ProductCode" = "8:{93DD1BB0-7E48-4A53-BD92-CD5363621E2F}"
-        "PackageCode" = "8:{5015C624-7F81-4452-98EA-7203EB6529E0}"
+        "PackageCode" = "8:{DF955B26-8A35-4E35-BBEA-5C7729A0662C}"
         "UpgradeCode" = "8:{6E9CC4BF-62B0-45B5-B54E-5FEB6095CD74}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
