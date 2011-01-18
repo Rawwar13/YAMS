@@ -15,6 +15,8 @@ namespace YAMS_Updater
     {
         private static string RootFolder = new System.IO.FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).DirectoryName;
 
+        public static ServiceController svcYAMS;
+
         [DllImport("kernel32")]
         public static extern IntPtr GetConsoleWindow();
 
@@ -44,7 +46,9 @@ namespace YAMS_Updater
                 }
                 Environment.Exit(0);
             }
-            
+
+            svcYAMS = new ServiceController("YAMS_Service");
+
             Console.WriteLine("*** YAMS Updater ***");
 
             if (args.Contains<string>("/restart"))
@@ -84,8 +88,10 @@ namespace YAMS_Updater
                 {
                     Application.Run(new frmFirstRun());
                 }
-
-                Application.Run(new frmMain());
+                else
+                {
+                    Application.Run(new frmMain());
+                }
 
                 return;
             }
@@ -94,14 +100,13 @@ namespace YAMS_Updater
 
         public static void StopService()
         {
-            ServiceController scYAMS = new ServiceController("YAMS_Service");
-            if (scYAMS.Status.Equals(ServiceControllerStatus.Stopped))
+            if (svcYAMS.Status.Equals(ServiceControllerStatus.Stopped))
             {
                 Console.WriteLine("Service not running");
             }
             else
             {
-                scYAMS.Stop();
+                svcYAMS.Stop();
                 Console.WriteLine("Service stopped");
             }
 
@@ -109,8 +114,7 @@ namespace YAMS_Updater
 
         public static void StartService()
         {
-            ServiceController scYAMS = new ServiceController("YAMS_Service");
-            if (!scYAMS.Status.Equals(ServiceControllerStatus.Stopped))
+            if (!svcYAMS.Status.Equals(ServiceControllerStatus.Stopped))
             {
                 Console.WriteLine("Service already running");
             }
@@ -131,7 +135,7 @@ namespace YAMS_Updater
                 }
 
                 //Restart the service
-                scYAMS.Start();
+                svcYAMS.Start();
                 Console.WriteLine("Service started");
             }
 
