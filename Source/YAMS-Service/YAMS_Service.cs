@@ -11,6 +11,7 @@ namespace YAMS_Service
         public YAMS_Service()
         {
             InitializeComponent();
+            this.ServiceName = "YAMS";
         }
 
         protected override void OnStart(string[] args)
