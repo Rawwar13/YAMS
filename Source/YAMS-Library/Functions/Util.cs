@@ -171,7 +171,7 @@ namespace YAMS
         //Uses WhatIsMyIP.com to determine the user's external IP
         public static IPAddress GetExternalIP()
         {
-            string strExternalIPChecker = "http://www.whatismyip.com/automation/n09230945.asp"; // See http://forum.whatismyip.com/f14/our-automation-rules-t241/
+            string strExternalIPChecker = "http://icanhazip.com/";
             WebClient wcGetIP = new WebClient();
             UTF8Encoding utf8 = new UTF8Encoding();
             string strResponse = "";
