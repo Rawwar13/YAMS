@@ -11,7 +11,7 @@
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
   
   <!-- Script for GitHub Badge Widget -->
-  <script src="assets/js/query.github_badge.js"></script>
+  <script src="assets/js/jquery.github_badge.js"></script>
   
   <!-- CSS for GitHub Badge Widget: implied media="all" -->
   <link rel="stylesheet" href="assets/css/jquery.github_badge.css?v=1" />
@@ -85,7 +85,10 @@
     $("#yams-badge").GithubBadge({
         login: "richardbenson",
         kind: "project",
-        repo_name: "YAMS"
+        repo_name: "YAMS",
+        image_path: "assets/images/",
+        animate_style: "show",
+        commit_count: "3"
     });
 </script>  
   
