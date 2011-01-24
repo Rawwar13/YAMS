@@ -42,3 +42,4 @@ p { clear: both; line-height: 1.64em; margin: 0 0 15px; }
 
 /* Customisations */
 .download { margin: auto; width: 296px; text-align: center; }
+li {margin-left: 2em; }
