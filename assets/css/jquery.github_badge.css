@@ -238,7 +238,6 @@
             .ghb_badge .ghb_commit_list li {
                 background: url("../images/push.png") no-repeat scroll 10px 8px #FFFFFF; /* Smiley Pic */
                 border-bottom: 1px solid #E5E5E5;
-                font-size: 14px;
                 font-weight: bold;
                 padding-left: 22px;
             }
