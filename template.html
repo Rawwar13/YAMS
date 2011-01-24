@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="Robots" content="index,follow" />
+  <meta name="author" content="Luka Cvrk (www.solucija.com)" />
+  <meta name="description" content="Yet Another Minecraft Server is an easy way to run your Minecraft server on Windows as a service." />
+  <link rel="stylesheet" type="text/css" href="assets/css/screen.css" media="screen" />
+  <title>Yet Another Minecraft Server (YAMS) @ GitHub </title>
+</head>
+<body>
+  <a href="http://github.com/richardbenson/YAMS"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>  
+  <div id="content">
+    <p id="top">The vanilla Minecraft Server (SMP) experience on Windows without the hassle</p>
+    <div id="logo">
+      <h1><a href="index.html"><abbr title="Yet Another Minecraft Server">YAMS</abbr></a></h1>
+    </div>
+    <ul id="menu">
+      <li class="current"><a href="#">Home</a></li>
+      <li><a href="#">About</a></li>
+      <!--<li><a href="#">Work</a></li>
+      <li><a href="#">Services</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Contact</a></li>-->
+    </ul>
+    <div class="line"></div>
+    <div id="pitch">
+      <h1>Yet Another Minecraft Server</h1>
+      <h2>A simple way to run your own Minecraft server on Windows.</h2>
+    </div>  
+    <div class="third">
+      <h3>Download</h3>
+      <p>YAMS is not quite cooked yet, but when it is a download link will appear here.</p>
+    </div>
+    <div class="third">
+      <h3>Why use YAMS?</h3>
+      <p>&quot;Always on&quot; server applications in Windows need to be installed and run as a Windows Service.  The standard Minecraft server doesn't offer this as an option, so YAMS sits on top of the vanilla (standard) Minecraft server, and keeps it running all the time.</p>
+      <p>For more details on what YAMS does and doesn't do, see the <a href="about.html">about page</a></p>
+    </div>
+    <div class="third last">
+      <h3>Open Source</h3>
+      <p>Download the code and customise YAMS for your own needs.</p>
+      <div class="download">
+        <a href="http://github.com/richardbenson/YAMS/zipball/master">
+          <img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a>
+        <a href="http://github.com/richardbenson/YAMS/tarball/master">
+          <img border="0" width="90" src="http://github.com/images/modules/download/tar.png"></a>
+      </div>
+      <p>You can also clone the project with <a href="http://git-scm.com">Git</a> by running:
+        <pre>$ git clone git://github.com/richardbenson/YAMS</pre>
+      </p>
+    </div>
+    <div class="line"></div>
+    <div class="left">
+      <h4>Join the Movement</h4>
+      <p><em>Laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</em></p>
+    </div>
+    <div class="right">
+      {% for post in site.posts limit:2 %}
+      <h3>{{ post.date | date_to_long_string }}</h3>
+      <p>{{ post.content }}</p>
+      <br />
+      {% endfor %}
+    </div>
+    <div id="footer">
+      <p>&copy; Copyright 2011 Richard Benson &minus; Design: Luka Cvrk, <a href="http://www.solucija.com" title="Free CSS Templates">Solucija</a></p>
+    </div>  
+  </div>
+</body>
+</html>

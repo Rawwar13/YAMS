@@ -1,0 +1,6 @@
+---
+layout: default
+title: A test post
+---
+
+This is just a test of the blogging in github pages
