@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Net;
-using System.IO;
-using System.Threading;
 using System.Data;
+using System.IO;
+using System.Net;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading;
 using HttpServer;
 using HttpServer.Authentication;
+using HttpServer.Headers;
 using HttpServer.Modules;
 using HttpServer.Resources;
 using HttpServer.Tools;
-using HttpServer.Headers;
-using HttpListener = HttpServer.HttpListener;
 using Newtonsoft.Json;
+using HttpListener = HttpServer.HttpListener;
+using YAMS;
 
 namespace YAMS
 {
@@ -21,6 +23,10 @@ namespace YAMS
         private static Server myServer;
 
         private static Thread serverThread;
+
+        private static string OpenTag = @"\{\?Y\:";
+        private static string CloseTag = @"\?\}";
+        private static Regex TagFinder = new Regex("(" + OpenTag + ")([^}]+)(" + CloseTag + ")");
 
         //Control
         public static void Init()
@@ -52,6 +58,20 @@ namespace YAMS
         public static void Stop()
         {
             serverThread.Abort();
+        }
+
+        public static string ReplaceTags(string strInput, Dictionary<string,string> dicTags)
+        {
+            var strOutput = strInput;
+
+            MatchCollection results = TagFinder.Matches(strInput);
+            foreach (Match match in results)
+            {
+                Regex replacer = new Regex(OpenTag + match.Value + CloseTag);
+                if (dicTags.ContainsKey(match.Value)) strOutput = replacer.Replace(strOutput, dicTags[match.Value]);
+            }
+
+            return strOutput;
         }
 
     }
@@ -143,17 +163,42 @@ namespace YAMS
                 
                 return ProcessingResult.SendResponse;
             }
-            else
+            else if (context.Request.Uri.AbsoluteUri.Contains(@"/admin/"))
             {
                 context.Response.Connection.Type = ConnectionType.Close;
-                byte[] buffer = Encoding.UTF8.GetBytes(File.ReadAllText(YAMS.Core.RootFolder + "\\web\\index.html"));
+                byte[] buffer = Encoding.UTF8.GetBytes(File.ReadAllText(YAMS.Core.RootFolder + @"\web\admin\index.html"));
+                context.Response.Body.Write(buffer, 0, buffer.Length);
+                return ProcessingResult.SendResponse;
+            }
+            else
+            {
+                //it's a public request, work out what they want
+                // / = list servers
+                // /[0-9]+/ = server home page including chat log
+                // /[0-9]+/map = Google Map
+                // /[0-9]+/renders = c10t renders
+                var strTemplate = File.ReadAllText(Core.RootFolder + @"\web\template.html");
+                Dictionary<string, string> dicTags = new Dictionary<string,string>();
+                
+                if (context.Request.Uri.AbsoluteUri.Equals(@"/"))
+                {
+                    //List servers available
+                    dicTags.Add("PageTitle", "Server List");
+                }
+
+                //Run through our replacer
+                strTemplate = YAMS.WebServer.ReplaceTags(strTemplate, dicTags);
+
+                //And send to the browser
+                context.Response.Connection.Type = ConnectionType.Close;
+                byte[] buffer = Encoding.UTF8.GetBytes(strTemplate);
                 context.Response.Body.Write(buffer, 0, buffer.Length);
                 return ProcessingResult.SendResponse;
             }
 
 
         }
-           
+
     }
 
     [Serializable]
