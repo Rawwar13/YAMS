@@ -129,6 +129,24 @@ namespace YAMS
                                 };
                             });
                             break;
+                        case "players":
+                            //Get status of a server
+                            intServerID = Convert.ToInt32(context.Request.Parameters["serverid"]);
+                            Core.Servers.ForEach(delegate(MCServer s)
+                            {
+                                if (s.ServerID == intServerID)
+                                {
+                                    strResponse = "{ \"serverid\" : " + intServerID + "," +
+                                                    "\"players\" : [";
+                                    s.Players.ForEach(delegate(string p)
+                                    {
+                                        strResponse += "\"" + p + "\",";
+                                    });
+                                    strResponse = strResponse.Remove(strResponse.Length - 1);
+                                    strResponse += "]}";
+                                };
+                            });
+                            break;
                         case "start":
                             //Starts a server
                             intServerID = Convert.ToInt32(context.Request.Parameters["serverid"]);
