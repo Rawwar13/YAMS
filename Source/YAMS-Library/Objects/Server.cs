@@ -23,6 +23,8 @@ namespace YAMS
         private Regex regPlayerLoggedOut = new Regex(@"([\w]+) ?(lost connection)");
         private Regex regServerVersion = new Regex(@"(?:Starting minecraft server version )");
 
+        private string ServerType = "vanilla";
+
         public Process prcMinecraft;
 
         private int intRestartSeconds = 0;
@@ -42,6 +44,7 @@ namespace YAMS
             this.bolEnableJavaOptimisations = Convert.ToBoolean(YAMS.Database.GetSetting(this.ServerID, "ServerEnableOptimisations"));
             this.intAssignedMem = Convert.ToInt32(YAMS.Database.GetSetting(this.ServerID, "ServerAssignedMemory"));
             this.ServerTitle = Convert.ToString(YAMS.Database.GetSetting(this.ServerID, "ServerTitle"));
+            this.ServerType = Convert.ToString(Database.GetSetting(this.ServerID, "ServerType"));
         }
 
         public void Start()
@@ -59,7 +62,19 @@ namespace YAMS
             try
             {
                 //Basic arguments in all circumstances
-                var strArgs = "-Xmx" + intAssignedMem + "M -Xms" + intAssignedMem + @"M -jar ..\..\..\lib\minecraft_server.jar nogui";
+                var strArgs = "-Xmx" + intAssignedMem + "M -Xms" + intAssignedMem + @"M -jar ..\..\..\lib\";
+                switch (this.ServerType) {
+                    case "vanilla":
+                        strArgs += "minecraft_server.jar";
+                        break;
+                    case "bukkit":
+                        strArgs += "craftbukkit.jar";
+                        break;
+                    default:
+                        strArgs += "minecraft_server.jar";
+                        break;
+                }
+                strArgs += " nogui";
                 var strFileName = YAMS.Util.JavaPath() + "java.exe";
 
                 //If we have enabled the java optimisations add the additional
