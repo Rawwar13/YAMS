@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Timers;
 using System.Net;
 using System.Collections.Generic;
+using YAMS;
 
 namespace YAMS
 {
@@ -41,9 +42,9 @@ namespace YAMS
             this.ServerID = intServerID;
             this.strWorkingDir = YAMS.Core.RootFolder + "\\servers\\" + this.ServerID.ToString() + "\\config\\";
 
-            this.bolEnableJavaOptimisations = Convert.ToBoolean(YAMS.Database.GetSetting(this.ServerID, "ServerEnableOptimisations"));
-            this.intAssignedMem = Convert.ToInt32(YAMS.Database.GetSetting(this.ServerID, "ServerAssignedMemory"));
-            this.ServerTitle = Convert.ToString(YAMS.Database.GetSetting(this.ServerID, "ServerTitle"));
+            this.bolEnableJavaOptimisations = Convert.ToBoolean(Database.GetSetting(this.ServerID, "ServerEnableOptimisations"));
+            this.intAssignedMem = Convert.ToInt32(Database.GetSetting(this.ServerID, "ServerAssignedMemory"));
+            this.ServerTitle = Convert.ToString(Database.GetSetting(this.ServerID, "ServerTitle"));
             this.ServerType = Convert.ToString(Database.GetSetting(this.ServerID, "ServerType"));
         }
 
@@ -52,10 +53,10 @@ namespace YAMS
             if (this.Running) return;
 
             //First check if an update is waiting to be applied
-            if (!YAMS.Util.ReplaceFile(YAMS.Core.RootFolder + "\\lib\\minecraft_server.jar", YAMS.Core.RootFolder + "\\lib\\minecraft_server.jar.UPDATE")) return;
+            if (!Util.ReplaceFile(Core.RootFolder + "\\lib\\minecraft_server.jar", Core.RootFolder + "\\lib\\minecraft_server.jar.UPDATE")) return;
 
             //Also check if a new properties file is to be applied
-            if (!YAMS.Util.ReplaceFile(this.strWorkingDir + "server.properties", this.strWorkingDir + "server.properties.UPDATE")) return;
+            if (!Util.ReplaceFile(this.strWorkingDir + "server.properties", this.strWorkingDir + "server.properties.UPDATE")) return;
 
             this.prcMinecraft = new Process();
 
@@ -105,7 +106,7 @@ namespace YAMS
                 this.prcMinecraft.BeginErrorReadLine();
 
                 this.Running = true;
-                YAMS.Database.AddLog("Server Started", "server", "info", false, this.ServerID);
+                Database.AddLog("Server Started", "server", "info", false, this.ServerID);
 
                 //Start our wrapper
                 //YAMS.Wrapper.Listen wrapper = new YAMS.Wrapper.Listen(IPAddress.Parse(YAMS.Database.GetSetting("ListenIP", "YAMS")), Convert.ToInt32(YAMS.Database.GetSetting("ListenPort", "YAMS")));
@@ -113,7 +114,7 @@ namespace YAMS
             }
             catch (Exception e)
             {
-                YAMS.Database.AddLog("Failed to start Server: " + e.Message, "library", "error", false, this.ServerID);
+                Database.AddLog("Failed to start Server: " + e.Message, "library", "error", false, this.ServerID);
             }
             
         }
@@ -125,7 +126,7 @@ namespace YAMS
             this.prcMinecraft.WaitForExit();
             this.prcMinecraft.CancelErrorRead();
             this.prcMinecraft.CancelOutputRead();
-            YAMS.Database.AddLog("Server Stopped", "server", "info", false, this.ServerID);
+            Database.AddLog("Server Stopped", "server", "info", false, this.ServerID);
             this.Running = false;
         }
 
@@ -149,7 +150,7 @@ namespace YAMS
             this.timRestarter.Interval = 1000; //Every second as we want to update the players
             this.timRestarter.Elapsed += new ElapsedEventHandler(RestarterTick);
             this.timRestarter.Enabled = true;
-            YAMS.Database.AddLog("AutoRestart initiated with " + intSeconds.ToString() + " second timer", "server", "info", false, this.ServerID);
+            Database.AddLog("AutoRestart initiated with " + intSeconds.ToString() + " second timer", "server", "info", false, this.ServerID);
 
         }
         private void RestarterTick(object source, ElapsedEventArgs e)
@@ -179,7 +180,7 @@ namespace YAMS
         {
             this.timRestarter.Enabled = false;
             this.intRestartSeconds = 0;
-            YAMS.Database.AddLog("Delayed restart cancelled", "server", "info", false, this.ServerID);
+            Database.AddLog("Delayed restart cancelled", "server", "info", false, this.ServerID);
         }
 
         //Send command to stdin on the server process
@@ -238,7 +239,7 @@ namespace YAMS
             }
             else { strLevel = "error"; }
 
-            YAMS.Database.AddLog(datTimeStamp, strMessage, "server", strLevel, false, this.ServerID);
+            Database.AddLog(datTimeStamp, strMessage, "server", strLevel, false, this.ServerID);
         }
 
         //Returns the amount of RAM being used by this server
