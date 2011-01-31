@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmFirstRun));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btnJDKDownload = new System.Windows.Forms.Button();
             this.btnJREDownload = new System.Windows.Forms.Button();
@@ -49,20 +50,20 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.chkRestartYAMS = new System.Windows.Forms.CheckBox();
+            this.chkRestartMC = new System.Windows.Forms.CheckBox();
             this.chkUpdateAddons = new System.Windows.Forms.CheckBox();
             this.chkUpdateYAMS = new System.Windows.Forms.CheckBox();
             this.chkUpdateJar = new System.Windows.Forms.CheckBox();
             this.label6 = new System.Windows.Forms.Label();
             this.tipYAMSUpdate = new System.Windows.Forms.ToolTip(this.components);
             this.directorySearcher1 = new System.DirectoryServices.DirectorySearcher();
-            this.chkRestartMC = new System.Windows.Forms.CheckBox();
-            this.chkRestartYAMS = new System.Windows.Forms.CheckBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.chkOverviewer = new System.Windows.Forms.CheckBox();
-            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.linkLabel2 = new System.Windows.Forms.LinkLabel();
             this.chkC10t = new System.Windows.Forms.CheckBox();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.chkOverviewer = new System.Windows.Forms.CheckBox();
+            this.label9 = new System.Windows.Forms.Label();
             this.btnComplete = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.icoJDK)).BeginInit();
@@ -282,6 +283,31 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "YAMS Settings";
             // 
+            // chkRestartYAMS
+            // 
+            this.chkRestartYAMS.AutoSize = true;
+            this.chkRestartYAMS.Checked = true;
+            this.chkRestartYAMS.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkRestartYAMS.Location = new System.Drawing.Point(17, 136);
+            this.chkRestartYAMS.Name = "chkRestartYAMS";
+            this.chkRestartYAMS.Size = new System.Drawing.Size(406, 17);
+            this.chkRestartYAMS.TabIndex = 10;
+            this.chkRestartYAMS.Text = "Restart YAMS automatically when update is available? (only when no players on)";
+            this.chkRestartYAMS.UseVisualStyleBackColor = true;
+            // 
+            // chkRestartMC
+            // 
+            this.chkRestartMC.AutoSize = true;
+            this.chkRestartMC.Checked = true;
+            this.chkRestartMC.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkRestartMC.Location = new System.Drawing.Point(17, 113);
+            this.chkRestartMC.Name = "chkRestartMC";
+            this.chkRestartMC.Size = new System.Drawing.Size(420, 17);
+            this.chkRestartMC.TabIndex = 9;
+            this.chkRestartMC.Text = "Restart Minecraft automatically when update is available? (only when no players o" +
+                "n)";
+            this.chkRestartMC.UseVisualStyleBackColor = true;
+            // 
             // chkUpdateAddons
             // 
             this.chkUpdateAddons.AutoSize = true;
@@ -333,31 +359,6 @@
             this.directorySearcher1.ServerPageTimeLimit = System.TimeSpan.Parse("-00:00:01");
             this.directorySearcher1.ServerTimeLimit = System.TimeSpan.Parse("-00:00:01");
             // 
-            // chkRestartMC
-            // 
-            this.chkRestartMC.AutoSize = true;
-            this.chkRestartMC.Checked = true;
-            this.chkRestartMC.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkRestartMC.Location = new System.Drawing.Point(17, 113);
-            this.chkRestartMC.Name = "chkRestartMC";
-            this.chkRestartMC.Size = new System.Drawing.Size(420, 17);
-            this.chkRestartMC.TabIndex = 9;
-            this.chkRestartMC.Text = "Restart Minecraft automatically when update is available? (only when no players o" +
-                "n)";
-            this.chkRestartMC.UseVisualStyleBackColor = true;
-            // 
-            // chkRestartYAMS
-            // 
-            this.chkRestartYAMS.AutoSize = true;
-            this.chkRestartYAMS.Checked = true;
-            this.chkRestartYAMS.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkRestartYAMS.Location = new System.Drawing.Point(17, 136);
-            this.chkRestartYAMS.Name = "chkRestartYAMS";
-            this.chkRestartYAMS.Size = new System.Drawing.Size(406, 17);
-            this.chkRestartYAMS.TabIndex = 10;
-            this.chkRestartYAMS.Text = "Restart YAMS automatically when update is available? (only when no players on)";
-            this.chkRestartYAMS.UseVisualStyleBackColor = true;
-            // 
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.linkLabel2);
@@ -371,38 +372,6 @@
             this.groupBox4.TabIndex = 3;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Third-party Add-Ons";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(13, 16);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(143, 13);
-            this.label9.TabIndex = 11;
-            this.label9.Text = "Install these additional apps?";
-            // 
-            // chkOverviewer
-            // 
-            this.chkOverviewer.AutoSize = true;
-            this.chkOverviewer.Checked = true;
-            this.chkOverviewer.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkOverviewer.Location = new System.Drawing.Point(16, 41);
-            this.chkOverviewer.Name = "chkOverviewer";
-            this.chkOverviewer.Size = new System.Drawing.Size(192, 17);
-            this.chkOverviewer.TabIndex = 11;
-            this.chkOverviewer.Text = "Minecraft Overviewer (by Brownan)";
-            this.chkOverviewer.UseVisualStyleBackColor = true;
-            // 
-            // linkLabel1
-            // 
-            this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(214, 42);
-            this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(247, 13);
-            this.linkLabel1.TabIndex = 12;
-            this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "https://github.com/brownan/Minecraft-Overviewer";
-            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // linkLabel2
             // 
@@ -427,6 +396,38 @@
             this.chkC10t.Text = "c10t: Minecraft (C)artography (T)ool (by Udoprog)";
             this.chkC10t.UseVisualStyleBackColor = true;
             // 
+            // linkLabel1
+            // 
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.Location = new System.Drawing.Point(214, 42);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(247, 13);
+            this.linkLabel1.TabIndex = 12;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "https://github.com/brownan/Minecraft-Overviewer";
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            // 
+            // chkOverviewer
+            // 
+            this.chkOverviewer.AutoSize = true;
+            this.chkOverviewer.Checked = true;
+            this.chkOverviewer.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkOverviewer.Location = new System.Drawing.Point(16, 41);
+            this.chkOverviewer.Name = "chkOverviewer";
+            this.chkOverviewer.Size = new System.Drawing.Size(192, 17);
+            this.chkOverviewer.TabIndex = 11;
+            this.chkOverviewer.Text = "Minecraft Overviewer (by Brownan)";
+            this.chkOverviewer.UseVisualStyleBackColor = true;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(13, 16);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(143, 13);
+            this.label9.TabIndex = 11;
+            this.label9.Text = "Install these additional apps?";
+            // 
             // btnComplete
             // 
             this.btnComplete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
@@ -449,6 +450,7 @@
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "frmFirstRun";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;

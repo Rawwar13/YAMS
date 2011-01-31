@@ -70,15 +70,19 @@ namespace YAMS_Updater
 
             //Directory Structure
             WorkingForm.lblCurrentItem.Text = "Creating directory structure";
+            WorkingForm.prgCurrentTask.Value = 0;
             WorkingForm.Refresh();
             if (!Directory.Exists(Core.RootFolder + @"\apps\")) Directory.CreateDirectory(Core.RootFolder + @"\apps\");
+            WorkingForm.prgCurrentTask.Value = 33;
             if (!Directory.Exists(Core.RootFolder + @"\lib\")) Directory.CreateDirectory(Core.RootFolder + @"\lib\");
+            WorkingForm.prgCurrentTask.Value = 66;
             if (!Directory.Exists(Core.RootFolder + @"\servers\")) Directory.CreateDirectory(Core.RootFolder + @"\servers\");
+            WorkingForm.prgCurrentTask.Value = 100;
 
             //Grab latest server jar
             WorkingForm.lblCurrentItem.Text = "Downloading latest Minecraft Server";
             WorkingForm.Refresh();
-            AutoUpdate.UpdateIfNeeded(YAMS.AutoUpdate.strMCServerURL, YAMS.Core.RootFolder + @"\lib\minecraft_server.jar.UPDATE");
+            AutoUpdate.UpdateIfNeeded(AutoUpdate.strMCServerURL, Core.RootFolder + @"\lib\minecraft_server.jar.UPDATE");
 
             //Download our add-ons if we want them
             if (this.chkOverviewer.Checked || this.chkC10t.Checked)
