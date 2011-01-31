@@ -423,7 +423,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:YAMS-Library, Version=1.0.147.2039, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:YAMS-Library, Version=1.0.158.2240, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_7FEF75E8895E2E0B967E5F783ABF10DC"
@@ -786,6 +786,20 @@
         }
         "Shortcut"
         {
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_632AE94782834006A85CCF0EB3196442"
+            {
+            "Name" = "8:YAMS Service Controller"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_B19853C2C38C491EBFC3DC477FF2539B"
+            "Folder" = "8:_1589C62B47D045F78107EB496D9CEB93"
+            "WorkingFolder" = "8:_5FD580D11DD840FFB6728649EB80CC01"
+            "Icon" = "8:"
+            "Feature" = "8:"
+            }
         }
         "UserInterface"
         {
@@ -1456,6 +1470,7 @@
             "ShowKeyOutput" = "11:TRUE"
                 "ExcludeFilters"
                 {
+                "ExcludeFilter" = "8:.project"
                 }
             }
         }
