@@ -243,21 +243,21 @@ namespace YAMS
         }
 
         //Returns the amount of RAM being used by this server
-        public long GetMemory()
+        public int GetMemory()
         {
             if (this.Running)
             {
-                return (this.prcMinecraft.PrivateMemorySize64 / (1024 *1024));
+                return Convert.ToInt32(this.prcMinecraft.WorkingSet64 / (1024 * 1024));
             }
             else { return 0; }
         }
 
         //Returns the amount of Virtual Memory being used by the server
-        public long GetVMemory()
+        public int GetVMemory()
         {
             if (this.Running)
             {
-                return (this.prcMinecraft.PagedMemorySize64 / (1024 * 1024));
+                return Convert.ToInt32(this.prcMinecraft.VirtualMemorySize64 / (1024 * 1024));
             } else { return 0; }
         }
     }
