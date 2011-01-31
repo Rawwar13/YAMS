@@ -99,7 +99,6 @@ namespace YAMS
                             string strLevel = context.Request.Parameters["level"];
 
                             DataSet ds = YAMS.Database.ReturnLogRows(intStartID, intNumRows, strLevel, intServer);
-                            StringBuilder sb = new StringBuilder();
 
                             strResponse = JsonConvert.SerializeObject(ds, Formatting.Indented);
                             break;
@@ -136,13 +135,16 @@ namespace YAMS
                             {
                                 if (s.ServerID == intServerID)
                                 {
-                                    strResponse = "{ \"serverid\" : " + intServerID + "," +
-                                                    "\"players\" : [";
-                                    s.Players.ForEach(delegate(string p)
+                                    strResponse = "{ \"serverid\" : " + intServerID + ",";
+                                    strResponse += "\"players\" : [";
+                                    if (s.Players.Count > 0)
                                     {
-                                        strResponse += "\"" + p + "\",";
-                                    });
-                                    strResponse = strResponse.Remove(strResponse.Length - 1);
+                                        s.Players.ForEach(delegate(string p)
+                                        {
+                                            strResponse += "\"" + p + "\",";
+                                        });
+                                        strResponse = strResponse.Remove(strResponse.Length - 1);
+                                    }
                                     strResponse += "]}";
                                 };
                             });
@@ -165,6 +167,15 @@ namespace YAMS
                             });
                             strResponse = "{ \"result\" : \"sentstop\" }";
                             break;
+                        case "command":
+                            //Sends literal command to a server
+                            intServerID = Convert.ToInt32(context.Request.Parameters["serverid"]);
+                            Core.Servers.ForEach(delegate(MCServer s)
+                            {
+                                if (s.ServerID == intServerID) s.Send(context.Request.Parameters["message"]);
+                            });
+                            strResponse = "{ \"result\" : \"sentcommand\" }";
+                            break;
                         default:
                             return ProcessingResult.Abort;
                     }
@@ -181,7 +192,7 @@ namespace YAMS
                 
                 return ProcessingResult.SendResponse;
             }
-            else if (context.Request.Uri.AbsoluteUri.Contains(@"/admin/"))
+            else if (context.Request.Uri.AbsoluteUri.Contains(@"/admin"))
             {
                 context.Response.Connection.Type = ConnectionType.Close;
                 byte[] buffer = Encoding.UTF8.GetBytes(File.ReadAllText(YAMS.Core.RootFolder + @"\web\admin\index.html"));
