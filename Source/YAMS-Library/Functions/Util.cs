@@ -178,6 +178,7 @@ namespace YAMS
             try
             {
                 strResponse = utf8.GetString(wcGetIP.DownloadData(strExternalIPChecker));
+                strResponse = strResponse.Replace("\n", "");
             }
             catch (WebException e)
             {
