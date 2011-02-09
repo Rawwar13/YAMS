@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Data.SqlServerCe;
+using System.Threading;
 using YAMS;
 
 namespace YAMS
@@ -12,6 +13,8 @@ namespace YAMS
         public static string RootFolder = new System.IO.FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).DirectoryName;
 
         public static List<MCServer> Servers = new List<MCServer> { };
+
+        private static Timer timUpdate;
 
         public static void StartUp()
         {
@@ -29,8 +32,10 @@ namespace YAMS
             AutoUpdate.bolUpdateSVC = Convert.ToBoolean(Database.GetSetting("bolUpdateSVC", "YAMS"));
             AutoUpdate.bolUpdateWeb = Convert.ToBoolean(Database.GetSetting("UpdateWeb", "YAMS"));
 
-            //Check for updates
+            //Check for updates and start a timer to do it automatically
             AutoUpdate.CheckUpdates();
+            timUpdate = new Timer(new TimerCallback(timUpdate_Tick), null, 0, 30*60*1000);
+            //timUpdate.Change(0, 30 * 60 * 1000); //Update every 30 minutes
 
             //Load any servers
             SqlCeDataReader readerServers = YAMS.Database.GetServers();
@@ -54,6 +59,11 @@ namespace YAMS
                s.Stop();
             });
             YAMS.Database.AddLog("Shutting Down");
+        }
+
+        public static void timUpdate_Tick(object t)
+        {
+            AutoUpdate.CheckUpdates();
         }
     }
 }
