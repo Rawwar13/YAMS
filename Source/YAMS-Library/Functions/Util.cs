@@ -162,6 +162,8 @@ namespace YAMS
             YAMS.Database.SaveSetting("ExternalIP", GetExternalIP().ToString());
             YAMS.Database.SaveSetting("ListenIP", GetListenIP().ToString());
 
+            //Run an update now
+            AutoUpdate.CheckUpdates();
 
             //Tell the DB that we've run this
             YAMS.Database.SaveSetting("FirstRun", "true");
