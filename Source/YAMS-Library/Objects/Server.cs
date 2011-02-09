@@ -99,6 +99,8 @@ namespace YAMS
                 //Set up events
                 this.prcMinecraft.OutputDataReceived += new DataReceivedEventHandler(ServerOutput);
                 this.prcMinecraft.ErrorDataReceived += new DataReceivedEventHandler(ServerError);
+                this.prcMinecraft.EnableRaisingEvents = true;
+                this.prcMinecraft.Exited += new EventHandler(ServerExited);
                 
                 //Finally start the thing
                 this.prcMinecraft.Start();
@@ -240,6 +242,13 @@ namespace YAMS
             else { strLevel = "error"; }
 
             Database.AddLog(datTimeStamp, strMessage, "server", strLevel, false, this.ServerID);
+        }
+
+        private void ServerExited(object sender, EventArgs e)
+        {
+            DateTime datTimeStamp = DateTime.Now;
+            Database.AddLog(datTimeStamp, "Server Exited", "server", "warn", false, this.ServerID);
+            this.Running = false;
         }
 
         //Returns the amount of RAM being used by this server
