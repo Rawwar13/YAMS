@@ -31,6 +31,14 @@ namespace YAMS
         //Control
         public static void Init()
         {
+            //See if there is a new version of the web files waiting before we start the server
+            if (File.Exists(Core.RootFolder + @"\web.zip"))
+            {
+                if (Directory.Exists(Core.RootFolder + @"\web\")) Directory.Delete(Core.RootFolder + @"\web\", true);
+                AutoUpdate.ExtractZip(YAMS.Core.RootFolder + @"\web.zip", YAMS.Core.RootFolder + @"\web\");
+                File.Delete(Core.RootFolder + @"\web.zip");
+            }
+            
             myServer = new Server();
 
             //Handle the requests for static files
