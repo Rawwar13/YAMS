@@ -50,15 +50,17 @@ namespace YAMS
         //Checks for available updates
         public static void CheckUpdates()
         {
+            Database.AddLog("Starting Update Check");
+
             //Check Minecraft server first
             if (bolUpdateJAR) bolServerUpdateAvailable = UpdateIfNeeded(strMCServerURL, YAMS.Core.RootFolder + @"\lib\minecraft_server.jar.UPDATE");
 
             //Now update self
-            if (bolUpdateGUI)
+            if (bolUpdateSVC)
             {
-                bolDllUpdateAvailable = UpdateIfNeeded(strYAMSDLLURL, YAMS.Core.RootFolder + @"\YAMS-Library.dll.UPDATE");
+                bolDllUpdateAvailable = UpdateIfNeeded(strYAMSDLLURL, YAMS.Core.RootFolder + @"\lib\YAMS-Library.dll.UPDATE");
                 bolServiceUpdateAvailable = UpdateIfNeeded(strMCServerURL, YAMS.Core.RootFolder + @"\YAMS-Service.exe.UPDATE");
-                bolWebUpdateAvailable = UpdateIfNeeded(strMCServerURL, YAMS.Core.RootFolder + @"\web\web.zip");
+                bolWebUpdateAvailable = UpdateIfNeeded(strMCServerURL, YAMS.Core.RootFolder + @"\web.zip");
             }
 
             //Check our managed updates
@@ -90,6 +92,16 @@ namespace YAMS
 
 
             }
+
+            //Now check if we can auto-restart anything
+            if ((bolDllUpdateAvailable || bolServiceUpdateAvailable || bolWebUpdateAvailable) && Convert.ToBoolean(Database.GetSetting("RestartOnSVCUpdate", "YAMS")))
+            {
+                //Check there are no players on the servers
+                Database.AddLog("Restarting Service for updates");
+                System.Diagnostics.Process.Start(@"YAMS-Updater.exe", "/restart");
+            }
+
+            Database.AddLog("Completed Update Check");
         }
 
         public static void ExtractZip(string strZipFile, string strPath)
@@ -200,6 +212,8 @@ namespace YAMS
                 fs.Close();
                 strm.Close();
                 response.Close();
+
+                YAMS.Database.AddLog(strFile + " update downloaded", "updater");
 
                 return true;
             }
