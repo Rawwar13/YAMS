@@ -1,13 +1,10 @@
 ﻿using System.Diagnostics;
 using System.ServiceProcess;
 
-
 namespace YAMS_Service
 {
     public partial class YAMS_Service : ServiceBase
     {
-        public static Process minecraftServer;
-        
         public YAMS_Service()
         {
             InitializeComponent();
@@ -25,5 +22,6 @@ namespace YAMS_Service
             YAMS.Core.ShutDown();
             EventLog.WriteEntry("YAMS Shutdown", EventLogEntryType.Information);
         }
+
     }
 }
