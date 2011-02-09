@@ -11,6 +11,7 @@ YAMS = {
     servers: [],
 
     timer: 0,
+    lastLogId: 0,
 
     server: function (id, name, ver) {
         this.id = id;
@@ -23,6 +24,7 @@ YAMS = {
         this.status = "stopped";
 
         this.init = function () {
+            var svr = this;
             var d = document.createElement("div");
             d.id = "server_" + this.id;
             //Copy the template
@@ -38,10 +40,14 @@ YAMS = {
 
             //Control
             $('#server_' + this.id + ' .start').click(function () {
-                this.start();
+                svr.start();
             });
             $('#server_' + this.id + ' .stop').click(function () {
-                this.stop();
+                svr.stop();
+            });
+            $('#server_' + this.id + ' .send').click(function () {
+                svr.sendCommand($('#server_' + svr.id + ' .command-input').val());
+                $('#server_' + svr.id + ' .command-input').val('');
             });
 
             //Lastly fill up log
@@ -130,11 +136,25 @@ YAMS = {
                     });
                 }
             });
+        },
+
+        this.sendCommand = function (strCommand) {
+            srv = this;
+            $.ajax({
+                url: "/api/",
+                type: "POST",
+                data: "action=command&serverid=" + this.id + "&message=" + escape(strCommand),
+                dataType: "json",
+                success: function (data) {
+                    if (data["result"] != "sentcommand") alert("Command Failed");
+                }
+            });
         }
 
     },
 
     init: function () {
+        this.timer = setInterval("YAMS.getRows();", 5000);
         $.ajax({
             url: "/api/",
             type: "POST",
@@ -148,7 +168,7 @@ YAMS = {
                 });
                 $.each(YAMS.servers, function (i, item) {
                     item.timer = setInterval("YAMS.servers[" + i + "].tick();", 5000);
-                })
+                });
             }
         })
     },
@@ -157,42 +177,20 @@ YAMS = {
         $.ajax({
             url: "/api/",
             type: "POST",
-            data: "action=log&start=" + start + "&rows=" + rows + "&serverid=" + serverid + "&level=" + level,
+            data: "action=log&start=" + YAMS.lastLogId + "&rows=" + 0 + "&serverid=0&level=" + "all",
             dataType: "json",
             success: function (data) {
                 $.each(data["Table"], function (i, item) {
                     var s = document.createElement('div');
                     $(s).addClass('message').addClass(item["LogLevel"]).html(item["LogMessage"]);
-                    $('#server_' + serverid + ' .log').append(s);
+                    $('#server_' + 0 + ' .log').append(s);
+                    YAMS.lastLogId = item["LogID"];
                 });
-                $('#server_' + serverid + ' .log').attr({ scrollTop: $('#server_' + serverid + ' .log').attr('scrollHeight') });
+                $('#server_' + 0 + ' .log').attr({ scrollTop: $('#server_' + 0 + ' .log').attr('scrollHeight') });
             }
         });
-        return false;
     }
 
 };
 
 $(document).ready(YAMS.init);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
