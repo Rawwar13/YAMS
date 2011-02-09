@@ -81,7 +81,7 @@ namespace YAMS_Updater
                 System.Windows.Forms.Application.EnableVisualStyles();
 
                 YAMS.Database.init();
-                YAMS.Database.AddLog("Updater Starting");
+                YAMS.Database.AddLog("YAMS-Updater run on local machine");
 
                 //Have they run the app before?
                 if (YAMS.Database.GetSetting("FirstRun", "YAMS") != "true")
@@ -121,11 +121,11 @@ namespace YAMS_Updater
             else
             {
                 //Apply any updates to core files, these should cope with any other updates
-                if (File.Exists(RootFolder + @"\YAMS-Library.dll.UPDATE"))
+                if (File.Exists(RootFolder + @"\lib\YAMS-Library.dll.UPDATE"))
                 {
-                    File.Move(RootFolder + @"\YAMS-Library.dll", RootFolder + @"\YAMS-Library.dll.OLD");
-                    File.Move(RootFolder + @"\YAMS-Library.dll.UPDATE", RootFolder + @"\YAMS-Library.dll");
-                    File.Delete(RootFolder + @"\YAMS-Library.dll.OLD");
+                    File.Move(RootFolder + @"\lib\YAMS-Library.dll", RootFolder + @"\lib\YAMS-Library.dll.OLD");
+                    File.Move(RootFolder + @"\lib\YAMS-Library.dll.UPDATE", RootFolder + @"\lib\YAMS-Library.dll");
+                    File.Delete(RootFolder + @"\lib\YAMS-Library.dll.OLD");
                 }
                 if (File.Exists(RootFolder + @"\YAMS-Service.exe.UPDATE"))
                 {
