@@ -35,6 +35,7 @@ namespace YAMS
             if (File.Exists(Core.RootFolder + @"\web.zip"))
             {
                 if (Directory.Exists(Core.RootFolder + @"\web\")) Directory.Delete(Core.RootFolder + @"\web\", true);
+                Directory.CreateDirectory(YAMS.Core.RootFolder + @"\web\");
                 AutoUpdate.ExtractZip(YAMS.Core.RootFolder + @"\web.zip", YAMS.Core.RootFolder + @"\web\");
                 File.Delete(Core.RootFolder + @"\web.zip");
             }
