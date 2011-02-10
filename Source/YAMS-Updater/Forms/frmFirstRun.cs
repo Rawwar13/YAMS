@@ -13,6 +13,21 @@ namespace YAMS_Updater
         {
             InitializeComponent();
 
+            CheckJava();
+            //Keep checking if they go ahead and install Java
+            timCheckUpdate.Tick += new EventHandler(timCheckUpdate_Tick);
+
+            tipYAMSUpdate.SetToolTip(this.chkUpdateYAMS, "Includes all YAMS components, you can specify individual components to update in the web app");
+        
+        }
+
+        void timCheckUpdate_Tick(object sender, EventArgs e)
+        {
+            CheckJava();
+        }
+
+        private void CheckJava()
+        {
             if (YAMS.Util.HasJRE())
             {
                 icoJRE.Image = YAMS_Updater.Properties.Resources.accept;
@@ -38,8 +53,6 @@ namespace YAMS_Updater
                 btnJDKDownload.Visible = true;
             }
 
-            tipYAMSUpdate.SetToolTip(this.chkUpdateYAMS, "Includes all YAMS components, you can specify individual components to update in the web app");
-        
         }
 
         private void btnJREDownload_Click(object sender, EventArgs e)

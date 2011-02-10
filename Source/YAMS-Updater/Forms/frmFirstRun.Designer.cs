@@ -65,6 +65,7 @@
             this.chkOverviewer = new System.Windows.Forms.CheckBox();
             this.label9 = new System.Windows.Forms.Label();
             this.btnComplete = new System.Windows.Forms.Button();
+            this.timCheckUpdate = new System.Windows.Forms.Timer(this.components);
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.icoJDK)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.icoJRE)).BeginInit();
@@ -440,6 +441,11 @@
             this.btnComplete.UseVisualStyleBackColor = true;
             this.btnComplete.Click += new System.EventHandler(this.btnComplete_Click);
             // 
+            // timCheckUpdate
+            // 
+            this.timCheckUpdate.Enabled = true;
+            this.timCheckUpdate.Interval = 10000;
+            // 
             // frmFirstRun
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -507,6 +513,7 @@
         private System.Windows.Forms.LinkLabel linkLabel2;
         private System.Windows.Forms.CheckBox chkC10t;
         private System.Windows.Forms.Button btnComplete;
+        private System.Windows.Forms.Timer timCheckUpdate;
 
     }
 }
