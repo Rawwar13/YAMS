@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Data.SqlServerCe;
 using System.Threading;
+using System.IO;
 using YAMS;
 
 namespace YAMS
@@ -18,6 +19,10 @@ namespace YAMS
 
         public static void StartUp()
         {
+            //Clear ouy old files if they exist
+            if (File.Exists(RootFolder + @"\YAMS-Library.dll.OLD")) File.Delete(RootFolder + @"\YAMS-Library.dll.OLD");
+            if (File.Exists(RootFolder + @"\YAMS-Service.exe.OLD")) File.Delete(RootFolder + @"\YAMS-Service.exe.OLD");
+
             //Start DB Connection
             Database.init();
             Database.AddLog("Starting Up");
@@ -29,13 +34,11 @@ namespace YAMS
             AutoUpdate.bolUpdateAddons = Convert.ToBoolean(Database.GetSetting("UpdateAddons", "YAMS"));
             AutoUpdate.bolUpdateGUI = Convert.ToBoolean(Database.GetSetting("UpdateGUI", "YAMS"));
             AutoUpdate.bolUpdateJAR = Convert.ToBoolean(Database.GetSetting("UpdateJAR", "YAMS"));
-            AutoUpdate.bolUpdateSVC = Convert.ToBoolean(Database.GetSetting("bolUpdateSVC", "YAMS"));
+            AutoUpdate.bolUpdateSVC = Convert.ToBoolean(Database.GetSetting("UpdateSVC", "YAMS"));
             AutoUpdate.bolUpdateWeb = Convert.ToBoolean(Database.GetSetting("UpdateWeb", "YAMS"));
 
             //Check for updates and start a timer to do it automatically
-            AutoUpdate.CheckUpdates();
-            timUpdate = new Timer(new TimerCallback(timUpdate_Tick), null, 0, 30*60*1000);
-            //timUpdate.Change(0, 30 * 60 * 1000); //Update every 30 minutes
+            timUpdate = new Timer(new TimerCallback(timUpdate_Tick), null, 0, 5*60*1000);
 
             //Load any servers
             SqlCeDataReader readerServers = YAMS.Database.GetServers();
