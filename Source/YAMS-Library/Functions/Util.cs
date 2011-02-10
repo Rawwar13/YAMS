@@ -150,12 +150,12 @@ namespace YAMS
 
             //Set our YAMS Defaults
             YAMS.Database.SaveSetting("UpdateJAR", "true");
-            YAMS.Database.SaveSetting("UpdateSVC", "false");
+            YAMS.Database.SaveSetting("UpdateSVC", "true");
             YAMS.Database.SaveSetting("UpdateGUI", "true");
             YAMS.Database.SaveSetting("UpdateWeb", "true");
             YAMS.Database.SaveSetting("UpdateAddons", "true");
-            YAMS.Database.SaveSetting("RestartOnJarUpdate", "false");
-            YAMS.Database.SaveSetting("RestartOnSVCUpdate", "false");
+            YAMS.Database.SaveSetting("RestartOnJarUpdate", "true");
+            YAMS.Database.SaveSetting("RestartOnSVCUpdate", "true");
             YAMS.Database.SaveSetting("Memory", "1024");
             YAMS.Database.SaveSetting("EnableJavaOptimisations", "true");
             YAMS.Database.SaveSetting("ListenPort", "56552"); //Use an IANA legal internal port 49152 - 65535
