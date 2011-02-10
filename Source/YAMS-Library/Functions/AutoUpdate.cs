@@ -63,7 +63,7 @@ namespace YAMS
             {
                 bolDllUpdateAvailable = UpdateIfNeeded(strYAMSDLLURL, YAMS.Core.RootFolder + @"\YAMS-Library.dll.UPDATE");
                 bolServiceUpdateAvailable = UpdateIfNeeded(strYAMSServiceURL, YAMS.Core.RootFolder + @"\YAMS-Service.exe.UPDATE");
-                bolWebUpdateAvailable = UpdateIfNeeded(strYAMSWebURL, YAMS.Core.RootFolder + @"\web.zip", "modified");
+                bolWebUpdateAvailable = UpdateIfNeeded(strYAMSWebURL, YAMS.Core.RootFolder + @"\web.zip");
                 bolGUIUpdateAvailable = UpdateIfNeeded(strYAMSGUIURL, YAMS.Core.RootFolder + @"\YAMS-Updater.exe");
             }
 
