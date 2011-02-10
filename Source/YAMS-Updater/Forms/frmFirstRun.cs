@@ -92,6 +92,11 @@ namespace YAMS_Updater
             if (!Directory.Exists(Core.RootFolder + @"\servers\")) Directory.CreateDirectory(Core.RootFolder + @"\servers\");
             WorkingForm.prgCurrentTask.Value = 100;
 
+            //Grab latest web app
+            WorkingForm.lblCurrentItem.Text = "Downloading web app";
+            WorkingForm.Refresh();
+            AutoUpdate.UpdateIfNeeded(AutoUpdate.strYAMSWebURL, Core.RootFolder + @"\web.zip");
+
             //Grab latest server jar
             WorkingForm.lblCurrentItem.Text = "Downloading latest Minecraft Server";
             WorkingForm.Refresh();
@@ -181,7 +186,7 @@ namespace YAMS_Updater
             Database.SaveSetting("ListenIP", Util.GetListenIP().ToString());
             
             //Run an autoupdate
-            AutoUpdate.CheckUpdates();
+            //AutoUpdate.CheckUpdates();
 
             //Tell the DB that we've run this
             Database.SaveSetting("FirstRun", "true");
