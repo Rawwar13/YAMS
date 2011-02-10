@@ -1,100 +1,36 @@
-<!doctype html>  
-
-<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ --> 
-<!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
-<!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]-->
-<!--[if IE 8 ]>    <html lang="en" class="no-js ie8"> <![endif]-->
-<!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>YAMS Admin</title>
 
-  <!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame 
-       Remove this if you use the .htaccess -->
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-
-  <title></title>
-  <meta name="description" content="">
-  <meta name="author" content="">
-
-  <!--  Mobile viewport optimized: j.mp/bplateviewport -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Place favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
-  <link rel="shortcut icon" href="/assets/favicon.ico">
-  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-
-
-  <!-- CSS : implied media="all" -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=2">
-  <link href='http://fonts.googleapis.com/css?family=Orbitron:regular,bold' rel='stylesheet' type='text/css'>
-  
-  <!-- Uncomment if you are specifically targeting less enabled mobile browsers
-  <link rel="stylesheet" media="handheld" href="css/handheld.css?v=2">  -->
- 
-  <!-- All JavaScript at the bottom, except for Modernizr which enables HTML5 elements & feature detects -->
-  <script src="/assets/js/libs/modernizr-1.6.min.js"></script>
+<!-- Combo-handled YUI CSS files: -->
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.2r1/build/reset-fonts-grids/reset-fonts-grids.css&2.8.2r1/build/base/base-min.css">
+<!-- Combo-handled YUI JS files: -->
+<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.2r1/build/yuiloader-dom-event/yuiloader-dom-event.js&2.8.2r1/build/selector/selector-min.js"></script>
+<!-- Load YAMS JS -->
+<link rel="stylesheet" type="text/css" href="/assets/css/screen.css">
+<script type="text/javascript">
+	var YAMSModules = [ "admin" ];
+</script>
+<script type="text/javascript" src="/assets/js/global.js"></script>
 
 </head>
 
 <body>
 
-  <div id="container">
-    <header>
-      <h1>YAMS</h1>
-    </header>
+    <div id="header"></div>
+    
+    <div id="yams-log"></div>
+    
+    <div id="server-status"></div>
+    
+    <div id="left-menu"></div>
     
     <div id="main">
-      <div id="server_0">
-          <h2></h2>
-          <div class="log"></div>
-      </div>
+    	<h1></h1>
+        <div id="server-console"></div>
     </div>
-    
-    <footer>
 
-    </footer>
-  </div> <!--! end of #container -->
-
-  <!--Template for server containers -->
-  <div id="server-template">
-      <h2></h2>
-      <div class="log"></div>
-      <div class="panel">
-        <div class="status"></div>
-        <div class="control">
-          <a class="start">Start</a>
-          <a class="stop">Stop</a>
-        </div>
-        <div class="players"></div>
-      </div>
-      <div class="command"><input type="text" class="command-input" /><button class="send">Send</button></div>
-  </div>
-    
-
-
-  <!-- Javascript at the bottom for fast page loading -->
-
-  <!-- Grab Google CDN's jQuery. fall back to local if necessary -->
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js"></script>
-  <script>!window.jQuery && document.write(unescape('%3Cscript src="/assets/js/libs/jquery-1.4.2.js"%3E%3C/script%3E'))</script>
-  
-  
-  <!-- scripts concatenated and minified via ant build script-->
-  <script src="/assets/js/plugins.js"></script>
-  <script src="/assets/js/script.js"></script>
-  <!-- end concatenated and minified scripts-->
-  
-  
-  <!--[if lt IE 7 ]>
-    <script src="/assets/js/libs/dd_belatedpng.js"></script>
-    <script> DD_belatedPNG.fix('img, .png_bg'); //fix any <img> or .png_bg background-images </script>
-  <![endif]-->
-
-  <!-- yui profiler and profileviewer - remove for production -->
-  <script src="/assets/js/profiling/yahoo-profiling.min.js"></script>
-  <script src="/assets/js/profiling/config.js"></script>
-  <!-- end profiling code -->
-  
 </body>
 </html>
