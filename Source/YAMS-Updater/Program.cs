@@ -15,8 +15,6 @@ namespace YAMS_Updater
     {
         private static string RootFolder = new System.IO.FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).DirectoryName;
 
-        public static ServiceController svcYAMS;
-
         [DllImport("kernel32")]
         public static extern IntPtr GetConsoleWindow();
 
@@ -47,7 +45,7 @@ namespace YAMS_Updater
                 Environment.Exit(0);
             }
 
-            svcYAMS = new ServiceController("YAMS_Service");
+            //svcYAMS = new ServiceController("YAMS_Service");
 
             Console.WriteLine("*** YAMS Updater ***");
 
@@ -88,11 +86,8 @@ namespace YAMS_Updater
                 {
                     Application.Run(new frmFirstRun());
                 }
-                else
-                {
-                    Application.Run(new frmMain());
-                }
 
+                Application.Run(new frmMain());
                 return;
             }
         
@@ -100,9 +95,15 @@ namespace YAMS_Updater
 
         public static void StopService()
         {
+            ServiceController svcYAMS = new ServiceController("YAMS_Service");
+
             if (svcYAMS.Status.Equals(ServiceControllerStatus.Stopped))
             {
                 Console.WriteLine("Service not running");
+            }
+            if (svcYAMS.Status.Equals(ServiceControllerStatus.StartPending)) {
+                System.Threading.Thread.Sleep(1000);
+                StopService();
             }
             else
             {
@@ -114,24 +115,31 @@ namespace YAMS_Updater
 
         public static void StartService()
         {
-            if (!svcYAMS.Status.Equals(ServiceControllerStatus.Stopped))
+            ServiceController svcYAMS = new ServiceController("YAMS_Service");
+
+            if (svcYAMS.Status.Equals(ServiceControllerStatus.Running))
             {
                 Console.WriteLine("Service already running");
+            }
+            if (svcYAMS.Status.Equals(ServiceControllerStatus.StopPending) || svcYAMS.Status.Equals(ServiceControllerStatus.StartPending))
+            {
+                System.Threading.Thread.Sleep(1000);
+                StartService();
             }
             else
             {
                 //Apply any updates to core files, these should cope with any other updates
-                if (File.Exists(RootFolder + @"\lib\YAMS-Library.dll.UPDATE"))
+                if (File.Exists(RootFolder + @"\YAMS-Library.dll.UPDATE"))
                 {
-                    File.Move(RootFolder + @"\lib\YAMS-Library.dll", RootFolder + @"\lib\YAMS-Library.dll.OLD");
-                    File.Move(RootFolder + @"\lib\YAMS-Library.dll.UPDATE", RootFolder + @"\lib\YAMS-Library.dll");
-                    File.Delete(RootFolder + @"\lib\YAMS-Library.dll.OLD");
+                    if (File.Exists(RootFolder + @"\YAMS-Library.dll.OLD")) File.Delete(RootFolder + @"\YAMS-Library.dll.OLD");
+                    File.Move(RootFolder + @"\YAMS-Library.dll", RootFolder + @"\YAMS-Library.dll.OLD");
+                    File.Move(RootFolder + @"\YAMS-Library.dll.UPDATE", RootFolder + @"\YAMS-Library.dll");
                 }
                 if (File.Exists(RootFolder + @"\YAMS-Service.exe.UPDATE"))
                 {
+                    if (File.Exists(RootFolder + @"\YAMS-Service.exe.OLD")) File.Delete(RootFolder + @"\YAMS-Service.exe.OLD");
                     File.Move(RootFolder + @"\YAMS-Service.exe", RootFolder + @"\YAMS-Service.exe.OLD");
                     File.Move(RootFolder + @"\YAMS-Service.exe.UPDATE", RootFolder + @"\YAMS-Service.exe");
-                    File.Delete(RootFolder + @"\Service.exe.OLD");
                 }
 
                 //Restart the service
