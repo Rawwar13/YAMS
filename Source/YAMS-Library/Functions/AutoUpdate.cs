@@ -24,19 +24,22 @@ namespace YAMS
         public static bool bolServerUpdateAvailable = false;
         public static bool bolDllUpdateAvailable = false;
         public static bool bolServiceUpdateAvailable = false;
+        public static bool bolGUIUpdateAvailable = false;
         public static bool bolWebUpdateAvailable = false;
         public static bool bolOverviewerUpdateAvailable = false;
         public static bool bolC10tUpdateAvailable = false;
+        public static bool bolRestartNeeded = false;
 
         //Minecraft URLs
-        public static string strMCServerURL = "http://minecraft.net/download/minecraft_server.jar";
+        public static string strMCServerURL = "http://www.minecraft.net/download/minecraft_server.jar";
         public static string strMCClientURL = "http://minecraft.net/download/Minecraft.jar";
 
         //YAMS URLs
-        public static string strYAMSDLLURL = "http://richardbenson.github.com/YAMS/downloads/YAMS-Library.dll";
-        public static string strYAMSServiceURL = "http://richardbenson.github.com/YAMS/downloads/YAMS-Service.exe";
-        public static string strYAMSWebURL = "http://richardbenson.github.com/YAMS/downloads/web.zip";
-        public static string strYAMSVersionsURL = "http://richardbenson.github.com/YAMS/versions.json";
+        public static string strYAMSDLLURL = "https://github.com/richardbenson/YAMS/raw/master/Updater/YAMS-Library.dll";
+        public static string strYAMSServiceURL = "https://github.com/richardbenson/YAMS/raw/master/Updater/YAMS-Service.exe";
+        public static string strYAMSGUIURL = "https://github.com/richardbenson/YAMS/raw/master/Updater/YAMS-Updater.exe";
+        public static string strYAMSWebURL = "https://github.com/richardbenson/YAMS/raw/master/Updater/web.zip";
+        public static string strYAMSVersionsURL = "https://github.com/richardbenson/YAMS/raw/master/Updater/versions.json";
 
         //Third party URLS
         public static string strOverviewerURL = "https://github.com/downloads/brownan/Minecraft-Overviewer/Overviewer-xxx.zip";
@@ -58,9 +61,10 @@ namespace YAMS
             //Now update self
             if (bolUpdateSVC)
             {
-                bolDllUpdateAvailable = UpdateIfNeeded(strYAMSDLLURL, YAMS.Core.RootFolder + @"\lib\YAMS-Library.dll.UPDATE");
-                bolServiceUpdateAvailable = UpdateIfNeeded(strMCServerURL, YAMS.Core.RootFolder + @"\YAMS-Service.exe.UPDATE");
-                bolWebUpdateAvailable = UpdateIfNeeded(strMCServerURL, YAMS.Core.RootFolder + @"\web.zip");
+                bolDllUpdateAvailable = UpdateIfNeeded(strYAMSDLLURL, YAMS.Core.RootFolder + @"\YAMS-Library.dll.UPDATE");
+                bolServiceUpdateAvailable = UpdateIfNeeded(strYAMSServiceURL, YAMS.Core.RootFolder + @"\YAMS-Service.exe.UPDATE");
+                bolWebUpdateAvailable = UpdateIfNeeded(strYAMSWebURL, YAMS.Core.RootFolder + @"\web.zip", "modified");
+                bolGUIUpdateAvailable = UpdateIfNeeded(strYAMSGUIURL, YAMS.Core.RootFolder + @"\YAMS-Updater.exe");
             }
 
             //Check our managed updates
@@ -81,7 +85,7 @@ namespace YAMS
                 }
 
                 strC10tVer = dicVers["c10t"];
-                if (UpdateIfNeeded(GetExternalURL("c10t", strC10tVer), YAMS.Core.RootFolder + @"\apps\c10t.zip"))
+                if (UpdateIfNeeded(GetExternalURL("c10t", strC10tVer), YAMS.Core.RootFolder + @"\apps\c10t.zip", "modified"))
                 {
                     bolC10tUpdateAvailable = true;
                     ExtractZip(YAMS.Core.RootFolder + @"\apps\c10t.zip", YAMS.Core.RootFolder + @"\apps\");
@@ -94,11 +98,24 @@ namespace YAMS
             }
 
             //Now check if we can auto-restart anything
-            if ((bolDllUpdateAvailable || bolServiceUpdateAvailable || bolWebUpdateAvailable) && Convert.ToBoolean(Database.GetSetting("RestartOnSVCUpdate", "YAMS")))
+            if ((bolDllUpdateAvailable || bolServiceUpdateAvailable || bolWebUpdateAvailable || bolRestartNeeded) && Convert.ToBoolean(Database.GetSetting("RestartOnSVCUpdate", "YAMS")))
             {
                 //Check there are no players on the servers
-                Database.AddLog("Restarting Service for updates");
-                System.Diagnostics.Process.Start(@"YAMS-Updater.exe", "/restart");
+                bool bolPlayersOn = false;
+                Core.Servers.ForEach(delegate(MCServer s)
+                {
+                    if (s.Players.Count > 0) bolPlayersOn = true;
+                });
+                if (bolPlayersOn)
+                {
+                    Database.AddLog("Deferring update until free");
+                    bolRestartNeeded = true;
+                }
+                else
+                {
+                    Database.AddLog("Restarting Service for updates");
+                    System.Diagnostics.Process.Start(YAMS.Core.RootFolder + @"\YAMS-Updater.exe", "/restart");
+                }
             }
 
             Database.AddLog("Completed Update Check");
@@ -176,7 +193,7 @@ namespace YAMS
             return strReturn;
         }
 
-        public static bool UpdateIfNeeded(string strURL, string strFile)
+        public static bool UpdateIfNeeded(string strURL, string strFile, string strType = "etag")
         {
             //Get our stored eTag for this URL
             string strETag = "";
@@ -187,14 +204,31 @@ namespace YAMS
                 //Set up a request and include our eTag
                 HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(strURL);
                 request.Method = "GET";
-                if (strETag != "") request.IfModifiedSince = Convert.ToDateTime(strETag);
+                if (strETag != "")
+                {
+                    if (strType == "etag")
+                    {
+                        request.Headers[HttpRequestHeader.IfNoneMatch] = strETag;
+                    }
+                    else
+                    {
+                        request.IfModifiedSince = Convert.ToDateTime(strETag);
+                    }
+                }
                 //if (strETag != null) request.Headers[HttpRequestHeader.IfModifiedSince] = strETag;
 
                 //Grab the response
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
 
                 //Save the etag
-                if (response.Headers[HttpResponseHeader.LastModified] != null) YAMS.Database.SaveEtag(strURL, response.Headers[HttpResponseHeader.LastModified]);
+                if (strType == "etag")
+                {
+                    if (response.Headers[HttpResponseHeader.ETag] != null) YAMS.Database.SaveEtag(strURL, response.Headers[HttpResponseHeader.ETag]);
+                }
+                else
+                {
+                    if (response.Headers[HttpResponseHeader.LastModified] != null) YAMS.Database.SaveEtag(strURL, response.Headers[HttpResponseHeader.LastModified]);
+                }
 
                 //Stream the file
                 Stream strm = response.GetResponseStream();
