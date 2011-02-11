@@ -35,6 +35,8 @@ namespace YAMS
         public string ServerVersion = "";
         public string ServerTitle = "";
 
+        public bool RestartNeeded = false;
+
         public List<string> Players = new List<string> { };
 
         public MCServer(int intServerID)
@@ -224,8 +226,8 @@ namespace YAMS
                         //See if it's a log in or log out event
                         Match regLogIn = this.regPlayerLoggedIn.Match(strMessage);
                         Match regLogOut = this.regPlayerLoggedOut.Match(strMessage);
-                        if (regLogIn.Success) Players.Add(regLogIn.Groups[1].Value); //is a login event
-                        if (regLogOut.Success) Players.Remove(regLogOut.Groups[1].Value); //logout event
+                        if (regLogIn.Success) this.PlayerLogin(regLogIn.Groups[1].Value); //is a login event
+                        if (regLogOut.Success) this.PlayerLogout(regLogOut.Groups[1].Value); //logout event
 
                         //See if it's the server version tag
                         Match regVersion = this.regServerVersion.Match(strMessage);
@@ -249,6 +251,18 @@ namespace YAMS
             DateTime datTimeStamp = DateTime.Now;
             Database.AddLog(datTimeStamp, "Server Exited", "server", "warn", false, this.ServerID);
             this.Running = false;
+        }
+
+        //Login and out events
+        private void PlayerLogin(string strName)
+        {
+            this.Players.Add(strName);
+        }
+        private void PlayerLogout(string strName)
+        {
+            this.Players.Remove(strName);
+            //Check if we should restart the server for an update
+            if (this.Players.Count == 0 && this.RestartNeeded && Convert.ToBoolean(Database.GetSetting("RestartOnJarUpdate", "YAMS"))) this.Restart();
         }
 
         //Returns the amount of RAM being used by this server
