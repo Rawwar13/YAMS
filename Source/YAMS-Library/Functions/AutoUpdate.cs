@@ -118,21 +118,6 @@ namespace YAMS
                 }
             }
 
-            //Restart individual servers?
-            if ((bolServerUpdateAvailable) && Convert.ToBoolean(Database.GetSetting("RestartOnJarUpdate", "YAMS")))
-            {
-                Core.Servers.ForEach(delegate(MCServer s)
-                {
-                    if (s.Players.Count == 0)
-                    {
-                        s.Restart();
-                    }
-                    else
-                    {
-                        s.RestartNeeded = true;
-                    }
-                });
-            }
             Database.AddLog("Completed Update Check");
         }
 
