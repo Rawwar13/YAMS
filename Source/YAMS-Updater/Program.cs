@@ -101,7 +101,7 @@ namespace YAMS_Updater
             {
                 Console.WriteLine("Service not running");
             }
-            if (svcYAMS.Status.Equals(ServiceControllerStatus.StartPending)) {
+            else if (svcYAMS.Status.Equals(ServiceControllerStatus.StartPending)) {
                 System.Threading.Thread.Sleep(1000);
                 StopService();
             }
@@ -121,7 +121,7 @@ namespace YAMS_Updater
             {
                 Console.WriteLine("Service already running");
             }
-            if (svcYAMS.Status.Equals(ServiceControllerStatus.StopPending) || svcYAMS.Status.Equals(ServiceControllerStatus.StartPending))
+            else if (svcYAMS.Status.Equals(ServiceControllerStatus.StopPending) || svcYAMS.Status.Equals(ServiceControllerStatus.StartPending))
             {
                 System.Threading.Thread.Sleep(1000);
                 StartService();
