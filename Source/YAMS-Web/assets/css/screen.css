@@ -11,3 +11,7 @@ h1 { margin: 0 0 0.5em 0; }
 .warn { color: #C60; }
 .error { color:#FF0000; }
 .chat { color:#000;}
+
+#status p { margin-bottom: 0; }
+
+#players { background-color: #fff; margin: 5px; overflow: auto; border: 1px solid #000; }
