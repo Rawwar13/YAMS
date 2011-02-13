@@ -184,11 +184,9 @@ namespace YAMS_Updater
             Database.SaveSetting("ListenPort", "56552"); //Use an IANA legal internal port 49152 - 65535
             Database.SaveSetting("ExternalIP", Util.GetExternalIP().ToString());
             Database.SaveSetting("ListenIP", Util.GetListenIP().ToString());
-            Database.SaveSetting("UpdateBranch", "live");
+            Database.SaveSetting("UpdateBranch", "dev");
+            Database.SaveSetting("AdminPassword", txtAdminPassword.Text);
             
-            //Run an autoupdate
-            //AutoUpdate.CheckUpdates();
-
             //Tell the DB that we've run this
             Database.SaveSetting("FirstRun", "true");
 

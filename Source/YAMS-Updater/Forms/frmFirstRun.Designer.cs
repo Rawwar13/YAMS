@@ -66,6 +66,8 @@
             this.label9 = new System.Windows.Forms.Label();
             this.btnComplete = new System.Windows.Forms.Button();
             this.timCheckUpdate = new System.Windows.Forms.Timer(this.components);
+            this.label10 = new System.Windows.Forms.Label();
+            this.txtAdminPassword = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.icoJDK)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.icoJRE)).BeginInit();
@@ -271,6 +273,8 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.txtAdminPassword);
+            this.groupBox3.Controls.Add(this.label10);
             this.groupBox3.Controls.Add(this.chkRestartYAMS);
             this.groupBox3.Controls.Add(this.chkRestartMC);
             this.groupBox3.Controls.Add(this.chkUpdateAddons);
@@ -279,7 +283,7 @@
             this.groupBox3.Controls.Add(this.label6);
             this.groupBox3.Location = new System.Drawing.Point(12, 267);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(679, 161);
+            this.groupBox3.Size = new System.Drawing.Size(679, 208);
             this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "YAMS Settings";
@@ -367,7 +371,7 @@
             this.groupBox4.Controls.Add(this.linkLabel1);
             this.groupBox4.Controls.Add(this.chkOverviewer);
             this.groupBox4.Controls.Add(this.label9);
-            this.groupBox4.Location = new System.Drawing.Point(13, 434);
+            this.groupBox4.Location = new System.Drawing.Point(12, 481);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(678, 94);
             this.groupBox4.TabIndex = 3;
@@ -433,9 +437,9 @@
             // 
             this.btnComplete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.btnComplete.Enabled = false;
-            this.btnComplete.Location = new System.Drawing.Point(572, 534);
+            this.btnComplete.Location = new System.Drawing.Point(572, 581);
             this.btnComplete.Name = "btnComplete";
-            this.btnComplete.Size = new System.Drawing.Size(119, 23);
+            this.btnComplete.Size = new System.Drawing.Size(119, 26);
             this.btnComplete.TabIndex = 4;
             this.btnComplete.Text = "Complete Setup";
             this.btnComplete.UseVisualStyleBackColor = true;
@@ -446,11 +450,27 @@
             this.timCheckUpdate.Enabled = true;
             this.timCheckUpdate.Interval = 10000;
             // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(14, 169);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(88, 13);
+            this.label10.TabIndex = 11;
+            this.label10.Text = "Admin Password:";
+            // 
+            // txtAdminPassword
+            // 
+            this.txtAdminPassword.Location = new System.Drawing.Point(108, 166);
+            this.txtAdminPassword.Name = "txtAdminPassword";
+            this.txtAdminPassword.Size = new System.Drawing.Size(193, 20);
+            this.txtAdminPassword.TabIndex = 12;
+            // 
             // frmFirstRun
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(703, 568);
+            this.ClientSize = new System.Drawing.Size(703, 618);
             this.Controls.Add(this.btnComplete);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
@@ -514,6 +534,8 @@
         private System.Windows.Forms.CheckBox chkC10t;
         private System.Windows.Forms.Button btnComplete;
         private System.Windows.Forms.Timer timCheckUpdate;
+        private System.Windows.Forms.TextBox txtAdminPassword;
+        private System.Windows.Forms.Label label10;
 
     }
 }
