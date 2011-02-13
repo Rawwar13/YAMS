@@ -50,6 +50,17 @@ namespace YAMS
             return ds;
         }
 
+        public static DataSet ReturnSettings()
+        {
+            DataSet ds = new DataSet();
+            SqlCeCommand command = connLocal.CreateCommand();
+
+            command.CommandText = "SELECT * FROM YAMSSettings";
+            SqlCeDataAdapter adapter = new SqlCeDataAdapter(command);
+            adapter.Fill(ds);
+            return ds;
+        }
+
         public static void AddLog(string strMessage, string strSource = "app", string strLevel = "info", bool bolSendToAdmin = false, int intServerID = 0)
         {
             if (strMessage == null) strMessage = "Null message received";
@@ -291,9 +302,7 @@ namespace YAMS
             {
                 case 1:
                     //Update from Schema 1
-                    SaveSetting("UpdateBranch", "live");
-                    SaveSetting("DBSchema", "2");
-                    goto case 2;
+                    //goto case 2;
                 case 2:
                     //Update from Schema 2
                     //goto case 3; //etc
