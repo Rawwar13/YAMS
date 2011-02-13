@@ -18,6 +18,7 @@ namespace YAMS
             //Open our DB connection for use all over the place
             connLocal = GetConnection();
             connLocal.Open();
+            UpdateDB();
         }
 
         private static SqlCeConnection GetConnection()
@@ -290,6 +291,8 @@ namespace YAMS
             {
                 case 1:
                     //Update from Schema 1
+                    SaveSetting("UpdateBranch", "live");
+                    SaveSetting("DBSchema", "2");
                     goto case 2;
                 case 2:
                     //Update from Schema 2
