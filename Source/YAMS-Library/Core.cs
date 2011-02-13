@@ -19,9 +19,11 @@ namespace YAMS
 
         public static void StartUp()
         {
-            //Clear ouy old files if they exist
-            if (File.Exists(RootFolder + @"\YAMS-Library.dll.OLD")) File.Delete(RootFolder + @"\YAMS-Library.dll.OLD");
-            if (File.Exists(RootFolder + @"\YAMS-Service.exe.OLD")) File.Delete(RootFolder + @"\YAMS-Service.exe.OLD");
+            //Clear ouy old files if they exist, if it doesn't work we'll just do it on next startup.
+            try { if (File.Exists(RootFolder + @"\YAMS-Library.dll.OLD")) File.Delete(RootFolder + @"\YAMS-Library.dll.OLD"); }
+            catch { };
+            try { if (File.Exists(RootFolder + @"\YAMS-Service.exe.OLD")) File.Delete(RootFolder + @"\YAMS-Service.exe.OLD"); }
+            catch { };
 
             //Start DB Connection
             Database.init();
@@ -38,7 +40,9 @@ namespace YAMS
             AutoUpdate.bolUpdateWeb = Convert.ToBoolean(Database.GetSetting("UpdateWeb", "YAMS"));
 
             //Check for updates and start a timer to do it automatically
-            timUpdate = new Timer(new TimerCallback(timUpdate_Tick), null, 0, 5*60*1000);
+            int UpdateTick = (60 * 60 * 1000);
+            if (Database.GetSetting("UpdateBranch", "YAMS") == "dev") UpdateTick = (1 * 60 * 1000);
+            timUpdate = new Timer(new TimerCallback(timUpdate_Tick), null, 0, UpdateTick);
 
             //Load any servers
             SqlCeDataReader readerServers = YAMS.Database.GetServers();
