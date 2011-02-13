@@ -62,6 +62,25 @@ YAMS.admin = {
 					]
                 });
                 YAMS.admin.layout.on('render', function () {
+                    var r = YAMS.admin.layout.getUnitByPosition('right').body;
+                    var p = document.createElement('div');
+                    p.id = "players";
+                    r.appendChild(r);
+                    var b1 = document.createElement('button');
+                    b1.id = 'start-server';
+                    b1.value = 'Start';
+                    b1.disabled = true;
+                    r.appendChild(b1);
+                    var b2 = document.createElement('button');
+                    b2.id = 'stop-server';
+                    b2.value = 'Stop';
+                    b2.disabled = true;
+                    r.appendChild(b2);
+                    var b1 = document.createElement('button');
+                    b1.id = 'start-server';
+                    b1.value = 'Start';
+                    b1.disabled = true;
+                    r.appendChild(b1);
                     YAMS.admin.getServers();
                     YAMS.admin.updateGlobalLog();
                     YAMS.admin.timer = setInterval("YAMS.admin.updateGlobalLog();", 10000);
@@ -110,6 +129,16 @@ YAMS.admin = {
                 content: 'Some Settings'
             }));
 
+            //Configure buttons
+            YAMS.E.on('console-send', 'click', YAMS.admin.consoleSend);
+            YAMS.E.on('chat-send', 'click', YAMS.admin.chatSend);
+            YAMS.E.on('console-input', 'keydown', function (e) {
+                if (e && (e.keyCode == 13)) { YAMS.admin.consoleSend(); }
+            });
+            YAMS.E.on('chat-input', 'keydown', function (e) {
+                if (e && (e.keyCode == 13)) { YAMS.admin.chatSend(); }
+            });
+
             YAMS.admin.layout.on('resize', function () {
                 var height = YAMS.admin.layout.getUnitByPosition('center').getSizes().body.h;
                 var width = YAMS.admin.layout.getUnitByPosition('center').getSizes().body.w;
@@ -140,15 +169,6 @@ YAMS.admin = {
         YAMS.admin.updateServerChat();
         //Set the timer
         YAMS.admin.serverTimer = setInterval("YAMS.admin.updateServerConsole();YAMS.admin.updateServerChat();", 10000);
-        //Configure buttons
-        YAMS.E.on('console-send', 'click', YAMS.admin.consoleSend);
-        YAMS.E.on('chat-send', 'click', YAMS.admin.chatSend);
-        YAMS.E.on('console-input', 'keydown', function (e) {
-            if (e && (e.keyCode == 13)) { YAMS.admin.consoleSend(); }
-        });
-        YAMS.E.on('chat-input', 'keydown', function (e) {
-            if (e && (e.keyCode == 13)) { YAMS.admin.chatSend(); }
-        });
     },
 
     consoleSend: function () {
@@ -178,6 +198,7 @@ YAMS.admin = {
             catch (x) { YAMS.admin.log('JSON Parse Failed'); return; }
 
             var l = YAMS.D.get('console');
+            if (l.scrollTop == l.scrollHeight) var bolScroll = true;
             for (var i = 0, len = results.Table.length; i < len; ++i) {
                 var r = results.Table[i];
                 var s = document.createElement('div');
@@ -190,6 +211,7 @@ YAMS.admin = {
                 YAMS.admin.lastServerLogId = r.LogID;
                 l.scrollTop = l.scrollHeight;
             }
+            if (bolScroll) l.scrollTop = l.scrollHeight;
             YAMS.admin.loading.cfg.setProperty('visible', false);
         },
         failure: function (o) {
@@ -197,7 +219,7 @@ YAMS.admin = {
         }
     },
 
-    updateServerChat: function () { var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.updateServerChat_callback, 'action=log&start=' + YAMS.admin.lastServerLogId + '&rows=0&serverid=' + YAMS.admin.selectedServer + '&level=chat'); },
+    updateServerChat: function () { var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.updateServerChat_callback, 'action=log&start=' + YAMS.admin.lastServerLogId + '&rows=200&serverid=' + YAMS.admin.selectedServer + '&level=chat'); },
 
     updateServerChat_callback: {
         success: function (o) {
@@ -206,6 +228,7 @@ YAMS.admin = {
             catch (x) { YAMS.admin.log('JSON Parse Failed'); return; }
 
             var l = YAMS.D.get('chat');
+            if (l.scrollTop == l.scrollHeight) var bolScroll = true;
             for (var i = 0, len = results.Table.length; i < len; ++i) {
                 var r = results.Table[i];
                 var s = document.createElement('div');
@@ -216,15 +239,15 @@ YAMS.admin = {
                 s.appendChild(m);
                 l.appendChild(s);
                 YAMS.admin.lastServerLogId = r.LogID;
-                l.scrollTop = l.scrollHeight;
             }
+            if (bolScroll) l.scrollTop = l.scrollHeight;
         },
         failure: function (o) {
             YAMS.admin.log('updateServerConsole failed');
         }
     },
 
-    updateGlobalLog: function () { var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.updateGlobalLog_callback, 'action=log&start=' + YAMS.admin.lastLogId + '&rows=0&serverid=0&level=all'); },
+    updateGlobalLog: function () { var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.updateGlobalLog_callback, 'action=log&start=' + YAMS.admin.lastLogId + '&rows=200&serverid=0&level=all'); },
 
     updateGlobalLog_callback: {
         success: function (o) {
@@ -232,20 +255,19 @@ YAMS.admin = {
             try { results = YAHOO.lang.JSON.parse(o.responseText); }
             catch (x) { YAMS.admin.log('JSON Parse Failed'); return; }
 
-            var l = YAMS.admin.layout.getUnitByPosition('bottom');
-            if (l.body.scrollTop == l.body.scrollHeight) var bolScroll = true;
+            var l = YAMS.admin.layout.getUnitByPosition('bottom').body;
+            if (l.scrollTop == l.scrollHeight) var bolScroll = true;
             for (var i = 0, len = results.Table.length; i < len; ++i) {
                 var r = results.Table[i];
                 var s = document.createElement('div');
-                s.class = "message " + r.LogLevel;
-                //YAMS.D.addClass(s, 'message');
-                //YAMS.D.addClass(s, r.LogLevel);
+                YAMS.D.addClass(s, 'message');
+                YAMS.D.addClass(s, r.LogLevel);
                 var d = eval('new ' + r.LogDateTime.replace(/\//g, '').replace('+0000', ''));
                 s.innerHTML = '[' + d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + '] ' + r.LogMessage;
-                l.body.appendChild(s);
+                l.appendChild(s);
                 YAMS.admin.lastLogId = r.LogID;
             }
-            if (bolScroll) l.body.scrollTop = l.body.scrollHeight;
+            l.scrollTop = l.scrollHeight;
         },
         failure: function (o) {
             YAMS.admin.log('updateGlobalLog failed');
