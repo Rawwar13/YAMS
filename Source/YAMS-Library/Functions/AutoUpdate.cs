@@ -35,11 +35,26 @@ namespace YAMS
         public static string strMCClientURL = "http://minecraft.net/download/Minecraft.jar";
 
         //YAMS URLs
-        public static string strYAMSDLLURL = "https://github.com/richardbenson/YAMS/raw/master/Updater/YAMS-Library.dll";
-        public static string strYAMSServiceURL = "https://github.com/richardbenson/YAMS/raw/master/Updater/YAMS-Service.exe";
-        public static string strYAMSGUIURL = "https://github.com/richardbenson/YAMS/raw/master/Updater/YAMS-Updater.exe";
-        public static string strYAMSWebURL = "https://github.com/richardbenson/YAMS/raw/master/Updater/web.zip";
-        public static string strYAMSVersionsURL = "https://github.com/richardbenson/YAMS/raw/master/Updater/versions.json";
+        public static Dictionary<string, string> strYAMSDLLURL = new Dictionary<string, string>() {
+            { "live", "https://github.com/richardbenson/YAMS/raw/updater/YAMS-Library.dll"},
+            { "dev", "https://github.com/richardbenson/YAMS/raw/updater/development/YAMS-Library.dll" }
+        };
+        public static Dictionary<string, string> strYAMSServiceURL = new Dictionary<string, string>() {
+            { "live", "https://github.com/richardbenson/YAMS/raw/updater/YAMS-Service.exe" },
+            { "dev", "https://github.com/richardbenson/YAMS/raw/updater/development/YAMS-Service.exe" }
+        };
+        public static Dictionary<string, string> strYAMSGUIURL = new Dictionary<string, string>() {
+            { "live", "https://github.com/richardbenson/YAMS/raw/updater/YAMS-Updater.exe" },
+            { "dev", "https://github.com/richardbenson/YAMS/raw/updater/development/YAMS-Updater.exe" }
+        };
+        public static Dictionary<string, string> strYAMSWebURL = new Dictionary<string, string>() {
+            { "live", "https://github.com/richardbenson/YAMS/raw/updater/web.zip" },
+            { "dev", "https://github.com/richardbenson/YAMS/raw/updater/development/web.zip" }
+        };
+        public static Dictionary<string, string> strYAMSVersionsURL = new Dictionary<string, string>() {
+            { "live", "https://github.com/richardbenson/YAMS/raw/updater/versions.json" },
+            { "dev", "https://github.com/richardbenson/YAMS/raw/updater/development/versions.json" }
+        };
 
         //Third party URLS
         public static string strOverviewerURL = "https://github.com/downloads/brownan/Minecraft-Overviewer/Overviewer-xxx.zip";
@@ -55,20 +70,23 @@ namespace YAMS
         {
             Database.AddLog("Starting Update Check");
 
+            //What branch are we on?
+            string strBranch = Database.GetSetting("UpdateBranch", "YAMS");
+
             //Check Minecraft server first
             if (bolUpdateJAR) bolServerUpdateAvailable = UpdateIfNeeded(strMCServerURL, YAMS.Core.RootFolder + @"\lib\minecraft_server.jar.UPDATE");
 
             //Now update self
             if (bolUpdateSVC)
             {
-                bolDllUpdateAvailable = UpdateIfNeeded(strYAMSDLLURL, YAMS.Core.RootFolder + @"\YAMS-Library.dll.UPDATE");
-                bolServiceUpdateAvailable = UpdateIfNeeded(strYAMSServiceURL, YAMS.Core.RootFolder + @"\YAMS-Service.exe.UPDATE");
-                bolWebUpdateAvailable = UpdateIfNeeded(strYAMSWebURL, YAMS.Core.RootFolder + @"\web.zip");
-                bolGUIUpdateAvailable = UpdateIfNeeded(strYAMSGUIURL, YAMS.Core.RootFolder + @"\YAMS-Updater.exe");
+                bolDllUpdateAvailable = UpdateIfNeeded(strYAMSDLLURL[strBranch], YAMS.Core.RootFolder + @"\YAMS-Library.dll.UPDATE");
+                bolServiceUpdateAvailable = UpdateIfNeeded(strYAMSServiceURL[strBranch], YAMS.Core.RootFolder + @"\YAMS-Service.exe.UPDATE");
+                bolWebUpdateAvailable = UpdateIfNeeded(strYAMSWebURL[strBranch], YAMS.Core.RootFolder + @"\web.zip");
+                bolGUIUpdateAvailable = UpdateIfNeeded(strYAMSGUIURL[strBranch], YAMS.Core.RootFolder + @"\YAMS-Updater.exe");
             }
 
             //Check our managed updates
-            if (bolUpdateAddons && UpdateIfNeeded(strYAMSVersionsURL, YAMS.Core.RootFolder + @"\lib\versions.json"))
+            if (bolUpdateAddons && UpdateIfNeeded(strYAMSVersionsURL[strBranch], YAMS.Core.RootFolder + @"\lib\versions.json"))
             {
                 //There is an update somewhere, extract versions and compare
                 string json = File.ReadAllText(YAMS.Core.RootFolder + @"\lib\versions.json");
