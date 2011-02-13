@@ -293,7 +293,7 @@ namespace YAMS
                         if (response.StatusCode == HttpStatusCode.NotModified)
                         {
                             //304 means there is no update available
-                            YAMS.Database.AddLog(strFile + " is up to date", "updater");
+                            //YAMS.Database.AddLog(strFile + " is up to date", "updater");
                             return false;
                         }
                         else
