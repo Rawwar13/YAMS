@@ -161,6 +161,7 @@ namespace YAMS
             YAMS.Database.SaveSetting("ListenPort", "56552"); //Use an IANA legal internal port 49152 - 65535
             YAMS.Database.SaveSetting("ExternalIP", GetExternalIP().ToString());
             YAMS.Database.SaveSetting("ListenIP", GetListenIP().ToString());
+            YAMS.Database.SaveSetting("UpdateBranch", "live");
 
             //Run an update now
             AutoUpdate.CheckUpdates();

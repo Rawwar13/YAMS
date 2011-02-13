@@ -95,7 +95,7 @@ namespace YAMS_Updater
             //Grab latest web app
             WorkingForm.lblCurrentItem.Text = "Downloading web app";
             WorkingForm.Refresh();
-            AutoUpdate.UpdateIfNeeded(AutoUpdate.strYAMSWebURL, Core.RootFolder + @"\web.zip");
+            AutoUpdate.UpdateIfNeeded(AutoUpdate.strYAMSWebURL["live"], Core.RootFolder + @"\web.zip");
 
             //Grab latest server jar
             WorkingForm.lblCurrentItem.Text = "Downloading latest Minecraft Server";
@@ -107,7 +107,7 @@ namespace YAMS_Updater
             {
                 WorkingForm.lblCurrentItem.Text = "Downloading add-ons";
                 WorkingForm.Refresh();
-                AutoUpdate.UpdateIfNeeded(AutoUpdate.strYAMSVersionsURL, YAMS.Core.RootFolder + @"\lib\versions.json");
+                AutoUpdate.UpdateIfNeeded(AutoUpdate.strYAMSVersionsURL["live"], YAMS.Core.RootFolder + @"\lib\versions.json");
                 string json = File.ReadAllText(YAMS.Core.RootFolder + @"\lib\versions.json");
                 Dictionary<string, string> dicVers = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
                 
@@ -184,6 +184,7 @@ namespace YAMS_Updater
             Database.SaveSetting("ListenPort", "56552"); //Use an IANA legal internal port 49152 - 65535
             Database.SaveSetting("ExternalIP", Util.GetExternalIP().ToString());
             Database.SaveSetting("ListenIP", Util.GetListenIP().ToString());
+            Database.SaveSetting("UpdateBranch", "live");
             
             //Run an autoupdate
             //AutoUpdate.CheckUpdates();
