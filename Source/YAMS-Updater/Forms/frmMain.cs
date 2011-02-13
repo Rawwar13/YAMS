@@ -79,6 +79,14 @@ namespace YAMS_Updater
             Program.StopService();
         }
 
-        
+        private void btnConsoleStart_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("http://localhost:" + YAMS.Database.GetSetting("ListenPort", "YAMS") + "/admin");
+        }
+
+        private void btnResetPassword_Click(object sender, EventArgs e)
+        {
+            YAMS.Database.SaveSetting("AdminPassword", txtPassword.Text);
+        }
     }
 }
