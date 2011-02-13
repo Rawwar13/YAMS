@@ -17,12 +17,12 @@ namespace YAMS
         
         private string strWorkingDir = "";
 
-        private Regex regRemoveDateStamp = new Regex(@"([0-9]+\-[0-9]+\-[0-9]+ [0-9]+:[0-9]+:[0-9]+ ){1}");
-        private Regex regErrorLevel = new Regex(@"\[([A-Z])+\]{1}");
-        private Regex regPlayerChat = new Regex(@"(\<([A-Za-z0-9])+\>){1}");
-        private Regex regPlayerLoggedIn = new Regex(@"([\w]+)(?: \[\/[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+\:[0-9]+\] logged in with entity id)");
-        private Regex regPlayerLoggedOut = new Regex(@"([\w]+) ?(lost connection)");
-        private Regex regServerVersion = new Regex(@"(?:Starting minecraft server version )");
+        private Regex regRemoveDateStamp = new Regex(@"^([0-9]+\-[0-9]+\-[0-9]+ [0-9]+:[0-9]+:[0-9]+ ){1}");
+        private Regex regErrorLevel = new Regex(@"^\[([A-Z])+\]{1}");
+        private Regex regPlayerChat = new Regex(@"^(\<([A-Za-z0-9])+\>){1}");
+        private Regex regPlayerLoggedIn = new Regex(@"^([\w]+)(?: \[\/[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+\:[0-9]+\] logged in with entity id)");
+        private Regex regPlayerLoggedOut = new Regex(@"^([\w]+) ?(lost connection)");
+        private Regex regServerVersion = new Regex(@"^(?:Starting minecraft server version )");
 
         private string ServerType = "vanilla";
 
