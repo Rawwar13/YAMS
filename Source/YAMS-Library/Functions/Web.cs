@@ -58,10 +58,19 @@ namespace YAMS
 
         public static void Start()
         {
-            myServer.Start(5);
+            try
+            {
+                myServer.Start(5);
 
-            //Start our session provider
-            //WebSession.Start(myServer);
+                //Start our session provider
+                WebSession.Start(myServer);
+            }
+            catch (System.Net.Sockets.SocketException e)
+            {
+                //Previous service has not released the port, so hang on and try again.
+                Thread.Sleep(1000);
+                Start();
+            }
         }
 
         public static void Stop()
@@ -94,10 +103,13 @@ namespace YAMS
             
             if (context.Request.Uri.AbsoluteUri.Contains(@"/api/"))
             {
+                //must be authenticated
+                
                 //what is the action?
-                if (context.Request.Method == Method.Post)
+                if (context.Request.Method == Method.Post && WebSession.Current.UserName == "admin")
                 {
                     String strResponse = "";
+                    IParameterCollection param = context.Request.Parameters;
                     switch (context.Request.Parameters["action"])
                     {
                         case "log":
@@ -106,8 +118,8 @@ namespace YAMS
                             int intNumRows = Convert.ToInt32(context.Request.Parameters["rows"]);
                             int intServer = Convert.ToInt32(context.Request.Parameters["serverid"]);
                             string strLevel = context.Request.Parameters["level"];
-
-                            DataSet ds = YAMS.Database.ReturnLogRows(intStartID, intNumRows, strLevel, intServer);
+                                                        
+                            DataSet ds = Database.ReturnLogRows(intStartID, intNumRows, strLevel, intServer);
 
                             strResponse = JsonConvert.SerializeObject(ds, Formatting.Indented);
                             break;
@@ -176,6 +188,15 @@ namespace YAMS
                             });
                             strResponse = "{ \"result\" : \"sentstop\" }";
                             break;
+                        case "restart":
+                            //Restarts a server
+                            intServerID = Convert.ToInt32(context.Request.Parameters["serverid"]);
+                            Core.Servers.ForEach(delegate(MCServer s)
+                            {
+                                if (s.ServerID == intServerID) s.Restart();
+                            });
+                            strResponse = "{ \"result\" : \"sentstop\" }";
+                            break;
                         case "command":
                             //Sends literal command to a server
                             intServerID = Convert.ToInt32(context.Request.Parameters["serverid"]);
@@ -184,6 +205,38 @@ namespace YAMS
                                 if (s.ServerID == intServerID) s.Send(context.Request.Parameters["message"]);
                             });
                             strResponse = "{ \"result\" : \"sentcommand\" }";
+                            break;
+                        case "get-yams-settings":
+                            DataSet dsSettings = Database.ReturnSettings();
+                            JsonConvert.SerializeObject(dsSettings, Formatting.Indented);
+                            break;
+                        case "save-yams-settings":
+                            //Settings update
+                            foreach (Parameter p in param)
+                            {
+                                if (p.Name != "action") Database.SaveSetting(p.Name, p.Value);
+                            }
+                            break;
+                        case "get-server-settings":
+                            //retrieve all server settings as JSON
+                            intServerID = Convert.ToInt32(param["serverid"]);
+                            strResponse = "{ \"serverid\" : " + intServerID + "," +
+                                              "\"title\" : \"" + Database.GetSetting(intServerID, "ServerTitle") + "\"," +
+                                              "\"optimisations\" : \"" + Database.GetSetting(intServerID, "ServerEnableOptimisations") + "\"," +
+                                              "\"memory\" : \"" + Database.GetSetting(intServerID, "ServerAssignedMemory") + "\"," +
+                                              "\"autostart\" : \"" + Database.GetSetting(intServerID, "ServerAutoStart") + "\"," +
+                                              "\"logonmode\" : \"" + Database.GetSetting(intServerID, "ServerLogonMode") + "\",";
+                            //Minecraft Settings
+                            strResponse += "\"hellworld\" : \"" + Database.GetSetting("hellworld", "MC", intServerID) + "\"," +
+                                           "\"spawnmonsters\" : \"" + Database.GetSetting("spawn-monsters", "MC", intServerID) + "\"," +
+                                           "\"onlinemode\" : \"" + Database.GetSetting("online-mode", "MC", intServerID) + "\"," +
+                                           "\"spawnanimals\" : \"" + Database.GetSetting("spawn-animals", "MC", intServerID) + "\"," +
+                                           "\"maxplayers\" : \"" + Database.GetSetting("max-players", "MC", intServerID) + "\"," +
+                                           "\"serverip\" : \"" + Database.GetSetting("server-ip", "MC", intServerID) + "\"," +
+                                           "\"pvp\" : \"" + Database.GetSetting("pvp", "MC", intServerID) + "\"," +
+                                           "\"serverport\" : \"" + Database.GetSetting("server-port", "MC", intServerID) + "\"";
+
+                            strResponse += "}";
                             break;
                         default:
                             return ProcessingResult.Abort;
@@ -203,10 +256,42 @@ namespace YAMS
             }
             else if (context.Request.Uri.AbsoluteUri.Contains(@"/admin"))
             {
-                context.Response.Connection.Type = ConnectionType.Close;
-                byte[] buffer = Encoding.UTF8.GetBytes(File.ReadAllText(YAMS.Core.RootFolder + @"\web\admin\index.html"));
-                context.Response.Body.Write(buffer, 0, buffer.Length);
-                return ProcessingResult.SendResponse;
+                
+                if (WebSession.Current.UserName != "admin")
+                {
+                    context.Response.Connection.Type = ConnectionType.Close;
+                    byte[] buffer = Encoding.UTF8.GetBytes(File.ReadAllText(YAMS.Core.RootFolder + @"\web\admin\login.html"));
+                    context.Response.Body.Write(buffer, 0, buffer.Length);
+                    return ProcessingResult.SendResponse;
+                }
+                else
+                {
+                    context.Response.Connection.Type = ConnectionType.Close;
+                    byte[] buffer = Encoding.UTF8.GetBytes(File.ReadAllText(YAMS.Core.RootFolder + @"\web\admin\index.html"));
+                    context.Response.Body.Write(buffer, 0, buffer.Length);
+                    return ProcessingResult.SendResponse;
+                }
+            }
+            else if (context.Request.Uri.AbsoluteUri.Contains(@"/login"))
+            {
+                //This is a login request, check it's legit
+                string userName = context.Request.Form["strUsername"];
+                string password = context.Request.Form["strPassword"];
+
+                if (userName == "admin" && password == Database.GetSetting("AdminPassword", "YAMS"))
+                {
+                    WebSession.Create();
+                    WebSession.Current.UserName = "admin";
+                    context.Response.Redirect(@"/admin");
+                    return ProcessingResult.SendResponse;
+                }
+                else
+                {
+                    context.Response.Connection.Type = ConnectionType.Close;
+                    byte[] buffer = Encoding.UTF8.GetBytes(File.ReadAllText(YAMS.Core.RootFolder + @"\web\admin\login.html"));
+                    context.Response.Body.Write(buffer, 0, buffer.Length);
+                    return ProcessingResult.SendResponse;
+                }
             }
             else
             {
