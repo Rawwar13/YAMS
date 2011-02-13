@@ -428,7 +428,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:YAMS-Library, Version=0.1.169.1958, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:YAMS-Library, Version=0.1.178.2339, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_7FEF75E8895E2E0B967E5F783ABF10DC"
@@ -660,7 +660,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Yet Another Minecraft Server"
         "ProductCode" = "8:{93DD1BB0-7E48-4A53-BD92-CD5363621E2F}"
-        "PackageCode" = "8:{22EDC720-8704-4421-803F-2E6173CF3A1B}"
+        "PackageCode" = "8:{FA7ED3B4-429B-4697-AAA6-50B07E0E94B0}"
         "UpgradeCode" = "8:{6E9CC4BF-62B0-45B5-B54E-5FEB6095CD74}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -681,7 +681,7 @@
         "ARPIconIndex" = "3:0"
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"
-        "TargetPlatform" = "3:0"
+        "TargetPlatform" = "3:1"
         "PreBuildEvent" = "8:"
         "PostBuildEvent" = "8:"
         "RunPostBuildEvent" = "3:0"
