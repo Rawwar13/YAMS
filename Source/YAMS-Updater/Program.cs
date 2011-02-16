@@ -84,10 +84,13 @@ namespace YAMS_Updater
                 //Have they run the app before?
                 if (YAMS.Database.GetSetting("FirstRun", "YAMS") != "true")
                 {
+                    Application.Run(new frmDependencies());
                     Application.Run(new frmFirstRun());
                 }
-
-                Application.Run(new frmMain());
+                else
+                {
+                    Application.Run(new frmMain());
+                }
                 return;
             }
         
