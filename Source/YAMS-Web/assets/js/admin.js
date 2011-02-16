@@ -269,6 +269,7 @@ YAMS.admin = {
         }
     },
 
+    mapServer: function () { var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.statusCommand_callback, 'action=gmap&serverid=' + YAMS.admin.selectedServer); },
     startServer: function () { var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.statusCommand_callback, 'action=start&serverid=' + YAMS.admin.selectedServer); },
     stopServer: function () { var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.statusCommand_callback, 'action=stop&serverid=' + YAMS.admin.selectedServer); },
     restartServer: function () { var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.statusCommand_callback, 'action=restart&serverid=' + YAMS.admin.selectedServer); },
@@ -289,8 +290,8 @@ YAMS.admin = {
 
             var l = YAMS.D.get('console');
             if (l.scrollTop == l.scrollHeight) var bolScroll = true;
-            for (var i = 0, len = results.Table.length; i < len; ++i) {
-                var r = results.Table[i];
+            for (var i = 0, len = results.Table.length - 1; len >= i; --len) {
+                var r = results.Table[len];
                 var s = document.createElement('div');
                 YAMS.D.addClass(s, 'message');
                 YAMS.D.addClass(s, r.LogLevel);
@@ -319,8 +320,8 @@ YAMS.admin = {
 
             var l = YAMS.D.get('chat');
             if (l.scrollTop == l.scrollHeight) var bolScroll = true;
-            for (var i = 0, len = results.Table.length; i < len; ++i) {
-                var r = results.Table[i];
+            for (var i = 0, len = results.Table.length - 1; len >= i; --len) {
+                var r = results.Table[len];
                 var s = document.createElement('div');
                 YAMS.D.addClass(s, 'message');
                 YAMS.D.addClass(s, r.LogLevel);
@@ -347,8 +348,8 @@ YAMS.admin = {
 
             var l = YAMS.admin.layout.getUnitByPosition('bottom').body;
             if (l.scrollTop == l.scrollHeight) var bolScroll = true;
-            for (var i = 0, len = results.Table.length; i < len; ++i) {
-                var r = results.Table[i];
+            for (var i = 0, len = results.Table.length - 1; len >= i; --len) {
+                var r = results.Table[len];
                 var s = document.createElement('div');
                 YAMS.D.addClass(s, 'message');
                 YAMS.D.addClass(s, r.LogLevel);
