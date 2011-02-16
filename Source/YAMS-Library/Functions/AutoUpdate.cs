@@ -60,10 +60,12 @@ namespace YAMS
         public static string strOverviewerURL = "https://github.com/downloads/brownan/Minecraft-Overviewer/Overviewer-xxx.zip";
         public static string strC10tx86URL = "http://toolchain.eu/minecraft/c10t/releases/c10t-xxx-windows-x86.zip";
         public static string strC10tx64URL = "http://toolchain.eu/minecraft/c10t/releases/c10t-xxx-windows-x86_64.zip";
+        public static string strBiomeExtractorURL = "http://dl.dropbox.com/u/107712/MCMap/Minecraft-Biome-Extractor-vxxx.zip";
 
         //Default versions
         private static string strOverviewerVer = "0.0.5";
         private static string strC10tVer = "1.4";
+        private static string strBiomeExtractorVer = "071a";
 
         //Checks for available updates
         public static void CheckUpdates()
@@ -100,6 +102,16 @@ namespace YAMS
                     File.Delete(YAMS.Core.RootFolder + @"\apps\overviewer.zip");
                     if (Directory.Exists(YAMS.Core.RootFolder + @"\apps\overviewer\")) Directory.Delete(YAMS.Core.RootFolder + @"\apps\overviewer\", true);
                     Directory.Move(YAMS.Core.RootFolder + @"\apps\Overviewer-" + strOverviewerVer, YAMS.Core.RootFolder + @"\apps\overviewer");
+                }
+
+                //Grab the biome extractor too
+                strBiomeExtractorVer = dicVers["biomeextractor"];
+                if (UpdateIfNeeded(GetExternalURL("biome-extractor", strBiomeExtractorVer), YAMS.Core.RootFolder + @"\apps\biome-extractor.zip"))
+                {
+                    ExtractZip(YAMS.Core.RootFolder + @"\apps\biome-extractor.zip", YAMS.Core.RootFolder + @"\apps\");
+                    File.Delete(YAMS.Core.RootFolder + @"\apps\biome-extractor.zip");
+                    if (Directory.Exists(YAMS.Core.RootFolder + @"\apps\biome-extractor\")) Directory.Delete(YAMS.Core.RootFolder + @"\apps\biome-extractor\", true);
+                    Directory.Move(YAMS.Core.RootFolder + @"\apps\Minecraft Biome Extractor", YAMS.Core.RootFolder + @"\apps\biome-extractor");
                 }
 
                 strC10tVer = dicVers["c10t"];
@@ -220,7 +232,9 @@ namespace YAMS
                             break;
                     }
                     break;
-
+                case "biome-extractor":
+                    strReturn = strBiomeExtractorURL;
+                    break;
             }
             strReturn = strReturn.Replace("xxx", strVersion);
             return strReturn;
