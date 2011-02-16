@@ -16,6 +16,7 @@ namespace YAMS
         private int intAssignedMem = 1024;
         
         private string strWorkingDir = "";
+        public string ServerDirectory;
 
         private Regex regRemoveDateStamp = new Regex(@"^([0-9]+\-[0-9]+\-[0-9]+ [0-9]+:[0-9]+:[0-9]+ ){1}");
         private Regex regErrorLevel = new Regex(@"^\[([A-Z])+\]{1}");
@@ -25,6 +26,8 @@ namespace YAMS
         private Regex regServerVersion = new Regex(@"^(?:Starting minecraft server version )");
 
         private string ServerType = "vanilla";
+
+        private Apps.Overviewer gmap;
 
         public Process prcMinecraft;
 
@@ -48,6 +51,8 @@ namespace YAMS
             this.intAssignedMem = Convert.ToInt32(Database.GetSetting(this.ServerID, "ServerAssignedMemory"));
             this.ServerTitle = Convert.ToString(Database.GetSetting(this.ServerID, "ServerTitle"));
             this.ServerType = Convert.ToString(Database.GetSetting(this.ServerID, "ServerType"));
+
+            this.ServerDirectory = YAMS.Core.RootFolder + "\\servers\\" + this.ServerID.ToString() + @"\";
         }
 
         public void Start()
@@ -282,6 +287,12 @@ namespace YAMS
             {
                 return Convert.ToInt32(this.prcMinecraft.VirtualMemorySize64 / (1024 * 1024));
             } else { return 0; }
+        }
+
+        //Call to create a google map of the world using Overviewer
+        public void MapWorld()
+        {
+            this.gmap = new Apps.Overviewer(this);
         }
     }
 }
