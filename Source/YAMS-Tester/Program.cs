@@ -16,7 +16,11 @@ namespace YAMS_Gui
         [STAThread]
         static void Main()
         {
-            YAMS.Core.StartUp();
+            //YAMS.Core.StartUp();
+            Database.init();
+            Util.FirstRun();
+            WebServer.Init();
+            WebServer.Start();
         
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
