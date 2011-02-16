@@ -6,6 +6,7 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Diagnostics;
 using HttpServer;
 using HttpServer.Authentication;
 using HttpServer.Headers;
@@ -13,6 +14,7 @@ using HttpServer.Modules;
 using HttpServer.Resources;
 using HttpServer.Tools;
 using Newtonsoft.Json;
+using System.Data.SqlServerCe;
 using HttpListener = HttpServer.HttpListener;
 using YAMS;
 
@@ -23,10 +25,6 @@ namespace YAMS
         private static Server myServer;
 
         private static Thread serverThread;
-
-        private static string OpenTag = @"\{\?Y\:";
-        private static string CloseTag = @"\?\}";
-        private static Regex TagFinder = new Regex("(" + OpenTag + ")([^}]+)(" + CloseTag + ")");
 
         //Control
         public static void Init()
@@ -45,6 +43,18 @@ namespace YAMS
             //Handle the requests for static files
             var module = new FileModule();
             module.Resources.Add(new FileResources("/assets/", YAMS.Core.RootFolder + "\\web\\assets\\"));
+
+            //Add any server specific folders
+            SqlCeDataReader readerServers = YAMS.Database.GetServers();
+            while (readerServers.Read())
+            {
+                var intServerID = readerServers["ServerID"].ToString();
+                //string strURI = "/servers/" + intServerID + "/map/";
+                //string strPath = YAMS.Core.RootFolder + "\\servers\\" + intServerID + "\\renders\\gmap\\output\\";
+                //Database.AddLog("Mapped \"" + strURI + "\" to \"" + strPath + "\"");
+                module.Resources.Add(new FileResources("/servers/" + intServerID + "/map/", YAMS.Core.RootFolder + "\\servers\\" + intServerID + "\\renders\\gmap\\output\\"));
+                module.Resources.Add(new FileResources("/servers/" + intServerID + "/renders/", YAMS.Core.RootFolder + "\\servers\\" + intServerID + "\\renders\\"));
+            }
             myServer.Add(module);
 
             //Handle requests to API
@@ -53,7 +63,18 @@ namespace YAMS
             myServer.Add(HttpListener.Create(IPAddress.Any, Convert.ToInt32(YAMS.Database.GetSetting("ListenPort", "YAMS"))));
             //myServer.RequestReceived += new EventHandler<RequestEventArgs>(RequestReceived);
 
+            myServer.ErrorPageRequested += new EventHandler<ErrorPageEventArgs>(myServer_ErrorPageRequested);
+
             serverThread = new Thread(new ThreadStart(Start));
+        }
+
+        static void myServer_ErrorPageRequested(object sender, ErrorPageEventArgs e)
+        {
+            Database.AddLog(e.Exception.Message, "web", "error");
+            e.Response.Reason = "Error - YAMS";
+            e.Response.Connection.Type = ConnectionType.Close;
+            byte[] buffer = Encoding.UTF8.GetBytes("<h1>500 Internal Server Error</h1><p>" + e.Exception.Message + "</p>");
+            e.Response.Body.Write(buffer, 0, buffer.Length);
         }
 
         public static void Start()
@@ -71,25 +92,17 @@ namespace YAMS
                 Thread.Sleep(1000);
                 Start();
             }
+            catch (Exception e) {
+                EventLog myLog = new EventLog();
+                myLog.Source = "YAMS";
+                myLog.WriteEntry("Exception: " + e.Data, EventLogEntryType.Error);
+            }
+
         }
 
         public static void Stop()
         {
             serverThread.Abort();
-        }
-
-        public static string ReplaceTags(string strInput, Dictionary<string,string> dicTags)
-        {
-            var strOutput = strInput;
-
-            MatchCollection results = TagFinder.Matches(strInput);
-            foreach (Match match in results)
-            {
-                Regex replacer = new Regex(OpenTag + match.Value + CloseTag);
-                if (dicTags.ContainsKey(match.Value)) strOutput = replacer.Replace(strOutput, dicTags[match.Value]);
-            }
-
-            return strOutput;
         }
 
     }
@@ -170,6 +183,21 @@ namespace YAMS
                                 };
                             });
                             break;
+                        case "gmap":
+                            //Maps a server
+                            intServerID = Convert.ToInt32(context.Request.Parameters["serverid"]);
+                            Core.Servers.ForEach(delegate(MCServer s)
+                            {
+                                if (s.ServerID == intServerID)
+                                {
+                                    Apps.Overviewer gmap = new Apps.Overviewer(s);
+                                    ThreadStart threadDelegate = new ThreadStart(gmap.Start);
+                                    Thread newThread = new Thread(threadDelegate);
+                                    newThread.Start();
+                                }
+                            });
+                            strResponse = "{ \"result\" : \"sent\" }";
+                            break;
                         case "start":
                             //Starts a server
                             intServerID = Convert.ToInt32(context.Request.Parameters["serverid"]);
@@ -242,6 +270,7 @@ namespace YAMS
                             return ProcessingResult.Abort;
                     }
 
+                    context.Response.Reason = "Completed - YAMS";
                     context.Response.Connection.Type = ConnectionType.Close;
                     byte[] buffer = Encoding.UTF8.GetBytes(strResponse);
                     context.Response.Body.Write(buffer, 0, buffer.Length);
@@ -259,6 +288,7 @@ namespace YAMS
                 
                 if (WebSession.Current.UserName != "admin")
                 {
+                    context.Response.Reason = "Completed - YAMS";
                     context.Response.Connection.Type = ConnectionType.Close;
                     byte[] buffer = Encoding.UTF8.GetBytes(File.ReadAllText(YAMS.Core.RootFolder + @"\web\admin\login.html"));
                     context.Response.Body.Write(buffer, 0, buffer.Length);
@@ -266,6 +296,7 @@ namespace YAMS
                 }
                 else
                 {
+                    context.Response.Reason = "Completed - YAMS";
                     context.Response.Connection.Type = ConnectionType.Close;
                     byte[] buffer = Encoding.UTF8.GetBytes(File.ReadAllText(YAMS.Core.RootFolder + @"\web\admin\index.html"));
                     context.Response.Body.Write(buffer, 0, buffer.Length);
@@ -287,6 +318,7 @@ namespace YAMS
                 }
                 else
                 {
+                    context.Response.Reason = "Completed - YAMS";
                     context.Response.Connection.Type = ConnectionType.Close;
                     byte[] buffer = Encoding.UTF8.GetBytes(File.ReadAllText(YAMS.Core.RootFolder + @"\web\admin\login.html"));
                     context.Response.Body.Write(buffer, 0, buffer.Length);
@@ -300,23 +332,57 @@ namespace YAMS
                 // /[0-9]+/ = server home page including chat log
                 // /[0-9]+/map = Google Map
                 // /[0-9]+/renders = c10t renders
-                var strTemplate = File.ReadAllText(Core.RootFolder + @"\web\template.html");
-                Dictionary<string, string> dicTags = new Dictionary<string,string>();
-                
-                if (context.Request.Uri.AbsoluteUri.Equals(@"/"))
+
+                Regex regRoot = new Regex(@"^/$");
+                Regex regServerList = new Regex(@"^/servers/$");
+                Regex regServerHome = new Regex(@"^/servers/([0-9]+)/$");
+                Regex regServerGMap = new Regex(@"^/servers/([0-9]+)/map/");
+                Regex regServerRenders = new Regex(@"^/servers/([0-9]+)/renders/");
+
+                if (regServerGMap.Match(context.Request.Uri.AbsolutePath).Success || regServerRenders.Match(context.Request.Uri.AbsolutePath).Success)
                 {
-                    //List servers available
-                    dicTags.Add("PageTitle", "Server List");
+                    return ProcessingResult.Continue;
+                }
+                else
+                {
+
+                    var strTemplate = File.ReadAllText(Core.RootFolder + @"\web\template.html");
+                    Dictionary<string, string> dicTags = new Dictionary<string, string>();
+
+                    if (regRoot.Match(context.Request.Uri.AbsolutePath).Success)
+                    {
+                        //Server Root
+                        dicTags.Add("PageTitle", "YAMS Hosted Server");
+                    }
+                    else if (regServerList.Match(context.Request.Uri.AbsolutePath).Success)
+                    {
+                        //List of Servers
+                        dicTags.Add("PageTitle", "Server List");
+                    }
+                    else if (regServerHome.Match(context.Request.Uri.AbsolutePath).Success)
+                    {
+                        //Individual Server home
+                        dicTags.Add("PageTitle", "Server Home");
+                    }
+                    else
+                    {
+                        //Unknown
+                        return ProcessingResult.Abort;
+                    }
+
+                    dicTags.Add("PageBody", "test");
+                    
+                    //Run through our replacer
+                    strTemplate = WebTemplate.ReplaceTags(strTemplate, dicTags);
+
+                    //And send to the browser
+                    context.Response.Reason = "Completed - YAMS";
+                    context.Response.Connection.Type = ConnectionType.Close;
+                    byte[] buffer = Encoding.UTF8.GetBytes(strTemplate);
+                    context.Response.Body.Write(buffer, 0, buffer.Length);
+                    return ProcessingResult.SendResponse;
                 }
 
-                //Run through our replacer
-                strTemplate = YAMS.WebServer.ReplaceTags(strTemplate, dicTags);
-
-                //And send to the browser
-                context.Response.Connection.Type = ConnectionType.Close;
-                byte[] buffer = Encoding.UTF8.GetBytes(strTemplate);
-                context.Response.Body.Write(buffer, 0, buffer.Length);
-                return ProcessingResult.SendResponse;
             }
 
 
