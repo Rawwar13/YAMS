@@ -62,6 +62,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Forms\frmDependencies.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmDependencies.Designer.cs">
+      <DependentUpon>frmDependencies.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\frmFirstRun.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -99,6 +105,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Forms\frmDependencies.resx">
+      <DependentUpon>frmDependencies.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmFirstRun.resx">
       <DependentUpon>frmFirstRun.cs</DependentUpon>
     </EmbeddedResource>
@@ -125,9 +134,15 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_BuildVersioningStyle="None.None.Increment.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
+      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.None.Increment.TimeStamp" />
     </VisualStudio>
   </ProjectExtensions>
+  <PropertyGroup>
+    <PreBuildEvent>del .\db\ /S /Q</PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>move /Y *.sdf .\db\</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

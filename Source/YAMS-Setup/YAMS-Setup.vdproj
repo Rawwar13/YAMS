@@ -22,13 +22,13 @@
         "Entry"
         {
         "MsmKey" = "8:_3011827ABD820C9C65AE12313DD44370"
-        "OwnerKey" = "8:_B19853C2C38C491EBFC3DC477FF2539B"
+        "OwnerKey" = "8:_CEF1E6FA8A513F93F7BBEF26FB7DACD5"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_3011827ABD820C9C65AE12313DD44370"
-        "OwnerKey" = "8:_7FEF75E8895E2E0B967E5F783ABF10DC"
+        "OwnerKey" = "8:_B19853C2C38C491EBFC3DC477FF2539B"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -57,37 +57,49 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_7FEF75E8895E2E0B967E5F783ABF10DC"
-        "OwnerKey" = "8:_532880C4567F4F62819255B1BA626725"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_7FEF75E8895E2E0B967E5F783ABF10DC"
-        "OwnerKey" = "8:_B19853C2C38C491EBFC3DC477FF2539B"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_AA069B23C6EF3EFDD3E46C5C391571CC"
+        "MsmKey" = "8:_5A7E9296DE63A834012E97FC043FAF64"
         "OwnerKey" = "8:_4ABE314323CE4BE8A0A04341BD1C5341"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_AA069B23C6EF3EFDD3E46C5C391571CC"
+        "MsmKey" = "8:_5A7E9296DE63A834012E97FC043FAF64"
+        "OwnerKey" = "8:_CEF1E6FA8A513F93F7BBEF26FB7DACD5"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_5A7E9296DE63A834012E97FC043FAF64"
         "OwnerKey" = "8:_B19853C2C38C491EBFC3DC477FF2539B"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_AA069B23C6EF3EFDD3E46C5C391571CC"
-        "OwnerKey" = "8:_7FEF75E8895E2E0B967E5F783ABF10DC"
+        "MsmKey" = "8:_5A7E9296DE63A834012E97FC043FAF64"
+        "OwnerKey" = "8:_532880C4567F4F62819255B1BA626725"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_AA069B23C6EF3EFDD3E46C5C391571CC"
+        "MsmKey" = "8:_64F200751ECB7FDA88D9FCF3ECAB55E5"
+        "OwnerKey" = "8:_4ABE314323CE4BE8A0A04341BD1C5341"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_64F200751ECB7FDA88D9FCF3ECAB55E5"
+        "OwnerKey" = "8:_CEF1E6FA8A513F93F7BBEF26FB7DACD5"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_64F200751ECB7FDA88D9FCF3ECAB55E5"
+        "OwnerKey" = "8:_B19853C2C38C491EBFC3DC477FF2539B"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_64F200751ECB7FDA88D9FCF3ECAB55E5"
         "OwnerKey" = "8:_532880C4567F4F62819255B1BA626725"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -99,50 +111,38 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_C2D35E04922410A73343CA1724045A72"
+        "MsmKey" = "8:_B780FA9264289F478C97E5CAD5A6DBF0"
         "OwnerKey" = "8:_4ABE314323CE4BE8A0A04341BD1C5341"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_C2D35E04922410A73343CA1724045A72"
+        "MsmKey" = "8:_B780FA9264289F478C97E5CAD5A6DBF0"
+        "OwnerKey" = "8:_CEF1E6FA8A513F93F7BBEF26FB7DACD5"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B780FA9264289F478C97E5CAD5A6DBF0"
         "OwnerKey" = "8:_B19853C2C38C491EBFC3DC477FF2539B"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_C2D35E04922410A73343CA1724045A72"
-        "OwnerKey" = "8:_7FEF75E8895E2E0B967E5F783ABF10DC"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_C2D35E04922410A73343CA1724045A72"
+        "MsmKey" = "8:_B780FA9264289F478C97E5CAD5A6DBF0"
         "OwnerKey" = "8:_532880C4567F4F62819255B1BA626725"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_E4D328AA646BCD75FD90A8C02A162ADC"
-        "OwnerKey" = "8:_4ABE314323CE4BE8A0A04341BD1C5341"
+        "MsmKey" = "8:_CEF1E6FA8A513F93F7BBEF26FB7DACD5"
+        "OwnerKey" = "8:_532880C4567F4F62819255B1BA626725"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_E4D328AA646BCD75FD90A8C02A162ADC"
+        "MsmKey" = "8:_CEF1E6FA8A513F93F7BBEF26FB7DACD5"
         "OwnerKey" = "8:_B19853C2C38C491EBFC3DC477FF2539B"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_E4D328AA646BCD75FD90A8C02A162ADC"
-        "OwnerKey" = "8:_7FEF75E8895E2E0B967E5F783ABF10DC"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_E4D328AA646BCD75FD90A8C02A162ADC"
-        "OwnerKey" = "8:_532880C4567F4F62819255B1BA626725"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -154,13 +154,13 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_B19853C2C38C491EBFC3DC477FF2539B"
+        "OwnerKey" = "8:_CEF1E6FA8A513F93F7BBEF26FB7DACD5"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_7FEF75E8895E2E0B967E5F783ABF10DC"
+        "OwnerKey" = "8:_B19853C2C38C491EBFC3DC477FF2539B"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -172,19 +172,19 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_E4D328AA646BCD75FD90A8C02A162ADC"
+        "OwnerKey" = "8:_64F200751ECB7FDA88D9FCF3ECAB55E5"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_AA069B23C6EF3EFDD3E46C5C391571CC"
+        "OwnerKey" = "8:_5A7E9296DE63A834012E97FC043FAF64"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_C2D35E04922410A73343CA1724045A72"
+        "OwnerKey" = "8:_B780FA9264289F478C97E5CAD5A6DBF0"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -201,11 +201,11 @@
         "DisplayName" = "8:Debug"
         "IsDebugOnly" = "11:TRUE"
         "IsReleaseOnly" = "11:FALSE"
-        "OutputFilename" = "8:Debug\\YAMS-Setup.msi"
+        "OutputFilename" = "8:..\\..\\Binaries\\Debug\\YAMS-Setup.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
-        "Compression" = "3:3"
+        "Compression" = "3:2"
         "SignOutput" = "11:FALSE"
         "CertificateFile" = "8:"
         "PrivateKeyFile" = "8:"
@@ -243,7 +243,7 @@
         "DisplayName" = "8:Release"
         "IsDebugOnly" = "11:FALSE"
         "IsReleaseOnly" = "11:TRUE"
-        "OutputFilename" = "8:Release\\YAMS-Setup.msi"
+        "OutputFilename" = "8:..\\..\\Binaries\\Release\\YAMS-Setup.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -266,6 +266,11 @@
                     {
                     "Name" = "8:.NET Framework 3.5 SP1"
                     "ProductCode" = "8:Microsoft.Net.Framework.3.5.SP1"
+                    }
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.SQL.Server.Compact.3.5"
+                    {
+                    "Name" = "8:SQL Server Compact 3.5 SP2"
+                    "ProductCode" = "8:Microsoft.SQL.Server.Compact.3.5"
                     }
                     "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Windows.Installer.3.1"
                     {
@@ -424,45 +429,14 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_7FEF75E8895E2E0B967E5F783ABF10DC"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:YAMS-Library, Version=0.1.187.1824, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_7FEF75E8895E2E0B967E5F783ABF10DC"
-                    {
-                    "Name" = "8:YAMS-Library.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:YAMS-Library.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_5FD580D11DD840FFB6728649EB80CC01"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_AA069B23C6EF3EFDD3E46C5C391571CC"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_5A7E9296DE63A834012E97FC043FAF64"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_AA069B23C6EF3EFDD3E46C5C391571CC"
+                    "_5A7E9296DE63A834012E97FC043FAF64"
                     {
                     "Name" = "8:ICSharpCode.SharpZipLib.dll"
                     "Attributes" = "3:512"
@@ -486,14 +460,45 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C2D35E04922410A73343CA1724045A72"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_64F200751ECB7FDA88D9FCF3ECAB55E5"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Newtonsoft.Json, Version=3.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_64F200751ECB7FDA88D9FCF3ECAB55E5"
+                    {
+                    "Name" = "8:Newtonsoft.Json.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Newtonsoft.Json.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_6D369EB895B84CFF91B507095ED12D5E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_B780FA9264289F478C97E5CAD5A6DBF0"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:HttpServer, Version=2.0.0.0, Culture=neutral, PublicKeyToken=5684c2c737cd4271, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_C2D35E04922410A73343CA1724045A72"
+                    "_B780FA9264289F478C97E5CAD5A6DBF0"
                     {
                     "Name" = "8:HttpServer.dll"
                     "Attributes" = "3:512"
@@ -517,20 +522,20 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_E4D328AA646BCD75FD90A8C02A162ADC"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_CEF1E6FA8A513F93F7BBEF26FB7DACD5"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Newtonsoft.Json, Version=3.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:YAMS-Library, Version=0.1.233.1744, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_E4D328AA646BCD75FD90A8C02A162ADC"
+                    "_CEF1E6FA8A513F93F7BBEF26FB7DACD5"
                     {
-                    "Name" = "8:Newtonsoft.Json.dll"
+                    "Name" = "8:YAMS-Library.dll"
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:Newtonsoft.Json.dll"
+            "SourcePath" = "8:YAMS-Library.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_6D369EB895B84CFF91B507095ED12D5E"
@@ -544,7 +549,7 @@
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
-            "Exclude" = "11:FALSE"
+            "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
@@ -660,7 +665,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Yet Another Minecraft Server"
         "ProductCode" = "8:{93DD1BB0-7E48-4A53-BD92-CD5363621E2F}"
-        "PackageCode" = "8:{24407DEA-7915-4FC2-8850-CBC10C787478}"
+        "PackageCode" = "8:{5C32856E-E62F-441C-A9B5-2481C5171BA0}"
         "UpgradeCode" = "8:{6E9CC4BF-62B0-45B5-B54E-5FEB6095CD74}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -1242,10 +1247,10 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_4ABE314323CE4BE8A0A04341BD1C5341"
             {
-            "SourcePath" = "8:..\\YAMS-Library\\obj\\Debug\\YAMS-Library.dll"
+            "SourcePath" = "8:..\\YAMS-Library\\obj\\Release\\YAMS-Library.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_6D369EB895B84CFF91B507095ED12D5E"
+            "Folder" = "8:_5FD580D11DD840FFB6728649EB80CC01"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1268,38 +1273,9 @@
                 {
                 }
             }
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_520EBDBCFA314E2597F9A6D319015834"
-            {
-            "SourcePath" = "8:"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_5FD580D11DD840FFB6728649EB80CC01"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            "ProjectOutputGroupRegister" = "3:1"
-            "OutputConfiguration" = "8:"
-            "OutputGroupCanonicalName" = "8:ContentFiles"
-            "OutputProjectGuid" = "8:{23221E7A-861F-4840-A107-823AD37F0839}"
-            "ShowKeyOutput" = "11:TRUE"
-                "ExcludeFilters"
-                {
-                "ExcludeFilter" = "8:dbYAMS.sdf"
-                }
-            }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_532880C4567F4F62819255B1BA626725"
             {
-            "SourcePath" = "8:..\\YAMS-Service\\obj\\x86\\Debug\\YAMS-Service.exe"
+            "SourcePath" = "8:..\\YAMS-Service\\obj\\x86\\Release\\YAMS-Service.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_5FD580D11DD840FFB6728649EB80CC01"
@@ -1384,7 +1360,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_B19853C2C38C491EBFC3DC477FF2539B"
             {
-            "SourcePath" = "8:..\\YAMS-Updater\\obj\\x86\\Debug\\YAMS-Updater.exe"
+            "SourcePath" = "8:..\\YAMS-Updater\\obj\\x86\\Release\\YAMS-Updater.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_5FD580D11DD840FFB6728649EB80CC01"
@@ -1405,34 +1381,6 @@
             "OutputConfiguration" = "8:"
             "OutputGroupCanonicalName" = "8:Built"
             "OutputProjectGuid" = "8:{8662029F-E31B-4D81-BC5E-9E3EA5F8B55D}"
-            "ShowKeyOutput" = "11:TRUE"
-                "ExcludeFilters"
-                {
-                }
-            }
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_E4B10F2825594A48BB55FA433DD8CB24"
-            {
-            "SourcePath" = "8:"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_5FD580D11DD840FFB6728649EB80CC01"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            "ProjectOutputGroupRegister" = "3:1"
-            "OutputConfiguration" = "8:"
-            "OutputGroupCanonicalName" = "8:ContentFiles"
-            "OutputProjectGuid" = "8:{23221E7A-861F-4840-A107-823AD37F0839}"
             "ShowKeyOutput" = "11:TRUE"
                 "ExcludeFilters"
                 {
