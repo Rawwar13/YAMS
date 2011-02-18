@@ -133,7 +133,7 @@ namespace YAMS_Updater
             Database.SaveSetting("UpdateAddons", Util.BooleanToString(this.chkUpdateAddons.Checked));
             Database.SaveSetting("RestartOnJarUpdate", Util.BooleanToString(this.chkRestartMC.Checked));
             Database.SaveSetting("RestartOnSVCUpdate", Util.BooleanToString(this.chkRestartYAMS.Checked));
-            Database.SaveSetting("EnableJavaOptimisations", Util.BooleanToString(this.chkOptimisations.Checked));
+            Database.SaveSetting("EnableJavaOptimisations", "true");
             Database.SaveSetting("ListenPort", "56552"); //Use an IANA legal internal port 49152 - 65535
             Database.SaveSetting("ExternalIP", Util.GetExternalIP().ToString());
             Database.SaveSetting("ListenIP", Util.GetListenIP().ToString());

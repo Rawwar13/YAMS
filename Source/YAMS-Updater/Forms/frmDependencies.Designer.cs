@@ -42,16 +42,20 @@
             this.timCheckUpdate = new System.Windows.Forms.Timer(this.components);
             this.btnComplete = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.icoMCInSystem = new System.Windows.Forms.PictureBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.icoMCInstalled = new System.Windows.Forms.PictureBox();
+            this.btnDownloadClient = new System.Windows.Forms.Button();
+            this.btnCopyClient = new System.Windows.Forms.Button();
+            this.lblMCClientSystem = new System.Windows.Forms.Label();
+            this.lblMCClientLocal = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.icoJDK)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.icoJRE)).BeginInit();
             this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.icoMCInSystem)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.icoMCInstalled)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -114,7 +118,7 @@
             // 
             this.icoJDK.Image = global::YAMS_Updater.Properties.Resources.cancel;
             this.icoJDK.InitialImage = global::YAMS_Updater.Properties.Resources.cancel;
-            this.icoJDK.Location = new System.Drawing.Point(176, 94);
+            this.icoJDK.Location = new System.Drawing.Point(206, 89);
             this.icoJDK.Name = "icoJDK";
             this.icoJDK.Size = new System.Drawing.Size(16, 16);
             this.icoJDK.TabIndex = 3;
@@ -124,7 +128,7 @@
             // 
             this.icoJRE.Image = global::YAMS_Updater.Properties.Resources.cancel;
             this.icoJRE.InitialImage = global::YAMS_Updater.Properties.Resources.cancel;
-            this.icoJRE.Location = new System.Drawing.Point(176, 19);
+            this.icoJRE.Location = new System.Drawing.Point(206, 15);
             this.icoJRE.Name = "icoJRE";
             this.icoJRE.Size = new System.Drawing.Size(16, 16);
             this.icoJRE.TabIndex = 2;
@@ -133,18 +137,20 @@
             // label2
             // 
             this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(7, 94);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(140, 13);
+            this.label2.Size = new System.Drawing.Size(166, 13);
             this.label2.TabIndex = 1;
             this.label2.Text = "Java Development Kit (JDK)";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(7, 20);
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(7, 16);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(163, 13);
+            this.label1.Size = new System.Drawing.Size(193, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "Java Runtime Environment (JRE)";
             // 
@@ -166,10 +172,14 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.lblMCClientSystem);
+            this.groupBox2.Controls.Add(this.lblMCClientLocal);
+            this.groupBox2.Controls.Add(this.btnCopyClient);
+            this.groupBox2.Controls.Add(this.btnDownloadClient);
             this.groupBox2.Controls.Add(this.label4);
-            this.groupBox2.Controls.Add(this.pictureBox2);
+            this.groupBox2.Controls.Add(this.icoMCInSystem);
             this.groupBox2.Controls.Add(this.label3);
-            this.groupBox2.Controls.Add(this.pictureBox1);
+            this.groupBox2.Controls.Add(this.icoMCInstalled);
             this.groupBox2.Location = new System.Drawing.Point(12, 191);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(679, 156);
@@ -177,43 +187,87 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Minecraft Client";
             // 
-            // pictureBox1
+            // label4
             // 
-            this.pictureBox1.Image = global::YAMS_Updater.Properties.Resources.cancel;
-            this.pictureBox1.InitialImage = global::YAMS_Updater.Properties.Resources.cancel;
-            this.pictureBox1.Location = new System.Drawing.Point(176, 19);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(16, 16);
-            this.pictureBox1.TabIndex = 4;
-            this.pictureBox1.TabStop = false;
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(7, 95);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(185, 13);
+            this.label4.TabIndex = 10;
+            this.label4.Text = "Client installed in system profile";
+            // 
+            // icoMCInSystem
+            // 
+            this.icoMCInSystem.Image = global::YAMS_Updater.Properties.Resources.cancel;
+            this.icoMCInSystem.InitialImage = global::YAMS_Updater.Properties.Resources.cancel;
+            this.icoMCInSystem.Location = new System.Drawing.Point(206, 92);
+            this.icoMCInSystem.Name = "icoMCInSystem";
+            this.icoMCInSystem.Size = new System.Drawing.Size(16, 16);
+            this.icoMCInSystem.TabIndex = 9;
+            this.icoMCInSystem.TabStop = false;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(7, 22);
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(7, 25);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(131, 13);
+            this.label3.Size = new System.Drawing.Size(160, 13);
             this.label3.TabIndex = 8;
             this.label3.Text = "Client installed in your user";
             // 
-            // label4
+            // icoMCInstalled
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(7, 71);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(151, 13);
-            this.label4.TabIndex = 10;
-            this.label4.Text = "Client installed in system profile";
+            this.icoMCInstalled.Image = global::YAMS_Updater.Properties.Resources.cancel;
+            this.icoMCInstalled.InitialImage = global::YAMS_Updater.Properties.Resources.cancel;
+            this.icoMCInstalled.Location = new System.Drawing.Point(206, 25);
+            this.icoMCInstalled.Name = "icoMCInstalled";
+            this.icoMCInstalled.Size = new System.Drawing.Size(16, 16);
+            this.icoMCInstalled.TabIndex = 4;
+            this.icoMCInstalled.TabStop = false;
             // 
-            // pictureBox2
+            // btnDownloadClient
             // 
-            this.pictureBox2.Image = global::YAMS_Updater.Properties.Resources.cancel;
-            this.pictureBox2.InitialImage = global::YAMS_Updater.Properties.Resources.cancel;
-            this.pictureBox2.Location = new System.Drawing.Point(176, 68);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(16, 16);
-            this.pictureBox2.TabIndex = 9;
-            this.pictureBox2.TabStop = false;
+            this.btnDownloadClient.Location = new System.Drawing.Point(578, 25);
+            this.btnDownloadClient.Name = "btnDownloadClient";
+            this.btnDownloadClient.Size = new System.Drawing.Size(95, 23);
+            this.btnDownloadClient.TabIndex = 11;
+            this.btnDownloadClient.Text = "Download Client";
+            this.btnDownloadClient.UseMnemonic = false;
+            this.btnDownloadClient.UseVisualStyleBackColor = true;
+            this.btnDownloadClient.Visible = false;
+            this.btnDownloadClient.Click += new System.EventHandler(this.btnDownloadClient_Click);
+            // 
+            // btnCopyClient
+            // 
+            this.btnCopyClient.Location = new System.Drawing.Point(578, 85);
+            this.btnCopyClient.Name = "btnCopyClient";
+            this.btnCopyClient.Size = new System.Drawing.Size(95, 23);
+            this.btnCopyClient.TabIndex = 12;
+            this.btnCopyClient.Text = "Copy Client";
+            this.btnCopyClient.UseMnemonic = false;
+            this.btnCopyClient.UseVisualStyleBackColor = true;
+            this.btnCopyClient.Visible = false;
+            this.btnCopyClient.Click += new System.EventHandler(this.btnCopyClient_Click);
+            // 
+            // lblMCClientSystem
+            // 
+            this.lblMCClientSystem.AutoSize = true;
+            this.lblMCClientSystem.Location = new System.Drawing.Point(7, 118);
+            this.lblMCClientSystem.Name = "lblMCClientSystem";
+            this.lblMCClientSystem.Size = new System.Drawing.Size(13, 13);
+            this.lblMCClientSystem.TabIndex = 14;
+            this.lblMCClientSystem.Text = "2";
+            // 
+            // lblMCClientLocal
+            // 
+            this.lblMCClientLocal.AutoSize = true;
+            this.lblMCClientLocal.Location = new System.Drawing.Point(7, 49);
+            this.lblMCClientLocal.Name = "lblMCClientLocal";
+            this.lblMCClientLocal.Size = new System.Drawing.Size(13, 13);
+            this.lblMCClientLocal.TabIndex = 13;
+            this.lblMCClientLocal.Text = "1";
             // 
             // frmDependencies
             // 
@@ -235,8 +289,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.icoJRE)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.icoMCInSystem)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.icoMCInstalled)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -256,9 +310,13 @@
         private System.Windows.Forms.Button btnComplete;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.PictureBox icoMCInSystem;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox icoMCInstalled;
+        private System.Windows.Forms.Button btnCopyClient;
+        private System.Windows.Forms.Button btnDownloadClient;
+        private System.Windows.Forms.Label lblMCClientSystem;
+        private System.Windows.Forms.Label lblMCClientLocal;
 
     }
 }

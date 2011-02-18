@@ -43,14 +43,35 @@ namespace YAMS_Updater
             {
                 icoJDK.Image = YAMS_Updater.Properties.Resources.accept;
                 lblJDK.Text = "JDK is installed, and will provide the best experience";
-                chkOptimisations.Checked = true;
-                chkOptimisations.Enabled = true;
                 btnComplete.Enabled = true;
             }
             else
             {
                 lblJDK.Text = "JDK is not installed, using the JDK instead of the JRE provides many enhancements but is not required";
                 btnJDKDownload.Visible = true;
+            }
+
+            if (YAMS.Util.HasMCClientLocal())
+            {
+                icoMCInstalled.Image = YAMS_Updater.Properties.Resources.accept;
+                lblMCClientLocal.Text = "Minecraft client is installed, please make sure it is up to date";
+                btnDownloadClient.Visible = false;
+            }
+            else
+            {
+                lblMCClientLocal.Text = "Some add-ons need the Minecraft client installed. Please download and run once. It is ok if it crashes as long as the files are downloaded.";
+                btnDownloadClient.Visible = true;
+            }
+            if (YAMS.Util.HasMCClientSystem())
+            {
+                icoMCInSystem.Image = YAMS_Updater.Properties.Resources.accept;
+                lblMCClientSystem.Text = "Minecraft client is installed in the SYSTEM profile";
+                btnDownloadClient.Visible = false;
+            }
+            else
+            {
+                lblMCClientSystem.Text = "As YAMS runs as a service, the Minecraft client needs to be copied to the SYSTEM profile to be accessed.";
+                if (YAMS.Util.HasMCClientLocal()) btnCopyClient.Visible = true;
             }
 
         }
@@ -63,6 +84,17 @@ namespace YAMS_Updater
         private void btnJDKDownload_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start("https://cds.sun.com/is-bin/INTERSHOP.enfinity/WFS/CDS-CDS_Developer-Site/en_US/-/USD/ViewProductDetail-Start?ProductRef=jdk-6u23-oth-JPR@CDS-CDS_Developer");
+        }
+
+        private void btnDownloadClient_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("http://www.minecraft.net/download.jsp");
+        }
+
+        private void btnCopyClient_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Please be aware if you have large worlds or mods, this can take a long time\n\nThe app may report \"Not Responding\" but it is still copying.");
+            YAMS.Util.CopyMCClient();
         }
     }
 }
