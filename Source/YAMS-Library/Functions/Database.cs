@@ -322,10 +322,40 @@ namespace YAMS
             return readerServers;
         }
 
+        //User Functions
+        public static bool AddUser(string strUsername, int intServerID, string strLevel = "guest")
+        {
+            SqlCeCommand cmd = new SqlCeCommand();
+            cmd.Connection = connLocal;
+            cmd.CommandText = "INSERT INTO Players (PlayerName, PlayerServer, PlayerLevel) VALUES (@name, @server, @level);";
+            cmd.Parameters.Add("@name", strUsername);
+            cmd.Parameters.Add("@server", intServerID);
+            cmd.Parameters.Add("@level", strLevel);
+            cmd.ExecuteNonQuery();
+            return true;
+        }
+
+        public static string GetPlayerLevel(string strName, int intServerID)
+        {
+            try
+            {
+                SqlCeCommand cmd = new SqlCeCommand("SELECT PlayerLevel FROM Players WHERE PlayerName = @name AND PlayerServer = @id", connLocal);
+                cmd.Parameters.Add("@id", intServerID);
+                cmd.Parameters.Add("@name", strName);
+                var strSettingValue = (string)cmd.ExecuteScalar();
+                return strSettingValue;
+            }
+            catch (Exception ex)
+            {
+                AddLog("YAMS.Database.GetPlayerLevel Exception: " + ex.Message, "database", "error");
+                return "";
+            }
+        }
+
         ~Database()
         {
             connLocal.Close();
         }
-    
+
     }
 }
