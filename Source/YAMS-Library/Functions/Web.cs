@@ -190,10 +190,8 @@ namespace YAMS
                             {
                                 if (s.ServerID == intServerID)
                                 {
-                                    Apps.Overviewer gmap = new Apps.Overviewer(s);
-                                    ThreadStart threadDelegate = new ThreadStart(gmap.Start);
-                                    Thread newThread = new Thread(threadDelegate);
-                                    newThread.Start();
+                                    AddOns.Overviewer gmap = new AddOns.Overviewer(s);
+                                    gmap.Start();
                                 }
                             });
                             strResponse = "{ \"result\" : \"sent\" }";
@@ -345,23 +343,25 @@ namespace YAMS
                 }
                 else
                 {
-
-                    var strTemplate = File.ReadAllText(Core.RootFolder + @"\web\template.html");
+                    string strTemplate = "No matching Template";
                     Dictionary<string, string> dicTags = new Dictionary<string, string>();
 
                     if (regRoot.Match(context.Request.Uri.AbsolutePath).Success)
                     {
                         //Server Root
+                        strTemplate = File.ReadAllText(Core.RootFolder + @"\web\templates\root.html");
                         dicTags.Add("PageTitle", "YAMS Hosted Server");
                     }
                     else if (regServerList.Match(context.Request.Uri.AbsolutePath).Success)
                     {
                         //List of Servers
+                        strTemplate = File.ReadAllText(Core.RootFolder + @"\web\templates\server-list.html");
                         dicTags.Add("PageTitle", "Server List");
                     }
                     else if (regServerHome.Match(context.Request.Uri.AbsolutePath).Success)
                     {
                         //Individual Server home
+                        strTemplate = File.ReadAllText(Core.RootFolder + @"\web\templates\server-home.html");
                         dicTags.Add("PageTitle", "Server Home");
                     }
                     else
