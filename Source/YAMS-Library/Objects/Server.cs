@@ -27,7 +27,7 @@ namespace YAMS
 
         private string ServerType = "vanilla";
 
-        private Apps.Overviewer gmap;
+        private AddOns.Overviewer gmap;
 
         public Process prcMinecraft;
 
@@ -37,10 +37,11 @@ namespace YAMS
         public int ServerID;
         public string ServerVersion = "";
         public string ServerTitle = "";
+        public string LogonMode = "blacklist";
 
         public bool RestartNeeded = false;
 
-        public List<string> Players = new List<string> { };
+        public Dictionary<string, Objects.Player> Players = new Dictionary<string, Objects.Player> { };
 
         public MCServer(int intServerID)
         {
@@ -51,6 +52,7 @@ namespace YAMS
             this.intAssignedMem = Convert.ToInt32(Database.GetSetting(this.ServerID, "ServerAssignedMemory"));
             this.ServerTitle = Convert.ToString(Database.GetSetting(this.ServerID, "ServerTitle"));
             this.ServerType = Convert.ToString(Database.GetSetting(this.ServerID, "ServerType"));
+            this.LogonMode = Convert.ToString(Database.GetSetting(this.ServerID, "ServerLogonMode"));
 
             this.ServerDirectory = YAMS.Core.RootFolder + "\\servers\\" + this.ServerID.ToString() + @"\";
         }
@@ -218,7 +220,10 @@ namespace YAMS
             //Generally this needs a long wait
             System.Threading.Thread.Sleep(10000);
         }
-            
+        public void Whisper(string strUsername, string strMessage)
+        {
+            this.Send("tell " + strUsername + " " + strMessage);
+        }
 
         //Catch the output from the server process
         private void ServerOutput(object sender, DataReceivedEventArgs e) { if (e.Data != null) YAMS.Database.AddLog(DateTime.Now, e.Data, "server", "out", false, this.ServerID); }
@@ -282,7 +287,7 @@ namespace YAMS
         //Login and out events
         private void PlayerLogin(string strName)
         {
-            this.Players.Add(strName);
+            this.Players.Add(strName, new Objects.Player(strName, this));
         }
         private void PlayerLogout(string strName)
         {
@@ -314,7 +319,7 @@ namespace YAMS
         public void MapWorld()
         {
             this.gmap = new AddOns.Overviewer(this);
-            this.gmap.start();
+            this.gmap.Start();
         }
     }
 }

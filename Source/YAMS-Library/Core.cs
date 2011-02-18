@@ -61,10 +61,10 @@ namespace YAMS
 
         public static void ShutDown()
         {
-            Core.Servers.ForEach(delegate(MCServer s)
+            foreach (KeyValuePair<int, MCServer> kvp in Core.Servers)
             {
-               s.Stop();
-            });
+                kvp.Value.Stop();
+            }
             YAMS.Database.AddLog("Shutting Down");
         }
 

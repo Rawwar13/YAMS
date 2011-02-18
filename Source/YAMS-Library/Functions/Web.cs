@@ -49,9 +49,6 @@ namespace YAMS
             while (readerServers.Read())
             {
                 var intServerID = readerServers["ServerID"].ToString();
-                //string strURI = "/servers/" + intServerID + "/map/";
-                //string strPath = YAMS.Core.RootFolder + "\\servers\\" + intServerID + "\\renders\\gmap\\output\\";
-                //Database.AddLog("Mapped \"" + strURI + "\" to \"" + strPath + "\"");
                 module.Resources.Add(new FileResources("/servers/" + intServerID + "/map/", YAMS.Core.RootFolder + "\\servers\\" + intServerID + "\\renders\\gmap\\output\\"));
                 module.Resources.Add(new FileResources("/servers/" + intServerID + "/renders/", YAMS.Core.RootFolder + "\\servers\\" + intServerID + "\\renders\\"));
             }
@@ -159,29 +156,29 @@ namespace YAMS
                                             "\"players\" : [";
                             if (s.Players.Count > 0)
                             {
-                                s.Players.ForEach(delegate(string p)
+                                foreach (KeyValuePair<string, Objects.Player> kvp in s.Players)
                                 {
-                                    strResponse += "\"" + p + "\",";
-                                });
+                                    strResponse += " { \"name\": \"" + kvp.Value.Username + "\", \"level\": \"" + kvp.Value.Level + "\" },";
+                                };
                                 strResponse = strResponse.Remove(strResponse.Length - 1);
                             }
                             strResponse += "]}";
                             break;
-                        case "players":
-                            //Get status of a server
-                            s = Core.Servers[Convert.ToInt32(context.Request.Parameters["serverid"])];
-                            strResponse = "{ \"serverid\" : " + intServerID + ",";
-                            strResponse += "\"players\" : [";
-                            if (s.Players.Count > 0)
-                            {
-                                s.Players.ForEach(delegate(string p)
-                                {
-                                    strResponse += "\"" + p + "\",";
-                                });
-                                strResponse = strResponse.Remove(strResponse.Length - 1);
-                            }
-                            strResponse += "]}";
-                            break;
+                        //case "players":
+                        //    //Get status of a server
+                        //    s = Core.Servers[Convert.ToInt32(context.Request.Parameters["serverid"])];
+                        //    strResponse = "{ \"serverid\" : " + intServerID + ",";
+                        //    strResponse += "\"players\" : [";
+                        //    if (s.Players.Count > 0)
+                        //    {
+                        //        s.Players.ForEach(delegate(string p)
+                        //        {
+                        //            strResponse += "\"" + p + "\",";
+                        //        });
+                        //        strResponse = strResponse.Remove(strResponse.Length - 1);
+                        //    }
+                        //    strResponse += "]}";
+                        //    break;
                         case "gmap":
                             //Maps a server
                             s = Core.Servers[Convert.ToInt32(context.Request.Parameters["serverid"])];
