@@ -35,6 +35,10 @@ namespace YAMS.AddOns
         //Set this class's server
         public App(MCServer s, string strBaseName, string strMainExe, string strName, bool bolRequiresClient)
         {
+            this.BaseName = strBaseName;
+            this.MainExe = strMainExe;
+            this.Name = strName;
+            this.RequiresClient = bolRequiresClient;
             this.FullFolderPath = Core.RootFolder + @"\apps\" + this.BaseName;
             this.FullExePath = this.FullFolderPath + @"\" + this.MainExe;
             if (File.Exists(this.FullExePath))
@@ -51,16 +55,19 @@ namespace YAMS.AddOns
         //Start doing work, can't think of a situation where we *wouldn't* want this in a new thread.
         public void Start()
         {
-            if ((this.RequiresClient && Util.HasMCClientSystem()) || !this.RequiresClient)
+            if (this.IsInstalled)
             {
-                this.Running = true;
-                ThreadStart threadDelegate = new ThreadStart(this.DoWork);
-                Thread newThread = new Thread(threadDelegate);
-                newThread.Start();
-            }
-            else
-            {
-                Database.AddLog(this.Name + " requires the MC client installed", "addons", "error");
+                if ((this.RequiresClient && Util.HasMCClientSystem()) || !this.RequiresClient)
+                {
+                    this.Running = true;
+                    ThreadStart threadDelegate = new ThreadStart(this.DoWork);
+                    Thread newThread = new Thread(threadDelegate);
+                    newThread.Start();
+                }
+                else
+                {
+                    Database.AddLog(this.Name + " requires the MC client installed", "addons", "error");
+                }
             }
         }
 
