@@ -5,22 +5,22 @@ using YAMS;
 
 namespace YAMS.AddOns
 {
-    public class App
+    public abstract class App
     {
         //We're usually going to operate on a server
         public MCServer Server;
 
         //Where is the main executable?
-        public string MainExe = @"nowhere.exe";
-        public string FullFolderPath = "";
-        public string FullExePath = "";
+        protected string MainExe = @"nowhere.exe";
+        protected string FullFolderPath = "";
+        protected string FullExePath = "";
 
         //What's it called
-        public string Name = "App";
-        public string BaseName = "app";
+        protected string Name = "App";
+        protected string BaseName = "app";
 
         //Do we need the client?
-        public bool RequiresClient = false;
+        protected bool RequiresClient = false;
 
         //Is it even installed?
         public bool IsInstalled = false;
@@ -33,7 +33,7 @@ namespace YAMS.AddOns
         public bool Running = false;
 
         //Set this class's server
-        public App(MCServer s)
+        public App(MCServer s, string strBaseName, string strMainExe, string strName, bool bolRequiresClient)
         {
             this.FullFolderPath = Core.RootFolder + @"\apps\" + this.BaseName;
             this.FullExePath = this.FullFolderPath + @"\" + this.MainExe;
@@ -65,16 +65,13 @@ namespace YAMS.AddOns
         }
 
         //When we're done, make sure it's known.
-        public void Finish()
+        public virtual void Finish()
         {
             this.Running = false;
         }
 
         //The workhorse of any app should always call Finish() when done.
-        public void DoWork()
-        {
-            throw new NotImplementedException();
-        }
+        public abstract void DoWork();
 
     }
 }
