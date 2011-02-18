@@ -6,6 +6,7 @@ using System.Timers;
 using System.Net;
 using System.Collections.Generic;
 using YAMS;
+using YAMS.Objects;
 
 namespace YAMS
 {
@@ -41,7 +42,7 @@ namespace YAMS
 
         public bool RestartNeeded = false;
 
-        public Dictionary<string, Objects.Player> Players = new Dictionary<string, Objects.Player> { };
+        public Dictionary<string, Player> Players = new Dictionary<string, Player> { };
 
         public MCServer(int intServerID)
         {
