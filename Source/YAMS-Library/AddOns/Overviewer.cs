@@ -24,8 +24,6 @@ namespace YAMS.AddOns
 
         public override void DoWork()
         {
-            //Stop updates incase we try and overwrite stuff when it's in use
-
             //Force a server save and turn off level saving
             this.Server.Save();
             this.Server.DisableSaving();
@@ -38,7 +36,7 @@ namespace YAMS.AddOns
                 while (!BE.Complete) Thread.Sleep(5000);
             }
 
-            string ServerRoot = Core.RootFolder + @"\servers\" + this.Server.ServerID;
+            string ServerRoot = this.Server.ServerDirectory;
             string strArgs = "--lighting --cachedir=\"" + ServerRoot + "\\renders\\gmap\\cache\" \"" + ServerRoot + "\\world\" \"" + ServerRoot + "\\renders\\gmap\\output\"";
 
             //First run the biome extractor tool
