@@ -113,6 +113,7 @@ namespace YAMS
         public ProcessingResult Process(RequestContext context)
         {
             int intServerID = 0;
+            MCServer s;
             
             if (context.Request.Uri.AbsoluteUri.Contains(@"/api/"))
             {
@@ -139,97 +140,73 @@ namespace YAMS
                         case "list":
                             //List available servers
                             strResponse = "{ \"servers\" : [";
-                            Core.Servers.ForEach(delegate(MCServer s)
+                            foreach(KeyValuePair<int, MCServer> kvp in Core.Servers)
                             {
-                                strResponse += "{ \"id\" : " + s.ServerID + ", " +
-                                                 "\"title\" : \"" + s.ServerTitle + "\", " +
-                                                 "\"ver\" : \"" + s.ServerVersion + "\" } ,";
-                            });
+                                strResponse += "{ \"id\" : " + kvp.Value.ServerID + ", " +
+                                                 "\"title\" : \"" + kvp.Value.ServerTitle + "\", " +
+                                                 "\"ver\" : \"" + kvp.Value.ServerVersion + "\" } ,";
+                            };
                             strResponse = strResponse.Remove(strResponse.Length - 1);
                             strResponse += "]}";
                             break;
                         case "status":
                             //Get status of a server
-                            intServerID = Convert.ToInt32(context.Request.Parameters["serverid"]);
-                            Core.Servers.ForEach(delegate(MCServer s)
+                            s = Core.Servers[Convert.ToInt32(context.Request.Parameters["serverid"])];
+                            strResponse = "{ \"serverid\" : " + s.ServerID + "," +
+                                            "\"status\" : \"" + s.Running + "\"," +
+                                            "\"ram\" : " + s.GetMemory() + "," +
+                                            "\"vm\" : " + s.GetVMemory() + "," +
+                                            "\"players\" : [";
+                            if (s.Players.Count > 0)
                             {
-                                if (s.ServerID == intServerID)
+                                s.Players.ForEach(delegate(string p)
                                 {
-                                    strResponse = "{ \"serverid\" : " + intServerID + "," +
-                                                    "\"status\" : \"" + s.Running + "\"," +
-                                                    "\"ram\" : " + s.GetMemory() + "," +
-                                                    "\"vm\" : " + s.GetVMemory() + " }";
-                                };
-                            });
+                                    strResponse += "\"" + p + "\",";
+                                });
+                                strResponse = strResponse.Remove(strResponse.Length - 1);
+                            }
+                            strResponse += "]}";
                             break;
                         case "players":
                             //Get status of a server
-                            intServerID = Convert.ToInt32(context.Request.Parameters["serverid"]);
-                            Core.Servers.ForEach(delegate(MCServer s)
+                            s = Core.Servers[Convert.ToInt32(context.Request.Parameters["serverid"])];
+                            strResponse = "{ \"serverid\" : " + intServerID + ",";
+                            strResponse += "\"players\" : [";
+                            if (s.Players.Count > 0)
                             {
-                                if (s.ServerID == intServerID)
+                                s.Players.ForEach(delegate(string p)
                                 {
-                                    strResponse = "{ \"serverid\" : " + intServerID + ",";
-                                    strResponse += "\"players\" : [";
-                                    if (s.Players.Count > 0)
-                                    {
-                                        s.Players.ForEach(delegate(string p)
-                                        {
-                                            strResponse += "\"" + p + "\",";
-                                        });
-                                        strResponse = strResponse.Remove(strResponse.Length - 1);
-                                    }
-                                    strResponse += "]}";
-                                };
-                            });
+                                    strResponse += "\"" + p + "\",";
+                                });
+                                strResponse = strResponse.Remove(strResponse.Length - 1);
+                            }
+                            strResponse += "]}";
                             break;
                         case "gmap":
                             //Maps a server
-                            intServerID = Convert.ToInt32(context.Request.Parameters["serverid"]);
-                            Core.Servers.ForEach(delegate(MCServer s)
-                            {
-                                if (s.ServerID == intServerID)
-                                {
-                                    AddOns.Overviewer gmap = new AddOns.Overviewer(s);
-                                    gmap.Start();
-                                }
-                            });
+                            s = Core.Servers[Convert.ToInt32(context.Request.Parameters["serverid"])];
+                            AddOns.Overviewer gmap = new AddOns.Overviewer(s);
+                            gmap.Start();
                             strResponse = "{ \"result\" : \"sent\" }";
                             break;
                         case "start":
                             //Starts a server
-                            intServerID = Convert.ToInt32(context.Request.Parameters["serverid"]);
-                            Core.Servers.ForEach(delegate(MCServer s)
-                            {
-                                if (s.ServerID == intServerID) s.Start();
-                            });
+                            Core.Servers[Convert.ToInt32(context.Request.Parameters["serverid"])].Start();
                             strResponse = "{ \"result\" : \"sentstart\" }";
                             break;
                         case "stop":
                             //Stops a server
-                            intServerID = Convert.ToInt32(context.Request.Parameters["serverid"]);
-                            Core.Servers.ForEach(delegate(MCServer s)
-                            {
-                                if (s.ServerID == intServerID) s.Stop();
-                            });
+                            Core.Servers[Convert.ToInt32(context.Request.Parameters["serverid"])].Stop();
                             strResponse = "{ \"result\" : \"sentstop\" }";
                             break;
                         case "restart":
                             //Restarts a server
-                            intServerID = Convert.ToInt32(context.Request.Parameters["serverid"]);
-                            Core.Servers.ForEach(delegate(MCServer s)
-                            {
-                                if (s.ServerID == intServerID) s.Restart();
-                            });
-                            strResponse = "{ \"result\" : \"sentstop\" }";
+                            Core.Servers[Convert.ToInt32(context.Request.Parameters["serverid"])].Restart();
+                            strResponse = "{ \"result\" : \"sentstart\" }";
                             break;
                         case "command":
                             //Sends literal command to a server
-                            intServerID = Convert.ToInt32(context.Request.Parameters["serverid"]);
-                            Core.Servers.ForEach(delegate(MCServer s)
-                            {
-                                if (s.ServerID == intServerID) s.Send(context.Request.Parameters["message"]);
-                            });
+                            Core.Servers[Convert.ToInt32(context.Request.Parameters["serverid"])].Send(context.Request.Parameters["message"]);
                             strResponse = "{ \"result\" : \"sentcommand\" }";
                             break;
                         case "get-yams-settings":

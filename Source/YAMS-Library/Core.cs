@@ -13,7 +13,7 @@ namespace YAMS
     {
         public static string RootFolder = new System.IO.FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).DirectoryName;
 
-        public static List<MCServer> Servers = new List<MCServer> { };
+        public static Dictionary<int, MCServer> Servers = new Dictionary<int, MCServer> { };
 
         private static Timer timUpdate;
 
@@ -50,7 +50,7 @@ namespace YAMS
             {
                 MCServer myServer = new MCServer(Convert.ToInt32(readerServers["ServerID"]));
                 if (Convert.ToBoolean(readerServers["ServerAutostart"])) myServer.Start();
-                Servers.Add(myServer);
+                Servers.Add(Convert.ToInt32(readerServers["ServerID"]), myServer);
             }
 
             //Start Webserver
