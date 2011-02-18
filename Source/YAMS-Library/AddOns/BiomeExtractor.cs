@@ -10,13 +10,9 @@ namespace YAMS.AddOns
 {
     class BiomeExtractor : App
     {
-        //App specifics
-        private string MainExe = @"MinecraftBiomeExtractor.jar";
-        private string Name = "Biome Extractor";
-        private string BaseName = "biome-extractor";
         
         public BiomeExtractor(MCServer s)
-            : base(s) {}
+            : base(s, "biome-extractor", @"MinecraftBiomeExtractor.jar", "Biome Extractor", true) {}
 
         public override void DoWork()
         {

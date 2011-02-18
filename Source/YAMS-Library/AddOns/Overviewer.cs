@@ -10,15 +10,8 @@ namespace YAMS.AddOns
 {
     class Overviewer : App
     {
-        //App specifics
-        private string MainExe = @"gmap.exe";
-        private string Name = "Overviewer";
-        private string BaseName = "overviewer";
-
-        private bool RequiresClient = true;
-
         public Overviewer(MCServer s)
-            : base(s)
+            : base(s, "overviewer", @"gmap.exe", "Overviewer", true)
         {
         }
 
