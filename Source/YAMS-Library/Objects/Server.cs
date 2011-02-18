@@ -199,6 +199,27 @@ namespace YAMS
             this.prcMinecraft.StandardInput.WriteLine(strMessage);
         }
 
+        //Some shortcut commands
+        public void Save()
+        {
+            this.Send("save-all");
+            //Generally this needs a long wait
+            System.Threading.Thread.Sleep(10000);
+        }
+        public void EnableSaving()
+        {
+            this.Send("save-on");
+            //Generally this needs a long wait
+            System.Threading.Thread.Sleep(10000);
+        }
+        public void DisableSaving()
+        {
+            this.Send("save-off");
+            //Generally this needs a long wait
+            System.Threading.Thread.Sleep(10000);
+        }
+            
+
         //Catch the output from the server process
         private void ServerOutput(object sender, DataReceivedEventArgs e) { if (e.Data != null) YAMS.Database.AddLog(DateTime.Now, e.Data, "server", "out", false, this.ServerID); }
         private void ServerError(object sender, DataReceivedEventArgs e)
@@ -292,7 +313,8 @@ namespace YAMS
         //Call to create a google map of the world using Overviewer
         public void MapWorld()
         {
-            this.gmap = new Apps.Overviewer(this);
+            this.gmap = new AddOns.Overviewer(this);
+            this.gmap.start();
         }
     }
 }
