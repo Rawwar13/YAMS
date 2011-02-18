@@ -188,7 +188,7 @@ YAMS.admin = {
         YAMS.admin.updateServerConsole();
         YAMS.admin.updateServerChat();
         //Set the timer
-        YAMS.admin.serverTimer = setInterval("YAMS.admin.updateServerConsole();YAMS.admin.updateServerChat();YAMS.admin.checkServerStatus();YAMS.admin.getPlayers();", 5000);
+        YAMS.admin.serverTimer = setInterval("YAMS.admin.updateServerConsole();YAMS.admin.updateServerChat();YAMS.admin.checkServerStatus();", 5000);
     },
 
     getServerSettings: function (e) { var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.getServerSettings_callback, 'action=get-server-settings&serverid=' + YAMS.admin.selectedServer); },
@@ -238,7 +238,7 @@ YAMS.admin = {
             }
         },
         failure: function (o) {
-            YAMS.admin.log('updateServerConsole failed');
+            YAMS.admin.log('getPlayers failed');
         }
     },
 
@@ -263,6 +263,17 @@ YAMS.admin = {
                 document.getElementById('stop-server').disabled = true;
                 document.getElementById('restart-server').disabled = true;
             }
+
+			//Update the player info
+			var l = YAMS.D.get('players');
+            l.innerHTML = '';
+            for (var i = 0, len = results.players.length; i < len; ++i) {
+                var r = results.players[i].name + " (" + results.players[i].level + ")";
+                var s = document.createElement('div');
+                s.innerHTML = r;
+                l.appendChild(s);
+            }
+			
         },
         failure: function (o) {
             YAMS.admin.log('checkServerStatus failed');
@@ -296,7 +307,7 @@ YAMS.admin = {
                 YAMS.D.addClass(s, 'message');
                 YAMS.D.addClass(s, r.LogLevel);
                 var d = eval('new ' + r.LogDateTime.replace(/\//g, '').replace('+0000', ''));
-                var m = document.createTextNode('[' + d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + '] ' + r.LogMessage);
+                var m = document.createTextNode('[' + d.getFullYear() + '-' + YAMS.admin.leadingZero(d.getMonth()) + '-' + YAMS.admin.leadingZero(d.getDate()) + ' ' + YAMS.admin.leadingZero(d.getHours()) + ':' + YAMS.admin.leadingZero(d.getMinutes()) + '] ' + r.LogMessage);
                 s.appendChild(m);
                 YAMS.D.get('console').appendChild(s);
                 YAMS.admin.lastServerLogId = r.LogID;
@@ -364,6 +375,14 @@ YAMS.admin = {
             YAMS.admin.log('updateGlobalLog failed');
         }
     },
+
+	leadingZero: function(intInput) {
+		if (intInput < 10) {
+			return "0" + intInput;
+		} else {
+			return intInput;
+		}
+	},
 
     server: function (id, name, ver) {
         this.id = id;
