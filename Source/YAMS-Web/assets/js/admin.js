@@ -337,7 +337,7 @@ YAMS.admin = {
                 YAMS.D.addClass(s, 'message');
                 YAMS.D.addClass(s, r.LogLevel);
                 var d = eval('new ' + r.LogDateTime.replace(/\//g, '').replace('+0000', ''));
-                var m = document.createTextNode('[' + d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + '] ' + r.LogMessage);
+                var m = document.createTextNode('[' + YAMS.admin.leadingZero(d.getFullYear()) + '-' + YAMS.admin.leadingZero(d.getMonth()) + '-' + YAMS.admin.leadingZero(d.getDate()) + ' ' + YAMS.admin.leadingZero(d.getHours()) + ':' + YAMS.admin.leadingZero(d.getMinutes()) + '] ' + r.LogMessage);
                 s.appendChild(m);
                 l.appendChild(s);
                 YAMS.admin.lastServerLogId = r.LogID;
@@ -365,7 +365,7 @@ YAMS.admin = {
                 YAMS.D.addClass(s, 'message');
                 YAMS.D.addClass(s, r.LogLevel);
                 var d = eval('new ' + r.LogDateTime.replace(/\//g, '').replace('+0000', ''));
-                s.innerHTML = '[' + d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + '] ' + r.LogMessage;
+                s.innerHTML = '[' + YAMS.admin.leadingZero(d.getFullYear()) + '-' + YAMS.admin.leadingZero(d.getMonth()) + '-' + YAMS.admin.leadingZero(d.getDate()) + ' ' + YAMS.admin.leadingZero(d.getHours()) + ':' + YAMS.admin.leadingZero(d.getMinutes()) + '] ' + r.LogMessage;
                 l.appendChild(s);
                 YAMS.admin.lastLogId = r.LogID;
             }
