@@ -5,14 +5,13 @@ using YAMS;
 
 namespace YAMS.Objects
 {
-    class Player
+    public class Player
     {
         //The minecraft login name of the player
         public string Username;
 
         //Their level
         public string Level = "guest";
-        private string strName;
 
         //Which server are they on?
         private MCServer Server;
@@ -36,6 +35,7 @@ namespace YAMS.Objects
                 {
                     //We're letting anyone in these days, so add to the DB
                     Database.AddUser(this.Username, this.Server.ServerID);
+                    this.Level = "guest";
                 };
             }
 
