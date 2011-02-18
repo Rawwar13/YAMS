@@ -1,150 +1,104 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using YAMS;
 
-namespace YAMS.Apps
+namespace YAMS.AddOns
 {
-    class Overviewer
+    class Overviewer : App
     {
+        //App specifics
+        private string MainExe = @"gmap.exe";
+        private string Name = "Overviewer";
+        private string BaseName = "overviewer";
 
-        private MCServer Server;
+        private bool RequiresClient = true;
 
-        private bool BiomeExtractorComplete = false;
-        private bool BiomeExtractorResult = false;
-
-        public Overviewer(MCServer Server)
+        public Overviewer(MCServer s)
+            : base(s)
         {
-            this.Server = Server;
         }
 
-        public void Start()
+        public override void DoWork()
         {
-            this.Server.Send("save-all");
-            Thread.Sleep(10000);
-            this.Server.Send("save-off");
-            Thread.Sleep(10000);
-            this.ExtractBiomes();
-            while (!this.BiomeExtractorComplete)
+            //Stop updates incase we try and overwrite stuff when it's in use
+
+            //Force a server save and turn off level saving
+            this.Server.Save();
+            this.Server.DisableSaving();
+
+            //If we have Biome Extractor installed, we should run it
+            BiomeExtractor BE = new BiomeExtractor(this.Server);
+            if (BE.IsInstalled)
             {
-                Thread.Sleep(5000);
+                BE.Start();
+                while (!BE.Complete) Thread.Sleep(5000);
             }
-            if (this.BiomeExtractorResult)
-            {
-                RunOverviewer();
-            }
-            else
-            {
-                Database.AddLog("Extractor failed", "overviewer");
-            }
-            this.Server.Send("save-on");
-        }
 
-        public void ExtractBiomes()
-        {
-            //First run the biome extractor tool
-            Process prcBiomeExtractor = new Process();
-            prcBiomeExtractor.StartInfo.UseShellExecute = false;
-            prcBiomeExtractor.StartInfo.FileName = YAMS.Util.JavaPath() + "java.exe";
-            prcBiomeExtractor.StartInfo.Arguments = "-jar MinecraftBiomeExtractor.jar -nogui \"" + Core.RootFolder + "\\servers\\" + this.Server.ServerID + "\\world\"";
-            prcBiomeExtractor.StartInfo.CreateNoWindow = true;
-            prcBiomeExtractor.StartInfo.RedirectStandardError = true;
-            prcBiomeExtractor.StartInfo.RedirectStandardInput = true;
-            prcBiomeExtractor.StartInfo.RedirectStandardOutput = true;
-            prcBiomeExtractor.StartInfo.WorkingDirectory = YAMS.Core.RootFolder + @"\apps\biome-extractor\";
-
-            //Set up events
-            prcBiomeExtractor.OutputDataReceived += new DataReceivedEventHandler(BiomeExtractorOutput);
-            prcBiomeExtractor.ErrorDataReceived += new DataReceivedEventHandler(BiomeExtractorError);
-            prcBiomeExtractor.EnableRaisingEvents = true;
-
-            //Finally start the thing
-            prcBiomeExtractor.Start();
-            prcBiomeExtractor.BeginOutputReadLine();
-            prcBiomeExtractor.BeginErrorReadLine();
-
-            Database.AddLog("Biome Extractor Started", "overviewer");
-
-            while (!prcBiomeExtractor.WaitForExit(1000)) ;
-
-            if (prcBiomeExtractor.ExitCode == 0) {
-                Database.AddLog("Biome Extractor Completed", "overviewer");
-                this.BiomeExtractorComplete = true;
-                this.BiomeExtractorResult = true;
-            }
-            else {
-                Database.AddLog("Biome Extractor Failed: " + prcBiomeExtractor.ExitCode, "overviewer", "error");
-                this.BiomeExtractorComplete = true;
-                this.BiomeExtractorResult = false;
-            }
-        }
-
-        private void BiomeExtractorOutput(object sender, DataReceivedEventArgs e) {
-            DateTime datTimeStamp = DateTime.Now;
-            if (e.Data != null) Database.AddLog(datTimeStamp, e.Data, "overviewer");
-        }
-        private void BiomeExtractorError(object sender, DataReceivedEventArgs e) {
-            DateTime datTimeStamp = DateTime.Now;
-            if (e.Data != null) Database.AddLog(datTimeStamp, e.Data, "overviewer", "error");
-        }
-
-
-        public void RunOverviewer()
-        {
             string ServerRoot = Core.RootFolder + @"\servers\" + this.Server.ServerID;
-
             string strArgs = "--lighting --cachedir=\"" + ServerRoot + "\\renders\\gmap\\cache\" \"" + ServerRoot + "\\world\" \"" + ServerRoot + "\\renders\\gmap\\output\"";
 
             //First run the biome extractor tool
-            Process prcBiomeExtractor = new Process();
-            prcBiomeExtractor.StartInfo.UseShellExecute = false;
-            prcBiomeExtractor.StartInfo.FileName = Core.RootFolder + @"\apps\overviewer\gmap.exe";
-            prcBiomeExtractor.StartInfo.Arguments = strArgs;
-            prcBiomeExtractor.StartInfo.CreateNoWindow = true;
-            prcBiomeExtractor.StartInfo.RedirectStandardError = true;
-            prcBiomeExtractor.StartInfo.RedirectStandardInput = true;
-            prcBiomeExtractor.StartInfo.RedirectStandardOutput = true;
-            prcBiomeExtractor.StartInfo.WorkingDirectory = YAMS.Core.RootFolder + @"\apps\overviewer\";
+            Process prcOverviewer = new Process();
+            prcOverviewer.StartInfo.UseShellExecute = false;
+            prcOverviewer.StartInfo.FileName = this.FullExePath;
+            prcOverviewer.StartInfo.Arguments = strArgs;
+            prcOverviewer.StartInfo.CreateNoWindow = true;
+            prcOverviewer.StartInfo.RedirectStandardError = true;
+            prcOverviewer.StartInfo.RedirectStandardInput = true;
+            prcOverviewer.StartInfo.RedirectStandardOutput = true;
+            prcOverviewer.StartInfo.WorkingDirectory = this.FullFolderPath;
 
             //Set up events
-            prcBiomeExtractor.OutputDataReceived += new DataReceivedEventHandler(OverviewerOutput);
-            prcBiomeExtractor.ErrorDataReceived += new DataReceivedEventHandler(OverviewerError);
-            prcBiomeExtractor.EnableRaisingEvents = true;
+            prcOverviewer.OutputDataReceived += new DataReceivedEventHandler(OverviewerOutput);
+            prcOverviewer.ErrorDataReceived += new DataReceivedEventHandler(OverviewerError);
+            prcOverviewer.EnableRaisingEvents = true;
 
             //Finally start the thing
-            prcBiomeExtractor.Start();
-            prcBiomeExtractor.BeginOutputReadLine();
-            prcBiomeExtractor.BeginErrorReadLine();
+            prcOverviewer.Start();
+            prcOverviewer.BeginOutputReadLine();
+            prcOverviewer.BeginErrorReadLine();
 
-            Database.AddLog("Overviewer Path: " + strArgs, "overviewer");
-            Database.AddLog("Overviewer Started", "overviewer");
+            Database.AddLog("Overviewer Path: " + strArgs, this.BaseName);
+            Database.AddLog("Overviewer Started", this.BaseName);
 
-            while (!prcBiomeExtractor.WaitForExit(1000)) ;
+            while (!prcOverviewer.WaitForExit(1000)) ;
 
-            if (prcBiomeExtractor.ExitCode == 0)
+            if (prcOverviewer.ExitCode == 0)
             {
-                Database.AddLog("Overviewer Completed", "overviewer");
-                this.BiomeExtractorResult = true;
+                Database.AddLog("Overviewer Completed", this.BaseName);
+                this.Complete = true;
+                this.Result = true;
             }
             else
             {
-                Database.AddLog("Overviewer Failed: " + prcBiomeExtractor.ExitCode, "overviewer", "error");
-                this.BiomeExtractorResult = false;
+                Database.AddLog("Overviewer Failed: " + prcOverviewer.ExitCode, this.BaseName, "error");
+                this.Complete = true;
+                this.Result = false;
             }
             Thread.Sleep(10000);
+
+            //Re-enable server saving and updating
+            this.Server.EnableSaving();
+
+            //Must always call this to let base class know we're done
+            this.Finish();
+        }
+
+        public void RunOverviewer()
+        {
         }
 
         private void OverviewerOutput(object sender, DataReceivedEventArgs e) {
             DateTime datTimeStamp = DateTime.Now;
-            if (e.Data != null) Database.AddLog(datTimeStamp, e.Data, "overviewer");
+            if (e.Data != null) Database.AddLog(datTimeStamp, e.Data, this.BaseName);
         }
         private void OverviewerError(object sender, DataReceivedEventArgs e) {
             DateTime datTimeStamp = DateTime.Now;
-            if (e.Data != null) Database.AddLog(datTimeStamp, e.Data, "overviewer", "error");
+            if (e.Data != null) Database.AddLog(datTimeStamp, e.Data, this.BaseName, "error");
         }
 
     }
