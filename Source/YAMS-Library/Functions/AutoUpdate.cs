@@ -135,10 +135,10 @@ namespace YAMS
                 {
                     //Check there are no players on the servers
                     bool bolPlayersOn = false;
-                    Core.Servers.ForEach(delegate(MCServer s)
+                    foreach (KeyValuePair<int, MCServer> kvp in Core.Servers)
                     {
-                        if (s.Players.Count > 0) bolPlayersOn = true;
-                    });
+                        if (kvp.Value.Players.Count > 0) bolPlayersOn = true;
+                    }
                     if (bolPlayersOn)
                     {
                         Database.AddLog("Deferring update until free");
@@ -154,17 +154,17 @@ namespace YAMS
                 //Restart individual servers?
                 if ((bolServerUpdateAvailable) && Convert.ToBoolean(Database.GetSetting("RestartOnJarUpdate", "YAMS")))
                 {
-                    Core.Servers.ForEach(delegate(MCServer s)
+                    foreach (KeyValuePair<int, MCServer> kvp in Core.Servers)
                     {
-                        if (s.Players.Count == 0)
+                        if (kvp.Value.Players.Count == 0)
                         {
-                            s.Restart();
+                            kvp.Value.Restart();
                         }
                         else
                         {
-                            s.RestartNeeded = true;
+                            kvp.Value.RestartNeeded = true;
                         }
-                    });
+                    }
                 }
                 Database.AddLog("Completed Update Check");
             }
