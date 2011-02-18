@@ -42,14 +42,14 @@
             this.timCheckUpdate = new System.Windows.Forms.Timer(this.components);
             this.btnComplete = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.lblMCClientSystem = new System.Windows.Forms.Label();
+            this.lblMCClientLocal = new System.Windows.Forms.Label();
+            this.btnCopyClient = new System.Windows.Forms.Button();
+            this.btnDownloadClient = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.icoMCInSystem = new System.Windows.Forms.PictureBox();
             this.label3 = new System.Windows.Forms.Label();
             this.icoMCInstalled = new System.Windows.Forms.PictureBox();
-            this.btnDownloadClient = new System.Windows.Forms.Button();
-            this.btnCopyClient = new System.Windows.Forms.Button();
-            this.lblMCClientSystem = new System.Windows.Forms.Label();
-            this.lblMCClientLocal = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.icoJDK)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.icoJRE)).BeginInit();
@@ -169,6 +169,7 @@
             this.btnComplete.TabIndex = 5;
             this.btnComplete.Text = "Continue Setup";
             this.btnComplete.UseVisualStyleBackColor = true;
+            this.btnComplete.Click += new System.EventHandler(this.btnComplete_Click);
             // 
             // groupBox2
             // 
@@ -186,6 +187,48 @@
             this.groupBox2.TabIndex = 6;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Minecraft Client";
+            // 
+            // lblMCClientSystem
+            // 
+            this.lblMCClientSystem.AutoSize = true;
+            this.lblMCClientSystem.Location = new System.Drawing.Point(7, 118);
+            this.lblMCClientSystem.Name = "lblMCClientSystem";
+            this.lblMCClientSystem.Size = new System.Drawing.Size(13, 13);
+            this.lblMCClientSystem.TabIndex = 14;
+            this.lblMCClientSystem.Text = "2";
+            // 
+            // lblMCClientLocal
+            // 
+            this.lblMCClientLocal.AutoSize = true;
+            this.lblMCClientLocal.Location = new System.Drawing.Point(7, 49);
+            this.lblMCClientLocal.Name = "lblMCClientLocal";
+            this.lblMCClientLocal.Size = new System.Drawing.Size(13, 13);
+            this.lblMCClientLocal.TabIndex = 13;
+            this.lblMCClientLocal.Text = "1";
+            // 
+            // btnCopyClient
+            // 
+            this.btnCopyClient.Location = new System.Drawing.Point(578, 85);
+            this.btnCopyClient.Name = "btnCopyClient";
+            this.btnCopyClient.Size = new System.Drawing.Size(95, 23);
+            this.btnCopyClient.TabIndex = 12;
+            this.btnCopyClient.Text = "Copy Client";
+            this.btnCopyClient.UseMnemonic = false;
+            this.btnCopyClient.UseVisualStyleBackColor = true;
+            this.btnCopyClient.Visible = false;
+            this.btnCopyClient.Click += new System.EventHandler(this.btnCopyClient_Click);
+            // 
+            // btnDownloadClient
+            // 
+            this.btnDownloadClient.Location = new System.Drawing.Point(578, 25);
+            this.btnDownloadClient.Name = "btnDownloadClient";
+            this.btnDownloadClient.Size = new System.Drawing.Size(95, 23);
+            this.btnDownloadClient.TabIndex = 11;
+            this.btnDownloadClient.Text = "Download Client";
+            this.btnDownloadClient.UseMnemonic = false;
+            this.btnDownloadClient.UseVisualStyleBackColor = true;
+            this.btnDownloadClient.Visible = false;
+            this.btnDownloadClient.Click += new System.EventHandler(this.btnDownloadClient_Click);
             // 
             // label4
             // 
@@ -226,48 +269,6 @@
             this.icoMCInstalled.Size = new System.Drawing.Size(16, 16);
             this.icoMCInstalled.TabIndex = 4;
             this.icoMCInstalled.TabStop = false;
-            // 
-            // btnDownloadClient
-            // 
-            this.btnDownloadClient.Location = new System.Drawing.Point(578, 25);
-            this.btnDownloadClient.Name = "btnDownloadClient";
-            this.btnDownloadClient.Size = new System.Drawing.Size(95, 23);
-            this.btnDownloadClient.TabIndex = 11;
-            this.btnDownloadClient.Text = "Download Client";
-            this.btnDownloadClient.UseMnemonic = false;
-            this.btnDownloadClient.UseVisualStyleBackColor = true;
-            this.btnDownloadClient.Visible = false;
-            this.btnDownloadClient.Click += new System.EventHandler(this.btnDownloadClient_Click);
-            // 
-            // btnCopyClient
-            // 
-            this.btnCopyClient.Location = new System.Drawing.Point(578, 85);
-            this.btnCopyClient.Name = "btnCopyClient";
-            this.btnCopyClient.Size = new System.Drawing.Size(95, 23);
-            this.btnCopyClient.TabIndex = 12;
-            this.btnCopyClient.Text = "Copy Client";
-            this.btnCopyClient.UseMnemonic = false;
-            this.btnCopyClient.UseVisualStyleBackColor = true;
-            this.btnCopyClient.Visible = false;
-            this.btnCopyClient.Click += new System.EventHandler(this.btnCopyClient_Click);
-            // 
-            // lblMCClientSystem
-            // 
-            this.lblMCClientSystem.AutoSize = true;
-            this.lblMCClientSystem.Location = new System.Drawing.Point(7, 118);
-            this.lblMCClientSystem.Name = "lblMCClientSystem";
-            this.lblMCClientSystem.Size = new System.Drawing.Size(13, 13);
-            this.lblMCClientSystem.TabIndex = 14;
-            this.lblMCClientSystem.Text = "2";
-            // 
-            // lblMCClientLocal
-            // 
-            this.lblMCClientLocal.AutoSize = true;
-            this.lblMCClientLocal.Location = new System.Drawing.Point(7, 49);
-            this.lblMCClientLocal.Name = "lblMCClientLocal";
-            this.lblMCClientLocal.Size = new System.Drawing.Size(13, 13);
-            this.lblMCClientLocal.TabIndex = 13;
-            this.lblMCClientLocal.Text = "1";
             // 
             // frmDependencies
             // 

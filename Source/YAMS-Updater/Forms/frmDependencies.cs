@@ -96,5 +96,10 @@ namespace YAMS_Updater
             MessageBox.Show("Please be aware if you have large worlds or mods, this can take a long time\n\nThe app may report \"Not Responding\" but it is still copying.");
             YAMS.Util.CopyMCClient();
         }
+
+        private void btnComplete_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }
