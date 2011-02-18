@@ -19,6 +19,7 @@ namespace YAMS
         public static bool bolUpdateAddons = false;
         public static bool bolUpdateSVC = false;
         public static bool bolUpdateWeb = false;
+        public static bool UpdatePaused = false;
 
         //Update booleans
         public static bool bolServerUpdateAvailable = false;
@@ -70,100 +71,107 @@ namespace YAMS
         //Checks for available updates
         public static void CheckUpdates()
         {
-            Database.AddLog("Starting Update Check");
-
-            //What branch are we on?
-            string strBranch = Database.GetSetting("UpdateBranch", "YAMS");
-
-            //Check Minecraft server first
-            if (bolUpdateJAR) bolServerUpdateAvailable = UpdateIfNeeded(strMCServerURL, YAMS.Core.RootFolder + @"\lib\minecraft_server.jar.UPDATE");
-
-            //Now update self
-            if (bolUpdateSVC)
+            if (!UpdatePaused)
             {
-                bolDllUpdateAvailable = UpdateIfNeeded(strYAMSDLLURL[strBranch], YAMS.Core.RootFolder + @"\YAMS-Library.dll.UPDATE");
-                bolServiceUpdateAvailable = UpdateIfNeeded(strYAMSServiceURL[strBranch], YAMS.Core.RootFolder + @"\YAMS-Service.exe.UPDATE");
-                bolWebUpdateAvailable = UpdateIfNeeded(strYAMSWebURL[strBranch], YAMS.Core.RootFolder + @"\web.zip");
-                bolGUIUpdateAvailable = UpdateIfNeeded(strYAMSGUIURL[strBranch], YAMS.Core.RootFolder + @"\YAMS-Updater.exe");
-            }
+                Database.AddLog("Starting Update Check");
 
-            //Check our managed updates
-            if (bolUpdateAddons && UpdateIfNeeded(strYAMSVersionsURL[strBranch], YAMS.Core.RootFolder + @"\lib\versions.json"))
-            {
-                //There is an update somewhere, extract versions and compare
-                string json = File.ReadAllText(YAMS.Core.RootFolder + @"\lib\versions.json");
-                Dictionary<string, string> dicVers = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+                //What branch are we on?
+                string strBranch = Database.GetSetting("UpdateBranch", "YAMS");
 
-                strOverviewerVer = dicVers["overviewer"];
-                if (UpdateIfNeeded(GetExternalURL("overviewer", strOverviewerVer), YAMS.Core.RootFolder + @"\apps\overviewer.zip"))
+                //Check Minecraft server first
+                if (bolUpdateJAR) bolServerUpdateAvailable = UpdateIfNeeded(strMCServerURL, YAMS.Core.RootFolder + @"\lib\minecraft_server.jar.UPDATE");
+
+                //Now update self
+                if (bolUpdateSVC)
                 {
-                    bolOverviewerUpdateAvailable = true;
-                    ExtractZip(YAMS.Core.RootFolder + @"\apps\overviewer.zip", YAMS.Core.RootFolder + @"\apps\");
-                    File.Delete(YAMS.Core.RootFolder + @"\apps\overviewer.zip");
-                    if (Directory.Exists(YAMS.Core.RootFolder + @"\apps\overviewer\")) Directory.Delete(YAMS.Core.RootFolder + @"\apps\overviewer\", true);
-                    Directory.Move(YAMS.Core.RootFolder + @"\apps\Overviewer-" + strOverviewerVer, YAMS.Core.RootFolder + @"\apps\overviewer");
+                    bolDllUpdateAvailable = UpdateIfNeeded(strYAMSDLLURL[strBranch], YAMS.Core.RootFolder + @"\YAMS-Library.dll.UPDATE");
+                    bolServiceUpdateAvailable = UpdateIfNeeded(strYAMSServiceURL[strBranch], YAMS.Core.RootFolder + @"\YAMS-Service.exe.UPDATE");
+                    bolWebUpdateAvailable = UpdateIfNeeded(strYAMSWebURL[strBranch], YAMS.Core.RootFolder + @"\web.zip");
+                    bolGUIUpdateAvailable = UpdateIfNeeded(strYAMSGUIURL[strBranch], YAMS.Core.RootFolder + @"\YAMS-Updater.exe");
                 }
 
-                //Grab the biome extractor too
-                strBiomeExtractorVer = dicVers["biomeextractor"];
-                if (UpdateIfNeeded(GetExternalURL("biome-extractor", strBiomeExtractorVer), YAMS.Core.RootFolder + @"\apps\biome-extractor.zip"))
+                //Check our managed updates
+                if (bolUpdateAddons && UpdateIfNeeded(strYAMSVersionsURL[strBranch], YAMS.Core.RootFolder + @"\lib\versions.json"))
                 {
-                    ExtractZip(YAMS.Core.RootFolder + @"\apps\biome-extractor.zip", YAMS.Core.RootFolder + @"\apps\");
-                    File.Delete(YAMS.Core.RootFolder + @"\apps\biome-extractor.zip");
-                    if (Directory.Exists(YAMS.Core.RootFolder + @"\apps\biome-extractor\")) Directory.Delete(YAMS.Core.RootFolder + @"\apps\biome-extractor\", true);
-                    Directory.Move(YAMS.Core.RootFolder + @"\apps\Minecraft Biome Extractor", YAMS.Core.RootFolder + @"\apps\biome-extractor");
-                }
+                    //There is an update somewhere, extract versions and compare
+                    string json = File.ReadAllText(YAMS.Core.RootFolder + @"\lib\versions.json");
+                    Dictionary<string, string> dicVers = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
 
-                strC10tVer = dicVers["c10t"];
-                if (UpdateIfNeeded(GetExternalURL("c10t", strC10tVer), YAMS.Core.RootFolder + @"\apps\c10t.zip", "modified"))
-                {
-                    bolC10tUpdateAvailable = true;
-                    ExtractZip(YAMS.Core.RootFolder + @"\apps\c10t.zip", YAMS.Core.RootFolder + @"\apps\");
-                    File.Delete(YAMS.Core.RootFolder + @"\apps\c10t.zip");
-                    if (Directory.Exists(YAMS.Core.RootFolder + @"\apps\c10t\")) Directory.Delete(YAMS.Core.RootFolder + @"\apps\c10t\", true);
-                    Directory.Move(YAMS.Core.RootFolder + @"\apps\c10t-" + strC10tVer, YAMS.Core.RootFolder + @"\apps\c10t");
-                }
-
-
-            }
-
-            //Now check if we can auto-restart anything
-            if ((bolDllUpdateAvailable || bolServiceUpdateAvailable || bolWebUpdateAvailable || bolRestartNeeded) && Convert.ToBoolean(Database.GetSetting("RestartOnSVCUpdate", "YAMS")))
-            {
-                //Check there are no players on the servers
-                bool bolPlayersOn = false;
-                Core.Servers.ForEach(delegate(MCServer s)
-                {
-                    if (s.Players.Count > 0) bolPlayersOn = true;
-                });
-                if (bolPlayersOn)
-                {
-                    Database.AddLog("Deferring update until free");
-                    bolRestartNeeded = true;
-                }
-                else
-                {
-                    Database.AddLog("Restarting Service for updates");
-                    System.Diagnostics.Process.Start(YAMS.Core.RootFolder + @"\YAMS-Updater.exe", "/restart");
-                }
-            }
-            
-            //Restart individual servers?
-            if ((bolServerUpdateAvailable) && Convert.ToBoolean(Database.GetSetting("RestartOnJarUpdate", "YAMS")))
-            {
-                Core.Servers.ForEach(delegate(MCServer s)
-                {
-                    if (s.Players.Count == 0)
+                    strOverviewerVer = dicVers["overviewer"];
+                    if (UpdateIfNeeded(GetExternalURL("overviewer", strOverviewerVer), YAMS.Core.RootFolder + @"\apps\overviewer.zip"))
                     {
-                        s.Restart();
+                        bolOverviewerUpdateAvailable = true;
+                        ExtractZip(YAMS.Core.RootFolder + @"\apps\overviewer.zip", YAMS.Core.RootFolder + @"\apps\");
+                        File.Delete(YAMS.Core.RootFolder + @"\apps\overviewer.zip");
+                        if (Directory.Exists(YAMS.Core.RootFolder + @"\apps\overviewer\")) Directory.Delete(YAMS.Core.RootFolder + @"\apps\overviewer\", true);
+                        Directory.Move(YAMS.Core.RootFolder + @"\apps\Overviewer-" + strOverviewerVer, YAMS.Core.RootFolder + @"\apps\overviewer");
+                    }
+
+                    //Grab the biome extractor too
+                    strBiomeExtractorVer = dicVers["biomeextractor"];
+                    if (UpdateIfNeeded(GetExternalURL("biome-extractor", strBiomeExtractorVer), YAMS.Core.RootFolder + @"\apps\biome-extractor.zip"))
+                    {
+                        ExtractZip(YAMS.Core.RootFolder + @"\apps\biome-extractor.zip", YAMS.Core.RootFolder + @"\apps\");
+                        File.Delete(YAMS.Core.RootFolder + @"\apps\biome-extractor.zip");
+                        if (Directory.Exists(YAMS.Core.RootFolder + @"\apps\biome-extractor\")) Directory.Delete(YAMS.Core.RootFolder + @"\apps\biome-extractor\", true);
+                        Directory.Move(YAMS.Core.RootFolder + @"\apps\Minecraft Biome Extractor", YAMS.Core.RootFolder + @"\apps\biome-extractor");
+                    }
+
+                    strC10tVer = dicVers["c10t"];
+                    if (UpdateIfNeeded(GetExternalURL("c10t", strC10tVer), YAMS.Core.RootFolder + @"\apps\c10t.zip", "modified"))
+                    {
+                        bolC10tUpdateAvailable = true;
+                        ExtractZip(YAMS.Core.RootFolder + @"\apps\c10t.zip", YAMS.Core.RootFolder + @"\apps\");
+                        File.Delete(YAMS.Core.RootFolder + @"\apps\c10t.zip");
+                        if (Directory.Exists(YAMS.Core.RootFolder + @"\apps\c10t\")) Directory.Delete(YAMS.Core.RootFolder + @"\apps\c10t\", true);
+                        Directory.Move(YAMS.Core.RootFolder + @"\apps\c10t-" + strC10tVer, YAMS.Core.RootFolder + @"\apps\c10t");
+                    }
+
+
+                }
+
+                //Now check if we can auto-restart anything
+                if ((bolDllUpdateAvailable || bolServiceUpdateAvailable || bolWebUpdateAvailable || bolRestartNeeded) && Convert.ToBoolean(Database.GetSetting("RestartOnSVCUpdate", "YAMS")))
+                {
+                    //Check there are no players on the servers
+                    bool bolPlayersOn = false;
+                    Core.Servers.ForEach(delegate(MCServer s)
+                    {
+                        if (s.Players.Count > 0) bolPlayersOn = true;
+                    });
+                    if (bolPlayersOn)
+                    {
+                        Database.AddLog("Deferring update until free");
+                        bolRestartNeeded = true;
                     }
                     else
                     {
-                        s.RestartNeeded = true;
+                        Database.AddLog("Restarting Service for updates");
+                        System.Diagnostics.Process.Start(YAMS.Core.RootFolder + @"\YAMS-Updater.exe", "/restart");
                     }
-                });
+                }
+
+                //Restart individual servers?
+                if ((bolServerUpdateAvailable) && Convert.ToBoolean(Database.GetSetting("RestartOnJarUpdate", "YAMS")))
+                {
+                    Core.Servers.ForEach(delegate(MCServer s)
+                    {
+                        if (s.Players.Count == 0)
+                        {
+                            s.Restart();
+                        }
+                        else
+                        {
+                            s.RestartNeeded = true;
+                        }
+                    });
+                }
+                Database.AddLog("Completed Update Check");
             }
-            Database.AddLog("Completed Update Check");
+            else
+            {
+                Database.AddLog("Updating Paused", "updater", "warn");
+            }
         }
 
         public static void ExtractZip(string strZipFile, string strPath)
