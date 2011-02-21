@@ -185,10 +185,10 @@ YAMS.admin = {
         //Set the title
         YAMS.S('#main h1')[0].innerHTML = YAMS.admin.servers[serverid].name + ' (' + YAMS.admin.servers[serverid].ver + ')';
         //Load console
-        YAMS.admin.updateServerConsole();
-        YAMS.admin.updateServerChat();
-        //Set the timer
-        YAMS.admin.serverTimer = setInterval("YAMS.admin.updateServerConsole();YAMS.admin.updateServerChat();YAMS.admin.checkServerStatus();", 5000);
+		YAMS.admin.updateServerConsole();
+		YAMS.admin.checkServerStatus();
+		//Set the timer
+        YAMS.admin.serverTimer = setInterval("YAMS.admin.updateServerConsole();YAMS.admin.checkServerStatus();", 5000);
     },
 
     getServerSettings: function (e) { var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.getServerSettings_callback, 'action=get-server-settings&serverid=' + YAMS.admin.selectedServer); },
@@ -217,28 +217,6 @@ YAMS.admin = {
         },
         failure: function (o) {
             YAMS.admin.log('updateServerConsole failed');
-        }
-    },
-
-    getPlayers: function () { var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.getPlayers_callback, 'action=players&serverid=' + YAMS.admin.selectedServer); },
-
-    getPlayers_callback: {
-        success: function (o) {
-            var results = [];
-            try { results = YAHOO.lang.JSON.parse(o.responseText); }
-            catch (x) { YAMS.admin.log('JSON Parse Failed'); return; }
-
-            var l = YAMS.D.get('players');
-            l.innerHTML = '';
-            for (var i = 0, len = results.players.length; i < len; ++i) {
-                var r = results.players[i];
-                var s = document.createElement('div');
-                s.innerHTML = r;
-                l.appendChild(s);
-            }
-        },
-        failure: function (o) {
-            YAMS.admin.log('getPlayers failed');
         }
     },
 
@@ -300,7 +278,9 @@ YAMS.admin = {
             catch (x) { YAMS.admin.log('JSON Parse Failed'); return; }
 
             var l = YAMS.D.get('console');
-            if (l.scrollTop == l.scrollHeight) var bolScroll = true;
+			var c = YAMS.D.get('chat');
+            if (l.scrollTop == l.scrollHeight || l.scrollTop == 0) var bolScrollL = true;
+            if (c.scrollTop == c.scrollHeight || c.scrollTop == 0) var bolScrollC = true;
             for (var i = 0, len = results.Table.length - 1; len >= i; --len) {
                 var r = results.Table[len];
                 var s = document.createElement('div');
@@ -309,40 +289,16 @@ YAMS.admin = {
                 var d = eval('new ' + r.LogDateTime.replace(/\//g, '').replace('+0000', ''));
                 var m = document.createTextNode('[' + d.getFullYear() + '-' + YAMS.admin.leadingZero(d.getMonth()) + '-' + YAMS.admin.leadingZero(d.getDate()) + ' ' + YAMS.admin.leadingZero(d.getHours()) + ':' + YAMS.admin.leadingZero(d.getMinutes()) + '] ' + r.LogMessage);
                 s.appendChild(m);
-                YAMS.D.get('console').appendChild(s);
+                if (r.LogLevel == 'chat') {
+					c.appendChild(s);
+				} else {
+	                l.appendChild(s);
+				}
                 YAMS.admin.lastServerLogId = r.LogID;
-                l.scrollTop = l.scrollHeight;
             }
-            if (bolScroll) l.scrollTop = l.scrollHeight;
+            if (bolScrollL) l.scrollTop = l.scrollHeight;
+            if (bolScrollC) c.scrollTop = c.scrollHeight;
             YAMS.admin.loading.cfg.setProperty('visible', false);
-        },
-        failure: function (o) {
-            YAMS.admin.log('updateServerConsole failed');
-        }
-    },
-
-    updateServerChat: function () { var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.updateServerChat_callback, 'action=log&start=' + YAMS.admin.lastServerLogId + '&rows=200&serverid=' + YAMS.admin.selectedServer + '&level=chat'); },
-
-    updateServerChat_callback: {
-        success: function (o) {
-            var results = [];
-            try { results = YAHOO.lang.JSON.parse(o.responseText); }
-            catch (x) { YAMS.admin.log('JSON Parse Failed'); return; }
-
-            var l = YAMS.D.get('chat');
-            if (l.scrollTop == l.scrollHeight) var bolScroll = true;
-            for (var i = 0, len = results.Table.length - 1; len >= i; --len) {
-                var r = results.Table[len];
-                var s = document.createElement('div');
-                YAMS.D.addClass(s, 'message');
-                YAMS.D.addClass(s, r.LogLevel);
-                var d = eval('new ' + r.LogDateTime.replace(/\//g, '').replace('+0000', ''));
-                var m = document.createTextNode('[' + YAMS.admin.leadingZero(d.getFullYear()) + '-' + YAMS.admin.leadingZero(d.getMonth()) + '-' + YAMS.admin.leadingZero(d.getDate()) + ' ' + YAMS.admin.leadingZero(d.getHours()) + ':' + YAMS.admin.leadingZero(d.getMinutes()) + '] ' + r.LogMessage);
-                s.appendChild(m);
-                l.appendChild(s);
-                YAMS.admin.lastServerLogId = r.LogID;
-            }
-            if (bolScroll) l.scrollTop = l.scrollHeight;
         },
         failure: function (o) {
             YAMS.admin.log('updateServerConsole failed');
@@ -365,7 +321,7 @@ YAMS.admin = {
                 YAMS.D.addClass(s, 'message');
                 YAMS.D.addClass(s, r.LogLevel);
                 var d = eval('new ' + r.LogDateTime.replace(/\//g, '').replace('+0000', ''));
-                s.innerHTML = '[' + YAMS.admin.leadingZero(d.getFullYear()) + '-' + YAMS.admin.leadingZero(d.getMonth()) + '-' + YAMS.admin.leadingZero(d.getDate()) + ' ' + YAMS.admin.leadingZero(d.getHours()) + ':' + YAMS.admin.leadingZero(d.getMinutes()) + '] ' + r.LogMessage;
+                s.innerHTML = '[' + YAMS.admin.leadingZero(d.getFullYear()) + '-' + YAMS.admin.leadingZero(d.getMonth()) + '-' + YAMS.admin.leadingZero(d.getDate()) + ' ' + YAMS.admin.leadingZero(d.getHours()) + ':' + YAMS.admin.leadingZero(d.getMinutes()) + '] (' + r.LogSource + ') ' + r.LogMessage;
                 l.appendChild(s);
                 YAMS.admin.lastLogId = r.LogID;
             }
