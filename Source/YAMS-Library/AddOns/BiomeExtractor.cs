@@ -11,11 +11,33 @@ namespace YAMS.AddOns
     class BiomeExtractor : App
     {
         
-        public BiomeExtractor(MCServer s)
-            : base(s, "biome-extractor", @"MinecraftBiomeExtractor.jar", "Biome Extractor", true) {}
+        public BiomeExtractor(MCServer s, string strParams = "")
+            : base(s, "biome-extractor", @"MinecraftBiomeExtractor.jar", "Biome Extractor", true, strParams) {}
 
         public override void DoWork()
         {
+            bool bolStoppedServer = false;
+            
+            //We shouldn't run this if the server is online, so check
+            if (this.Server.Running)
+            {
+                //It is running, if it's empty we could stop it
+                if (this.Server.Players.Count == 0)
+                {
+                    Database.AddLog("Stopping server for Biome Extractor.", this.BaseName, "info", false, this.Server.ServerID);
+                    this.Server.Stop();
+                    bolStoppedServer = true;
+                }
+                else
+                {
+                    //There are people on, so warn and dump out of here
+                    Database.AddLog("Couldn't run Biome Extractor as server running and not empty.", this.BaseName, "warn", true, this.Server.ServerID);
+                    this.Complete = true;
+                    this.Result = false;
+                    return;
+                }
+            }
+            
             //First run the biome extractor tool
             Process prcBiomeExtractor = new Process();
             prcBiomeExtractor.StartInfo.UseShellExecute = false;
@@ -53,7 +75,14 @@ namespace YAMS.AddOns
                 this.Complete = true;
                 this.Result = false;
             }
-            
+
+            //Did we stop the server earlier?
+            if (bolStoppedServer)
+            {
+                Database.AddLog("Restarting server after Biome Extractor completed.", this.BaseName, "info", false, this.Server.ServerID);
+                this.Server.Start();
+            }
+
             //Must always call this to let base class know we're done
             this.Finish();
         }
