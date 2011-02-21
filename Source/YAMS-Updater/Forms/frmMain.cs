@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
+using System.Diagnostics;
+using System.IO;
 using System.ServiceProcess;
+using System.Windows.Forms;
 
 namespace YAMS_Updater
 {
@@ -18,6 +14,30 @@ namespace YAMS_Updater
 
             timStatus.Tick += new EventHandler(timStatus_Tick);
             timStatus.Start();
+
+            //Get the version numbers of our compiled files
+            lblDLL.Text = FileVersionInfo.GetVersionInfo(Path.Combine(Program.RootFolder, "YAMS-Library.dll")).FileVersion;
+            lblSVC.Text = FileVersionInfo.GetVersionInfo(Path.Combine(Program.RootFolder, "YAMS-Service.exe")).FileVersion;
+            lblGUI.Text = FileVersionInfo.GetVersionInfo(Path.Combine(Program.RootFolder, "YAMS-Updater.exe")).FileVersion;
+            lblDB.Text = YAMS.Database.GetSetting("DBSchema", "YAMS");
+
+            //Listen ports for the webservers
+            lblAdminPort.Text = YAMS.Database.GetSetting("AdminListenPort", "YAMS");
+            lblPublicPort.Text = YAMS.Database.GetSetting("PublicListenPort", "YAMS");
+
+            //Set current update branch
+            switch (YAMS.Database.GetSetting("UpdateBranch", "YAMS")) {
+                case "live":
+                    selUpdateBranch.SelectedIndex = 0;
+                    break;
+                case "dev":
+                    selUpdateBranch.SelectedIndex = 1;
+                    break;
+                default:
+                    selUpdateBranch.SelectedIndex = 0;
+                    break;
+            }
+
         }
 
         void timStatus_Tick(object sender, EventArgs e)
@@ -87,6 +107,28 @@ namespace YAMS_Updater
         private void btnResetPassword_Click(object sender, EventArgs e)
         {
             YAMS.Database.SaveSetting("AdminPassword", txtPassword.Text);
+        }
+
+        private void btnSwitchBranch_Click(object sender, EventArgs e)
+        {
+            switch (selUpdateBranch.SelectedIndex)
+            {
+                case 0:
+                    YAMS.Database.SaveSetting("UpdateBranch", "live");
+                    break;
+                case 1:
+                    YAMS.Database.SaveSetting("UpdateBranch", "dev");
+                    break;
+                default:
+                    YAMS.Database.SaveSetting("UpdateBranch", "live");
+                    break;
+            }
+        }
+
+        private void btnUpdateClient_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Please be aware if you have large worlds or mods, this can take a long time\n\nThe app may report \"Not Responding\" but it is still copying.");
+            YAMS.Util.CopyMCClient();
         }
     }
 }
