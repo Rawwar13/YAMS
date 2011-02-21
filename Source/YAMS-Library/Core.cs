@@ -41,7 +41,7 @@ namespace YAMS
 
             //Check for updates and start a timer to do it automatically
             int UpdateTick = (60 * 60 * 1000);
-            if (Database.GetSetting("UpdateBranch", "YAMS") == "dev") UpdateTick = (1 * 60 * 1000);
+            if (Database.GetSetting("UpdateBranch", "YAMS") == "dev") UpdateTick = (15 * 60 * 1000);
             timUpdate = new Timer(new TimerCallback(timUpdate_Tick), null, 0, UpdateTick);
 
             //Load any servers
@@ -55,12 +55,14 @@ namespace YAMS
 
             //Start Webserver
             WebServer.Init();
-            WebServer.Start();
+            WebServer.StartAdmin();
+            WebServer.StartPublic();
 
         }
 
         public static void ShutDown()
         {
+            WebServer.Stop();
             foreach (KeyValuePair<int, MCServer> kvp in Core.Servers)
             {
                 kvp.Value.Stop();
