@@ -13,7 +13,7 @@ namespace YAMS_Updater
 {
     class Program
     {
-        private static string RootFolder = new System.IO.FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).DirectoryName;
+        public static string RootFolder = new System.IO.FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).DirectoryName;
 
         [DllImport("kernel32")]
         public static extern IntPtr GetConsoleWindow();
