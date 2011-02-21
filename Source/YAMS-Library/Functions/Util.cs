@@ -141,49 +141,29 @@ namespace YAMS
             NewServer.Add(new KeyValuePair<string, string>("spawn-animals", "true"));
             NewServer.Add(new KeyValuePair<string, string>("spawn-monsters", "true"));
             NewServer.Add(new KeyValuePair<string, string>("verify-names", "true"));
-            YAMS.Database.NewServer(NewServer, "My First YAMS Server");
-
-            //Create a new Nether server as well (for testing NetherLink)
-            /*NewServer.Clear();
-            NewServer.Add(new KeyValuePair<string, string>("admin-slot", "true"));
-            NewServer.Add(new KeyValuePair<string, string>("enable-health", "true"));
-            NewServer.Add(new KeyValuePair<string, string>("hellworld", "true"));
-            NewServer.Add(new KeyValuePair<string, string>("level-name", @"..\\world"));
-            NewServer.Add(new KeyValuePair<string, string>("max-connections", "1"));
-            NewServer.Add(new KeyValuePair<string, string>("max-players", "20"));
-            NewServer.Add(new KeyValuePair<string, string>("motd", "Welcome to Hell!"));
-            NewServer.Add(new KeyValuePair<string, string>("online-mode", "true"));
-            NewServer.Add(new KeyValuePair<string, string>("public", "false"));
-            NewServer.Add(new KeyValuePair<string, string>("pvp", "true"));
-            NewServer.Add(new KeyValuePair<string, string>("server-ip", ""));
-            NewServer.Add(new KeyValuePair<string, string>("server-name", "My YAMS Nether Server"));
-            NewServer.Add(new KeyValuePair<string, string>("server-port", "25566"));
-            NewServer.Add(new KeyValuePair<string, string>("spawn-animals", "true"));
-            NewServer.Add(new KeyValuePair<string, string>("spawn-monsters", "true"));
-            NewServer.Add(new KeyValuePair<string, string>("verify-names", "true"));
-            YAMS.Database.NewServer(NewServer, "My First Nether Server");*/
-
+            Database.NewServer(NewServer, "My First YAMS Server");
 
             //Set our YAMS Defaults
-            YAMS.Database.SaveSetting("UpdateJAR", "true");
-            YAMS.Database.SaveSetting("UpdateSVC", "true");
-            YAMS.Database.SaveSetting("UpdateGUI", "true");
-            YAMS.Database.SaveSetting("UpdateWeb", "true");
-            YAMS.Database.SaveSetting("UpdateAddons", "true");
-            YAMS.Database.SaveSetting("RestartOnJarUpdate", "true");
-            YAMS.Database.SaveSetting("RestartOnSVCUpdate", "true");
-            YAMS.Database.SaveSetting("Memory", "1024");
-            YAMS.Database.SaveSetting("EnableJavaOptimisations", "true");
-            YAMS.Database.SaveSetting("ListenPort", "56552"); //Use an IANA legal internal port 49152 - 65535
-            YAMS.Database.SaveSetting("ExternalIP", GetExternalIP().ToString());
-            YAMS.Database.SaveSetting("ListenIP", GetListenIP().ToString());
-            YAMS.Database.SaveSetting("UpdateBranch", "dev");
+            Database.SaveSetting("UpdateJAR", "true");
+            Database.SaveSetting("UpdateSVC", "true");
+            Database.SaveSetting("UpdateGUI", "true");
+            Database.SaveSetting("UpdateWeb", "true");
+            Database.SaveSetting("UpdateAddons", "true");
+            Database.SaveSetting("RestartOnJarUpdate", "true");
+            Database.SaveSetting("RestartOnSVCUpdate", "true");
+            Database.SaveSetting("Memory", "1024");
+            Database.SaveSetting("EnableJavaOptimisations", "true");
+            Database.SaveSetting("AdminListenPort", "56552"); //Use an IANA legal internal port 49152 - 65535
+            Database.SaveSetting("PublicListenPort", Convert.ToString(Networking.TcpPort.FindNextAvailablePort(80))); //Find nearest open port to 80 for public site
+            Database.SaveSetting("ExternalIP", GetExternalIP().ToString());
+            Database.SaveSetting("ListenIP", GetListenIP().ToString());
+            Database.SaveSetting("UpdateBranch", "dev");
 
             //Run an update now
             AutoUpdate.CheckUpdates();
 
             //Tell the DB that we've run this
-            YAMS.Database.SaveSetting("FirstRun", "true");
+            Database.SaveSetting("FirstRun", "true");
 
         }
 
