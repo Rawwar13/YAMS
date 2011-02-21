@@ -10,10 +10,8 @@ namespace YAMS.AddOns
 {
     class Overviewer : App
     {
-        public Overviewer(MCServer s)
-            : base(s, "overviewer", @"gmap.exe", "Overviewer", true)
-        {
-        }
+        public Overviewer(MCServer s, string strParams = "lighting=true&night=false")
+            : base(s, "overviewer", @"gmap.exe", "Overviewer", true, strParams) {}
 
         public override void DoWork()
         {
@@ -77,10 +75,6 @@ namespace YAMS.AddOns
 
             //Must always call this to let base class know we're done
             this.Finish();
-        }
-
-        public void RunOverviewer()
-        {
         }
 
         private void OverviewerOutput(object sender, DataReceivedEventArgs e) {
