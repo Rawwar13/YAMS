@@ -67,6 +67,7 @@ namespace YAMS_Updater
                 icoMCInSystem.Image = YAMS_Updater.Properties.Resources.accept;
                 lblMCClientSystem.Text = "Minecraft client is installed in the SYSTEM profile";
                 btnDownloadClient.Visible = false;
+                if (YAMS.Util.HasMCClientLocal()) btnCopyClient.Visible = true;
             }
             else
             {
