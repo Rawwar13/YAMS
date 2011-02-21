@@ -63,18 +63,18 @@ namespace YAMS_Gui
 
         private void button4_Click(object sender, EventArgs e)
         {
-            YAMS.Core.Servers.ForEach(delegate(MCServer myServer)
-            {
-                myServer.Stop();
-            });
+            //YAMS.Core.Servers.ForEach(delegate(MCServer myServer)
+            //{
+            //    myServer.Stop();
+            //});
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            YAMS.Core.Servers.ForEach(delegate(MCServer myServer)
-            {
-                myServer.Start();
-            });
+            //YAMS.Core.Servers.ForEach(delegate(MCServer myServer)
+            //{
+            //    myServer.Start();
+            //});
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -84,18 +84,18 @@ namespace YAMS_Gui
 
         private void button6_Click(object sender, EventArgs e)
         {
-            YAMS.Core.Servers.ForEach(delegate(MCServer myServer)
-            {
-                myServer.Restart();
-            });
+            //YAMS.Core.Servers.ForEach(delegate(MCServer myServer)
+            //{
+            //    myServer.Restart();
+            //});
         }
 
         private void button7_Click(object sender, EventArgs e)
         {
-            YAMS.Core.Servers.ForEach(delegate(MCServer myServer)
-            {
-                myServer.DelayedRestart(Convert.ToInt32(textBox3.Text));
-            });
+            //YAMS.Core.Servers.ForEach(delegate(MCServer myServer)
+            //{
+            //    myServer.DelayedRestart(Convert.ToInt32(textBox3.Text));
+            //});
         }
 
         private void button8_Click(object sender, EventArgs e)
@@ -110,18 +110,18 @@ namespace YAMS_Gui
 
         private void button10_Click(object sender, EventArgs e)
         {
-            YAMS.WebServer.Start();
+            YAMS.WebServer.StartAdmin();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            YAMS.Core.Servers.ForEach(delegate(MCServer myServer)
-            {
-                myServer.Players.ForEach(delegate(String name)
-                {
-                    MessageBox.Show(name);
-                });
-            });
+            //YAMS.Core.Servers.ForEach(delegate(MCServer myServer)
+            //{
+            //    myServer.Players.ForEach(delegate(String name)
+            //    {
+            //        MessageBox.Show(name);
+            //    });
+            //});
         }
     }
 }

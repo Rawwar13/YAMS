@@ -20,7 +20,8 @@ namespace YAMS_Gui
             Database.init();
             Util.FirstRun();
             WebServer.Init();
-            WebServer.Start();
+            WebServer.StartPublic();
+            WebServer.StartAdmin();
         
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
