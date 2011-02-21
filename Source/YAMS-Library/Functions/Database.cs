@@ -352,6 +352,17 @@ namespace YAMS
             }
         }
 
+        //Job Engine
+        public static SqlCeDataReader GetJobs(int intHour, int intMinute)
+        {
+            SqlCeCommand cmd = new SqlCeCommand("SELECT * FROM Jobs WHERE (JobHour = -1 AND JobMinute = @minute) OR (JobHour = @hour AND JobMinute = @minute)", connLocal);
+            cmd.Parameters.Add("@minute", intMinute);
+            cmd.Parameters.Add("@hour", intHour);
+            SqlCeDataReader readerServers = null;
+            readerServers = cmd.ExecuteReader();
+            return readerServers;
+        }
+
         ~Database()
         {
             connLocal.Close();
