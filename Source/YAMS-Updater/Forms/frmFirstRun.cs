@@ -12,8 +12,6 @@ namespace YAMS_Updater
         public frmFirstRun()
         {
             InitializeComponent();
-
-
             tipYAMSUpdate.SetToolTip(this.chkUpdateYAMS, "Includes all YAMS components, you can specify individual components to update in the web app");
         
         }
@@ -134,10 +132,11 @@ namespace YAMS_Updater
             Database.SaveSetting("RestartOnJarUpdate", Util.BooleanToString(this.chkRestartMC.Checked));
             Database.SaveSetting("RestartOnSVCUpdate", Util.BooleanToString(this.chkRestartYAMS.Checked));
             Database.SaveSetting("EnableJavaOptimisations", "true");
-            Database.SaveSetting("ListenPort", "56552"); //Use an IANA legal internal port 49152 - 65535
+            Database.SaveSetting("AdminListenPort", "56552"); //Use an IANA legal internal port 49152 - 65535
+            Database.SaveSetting("PublicListenPort", Convert.ToString(Networking.TcpPort.FindNextAvailablePort(80))); //Find nearest open port to 80 for public site
             Database.SaveSetting("ExternalIP", Util.GetExternalIP().ToString());
             Database.SaveSetting("ListenIP", Util.GetListenIP().ToString());
-            Database.SaveSetting("UpdateBranch", "dev");
+            Database.SaveSetting("UpdateBranch", "live");
             Database.SaveSetting("AdminPassword", txtAdminPassword.Text);
             
             //Tell the DB that we've run this
