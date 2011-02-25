@@ -120,6 +120,18 @@ namespace YAMS
                 this.Running = true;
                 Database.AddLog("Server Started", "server", "info", false, this.ServerID);
 
+                //Open Firewall and try a portforward
+                //try
+                //{
+                //    Networking.OpenFirewallPort(Convert.ToInt32(YAMS.Database.GetSetting("server-port", "MC", this.ServerID)), this.ServerTitle);
+                //    Networking.OpenUPnP(Convert.ToInt32(YAMS.Database.GetSetting("server-port", "MC", this.ServerID)), this.ServerTitle);
+                //}
+                //catch (Exception e)
+                //{
+                //    YAMS.Database.AddLog(e.Message);
+                //}
+
+
                 //Start our wrapper
                 //YAMS.Wrapper.Listen wrapper = new YAMS.Wrapper.Listen(IPAddress.Parse(YAMS.Database.GetSetting("ListenIP", "YAMS")), Convert.ToInt32(YAMS.Database.GetSetting("ListenPort", "YAMS")));
 
@@ -322,5 +334,31 @@ namespace YAMS
             this.gmap = new AddOns.Overviewer(this);
             this.gmap.Start();
         }
+
+        //Read contents of a config file into a list
+        public List<string> ReadConfig(string strFile)
+        {
+            List<string> lines = new List<string>();
+
+            try
+            {
+                using (StreamReader r = new StreamReader(this.strWorkingDir + strFile))
+                {
+                    string line;
+                    while ((line = r.ReadLine()) != null)
+                    {
+                        if (line != "") lines.Add(line);
+                    }
+                }
+
+                return lines;
+            }
+            catch (IOException e)
+            {
+                Database.AddLog("Exception reading config file " + strFile + ": " + e.Message, "web", "warn");
+                return new List<string>();
+            }
+        }
+
     }
 }
