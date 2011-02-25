@@ -16,6 +16,7 @@ namespace YAMS
         public static Dictionary<int, MCServer> Servers = new Dictionary<int, MCServer> { };
 
         private static Timer timUpdate;
+        private static Timer timBackup;
 
         public static void StartUp()
         {
@@ -53,6 +54,10 @@ namespace YAMS
                 Servers.Add(Convert.ToInt32(readerServers["ServerID"]), myServer);
             }
 
+            //Schedule a backup for all servers (temporarily here before going in job engine)
+            int BackupTick = (60 * 60 * 1000);
+            timBackup = new Timer(new TimerCallback(timBackup_Tick), null, 5*60*1000, BackupTick);
+
             //Start Webserver
             WebServer.Init();
             WebServer.StartAdmin();
@@ -73,6 +78,13 @@ namespace YAMS
         public static void timUpdate_Tick(object t)
         {
             AutoUpdate.CheckUpdates();
+        }
+        public static void timBackup_Tick(object t)
+        {
+            foreach (KeyValuePair<int, MCServer> kvp in Core.Servers)
+            {
+                Backup.BackupNow(kvp.Value);
+            }
         }
     }
 }
