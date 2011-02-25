@@ -29,6 +29,7 @@ namespace YAMS
         public static bool bolWebUpdateAvailable = false;
         public static bool bolOverviewerUpdateAvailable = false;
         public static bool bolC10tUpdateAvailable = false;
+        public static bool bolTectonicusUpdateAvailable = false;
         public static bool bolRestartNeeded = false;
 
         //Minecraft URLs
@@ -58,23 +59,26 @@ namespace YAMS
         };
 
         //Third party URLS
-        public static string strOverviewerURL = "https://github.com/downloads/brownan/Minecraft-Overviewer/Overviewer-xxx.zip";
-        public static string strC10tx86URL = "http://toolchain.eu/minecraft/c10t/releases/c10t-xxx-windows-x86.zip";
-        public static string strC10tx64URL = "http://toolchain.eu/minecraft/c10t/releases/c10t-xxx-windows-x86_64.zip";
-        public static string strBiomeExtractorURL = "http://dl.dropbox.com/u/107712/MCMap/Minecraft-Biome-Extractor-vxxx.zip";
+        public static Dictionary<string, string> dicAddOnURLS = new Dictionary<string, string>
+        {
+            { "tectonicus", "http://www.triangularpixels.com/Tectonicus/Tectonicus_vxxx.jar" },
+            { "overviewer", "https://github.com/downloads/brownan/Minecraft-Overviewer/Overviewer-xxx.zip" },
+            { "biome-extractor", "http://dl.dropbox.com/u/107712/MCMap/Minecraft-Biome-Extractor-vxxx.zip" },
+            { "c10t-x86", "http://toolchain.eu/minecraft/c10t/releases/c10t-xxx-windows-x86.zip" },
+            { "c10t-x64", "http://toolchain.eu/minecraft/c10t/releases/c10t-xxx-windows-x86_64.zip" }
+        };
 
         //Default versions
         private static string strOverviewerVer = "0.0.5";
         private static string strC10tVer = "1.4";
         private static string strBiomeExtractorVer = "071a";
+        private static string strTectonicusVer = "1.19";
 
         //Checks for available updates
         public static void CheckUpdates()
         {
             if (!UpdatePaused)
             {
-                Database.AddLog("Starting Update Check");
-
                 //What branch are we on?
                 string strBranch = Database.GetSetting("UpdateBranch", "YAMS");
 
@@ -90,44 +94,71 @@ namespace YAMS
                     bolGUIUpdateAvailable = UpdateIfNeeded(strYAMSGUIURL[strBranch], YAMS.Core.RootFolder + @"\YAMS-Updater.exe");
                 }
 
-                //Check our managed updates
-                if (bolUpdateAddons && UpdateIfNeeded(strYAMSVersionsURL[strBranch], YAMS.Core.RootFolder + @"\lib\versions.json"))
+                if (bolUpdateAddons)
                 {
-                    //There is an update somewhere, extract versions and compare
+                    //Grabe latest version file if it needs updating
+                    UpdateIfNeeded(strYAMSVersionsURL[strBranch], YAMS.Core.RootFolder + @"\lib\versions.json");
+
+                    //Update add-ons if they have elected to have them
                     string json = File.ReadAllText(YAMS.Core.RootFolder + @"\lib\versions.json");
                     Dictionary<string, string> dicVers = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
 
-                    strOverviewerVer = dicVers["overviewer"];
-                    if (UpdateIfNeeded(GetExternalURL("overviewer", strOverviewerVer), YAMS.Core.RootFolder + @"\apps\overviewer.zip"))
-                    {
-                        bolOverviewerUpdateAvailable = true;
-                        ExtractZip(YAMS.Core.RootFolder + @"\apps\overviewer.zip", YAMS.Core.RootFolder + @"\apps\");
-                        File.Delete(YAMS.Core.RootFolder + @"\apps\overviewer.zip");
-                        if (Directory.Exists(YAMS.Core.RootFolder + @"\apps\overviewer\")) Directory.Delete(YAMS.Core.RootFolder + @"\apps\overviewer\", true);
-                        Directory.Move(YAMS.Core.RootFolder + @"\apps\Overviewer-" + strOverviewerVer, YAMS.Core.RootFolder + @"\apps\overviewer");
+                    if (Convert.ToBoolean(Database.GetSetting("OverviewerInstalled", "YAMS"))) {
+                        strOverviewerVer = dicVers["overviewer"];
+                        if (UpdateIfNeeded(GetExternalURL("overviewer", strOverviewerVer), YAMS.Core.RootFolder + @"\apps\overviewer.zip"))
+                        {
+                            bolOverviewerUpdateAvailable = true;
+                            ExtractZip(YAMS.Core.RootFolder + @"\apps\overviewer.zip", YAMS.Core.RootFolder + @"\apps\");
+                            File.Delete(YAMS.Core.RootFolder + @"\apps\overviewer.zip");
+                            if (Directory.Exists(YAMS.Core.RootFolder + @"\apps\overviewer\")) Directory.Delete(YAMS.Core.RootFolder + @"\apps\overviewer\", true);
+                            Directory.Move(YAMS.Core.RootFolder + @"\apps\Overviewer-" + strOverviewerVer, YAMS.Core.RootFolder + @"\apps\overviewer");
+                        }
                     }
 
                     //Grab the biome extractor too
-                    strBiomeExtractorVer = dicVers["biomeextractor"];
-                    if (UpdateIfNeeded(GetExternalURL("biome-extractor", strBiomeExtractorVer), YAMS.Core.RootFolder + @"\apps\biome-extractor.zip"))
-                    {
-                        ExtractZip(YAMS.Core.RootFolder + @"\apps\biome-extractor.zip", YAMS.Core.RootFolder + @"\apps\");
-                        File.Delete(YAMS.Core.RootFolder + @"\apps\biome-extractor.zip");
-                        if (Directory.Exists(YAMS.Core.RootFolder + @"\apps\biome-extractor\")) Directory.Delete(YAMS.Core.RootFolder + @"\apps\biome-extractor\", true);
-                        Directory.Move(YAMS.Core.RootFolder + @"\apps\Minecraft Biome Extractor", YAMS.Core.RootFolder + @"\apps\biome-extractor");
+                    if (Convert.ToBoolean(Database.GetSetting("BiomeExtractorInstalled", "YAMS"))) {
+                        strBiomeExtractorVer = dicVers["biomeextractor"];
+                        if (UpdateIfNeeded(GetExternalURL("biome-extractor", strBiomeExtractorVer), YAMS.Core.RootFolder + @"\apps\biome-extractor.zip"))
+                        {
+                            ExtractZip(YAMS.Core.RootFolder + @"\apps\biome-extractor.zip", YAMS.Core.RootFolder + @"\apps\");
+                            File.Delete(YAMS.Core.RootFolder + @"\apps\biome-extractor.zip");
+                            if (Directory.Exists(YAMS.Core.RootFolder + @"\apps\biome-extractor\")) Directory.Delete(YAMS.Core.RootFolder + @"\apps\biome-extractor\", true);
+                            Directory.Move(YAMS.Core.RootFolder + @"\apps\Minecraft Biome Extractor", YAMS.Core.RootFolder + @"\apps\biome-extractor");
+                        }
                     }
 
-                    strC10tVer = dicVers["c10t"];
-                    if (UpdateIfNeeded(GetExternalURL("c10t", strC10tVer), YAMS.Core.RootFolder + @"\apps\c10t.zip", "modified"))
+                    //Update c10t
+                    if (Convert.ToBoolean(Database.GetSetting("C10tInstalled", "YAMS")))
                     {
-                        bolC10tUpdateAvailable = true;
-                        ExtractZip(YAMS.Core.RootFolder + @"\apps\c10t.zip", YAMS.Core.RootFolder + @"\apps\");
-                        File.Delete(YAMS.Core.RootFolder + @"\apps\c10t.zip");
-                        if (Directory.Exists(YAMS.Core.RootFolder + @"\apps\c10t\")) Directory.Delete(YAMS.Core.RootFolder + @"\apps\c10t\", true);
-                        Directory.Move(YAMS.Core.RootFolder + @"\apps\c10t-" + strC10tVer, YAMS.Core.RootFolder + @"\apps\c10t");
+                        strC10tVer = dicVers["c10t"];
+                        if (UpdateIfNeeded(GetExternalURL("c10t", strC10tVer), YAMS.Core.RootFolder + @"\apps\c10t.zip", "modified"))
+                        {
+                            bolC10tUpdateAvailable = true;
+                            ExtractZip(YAMS.Core.RootFolder + @"\apps\c10t.zip", YAMS.Core.RootFolder + @"\apps\");
+                            File.Delete(YAMS.Core.RootFolder + @"\apps\c10t.zip");
+                            if (Directory.Exists(YAMS.Core.RootFolder + @"\apps\c10t\")) Directory.Delete(YAMS.Core.RootFolder + @"\apps\c10t\", true);
+                            Directory.Move(YAMS.Core.RootFolder + @"\apps\c10t-" + strC10tVer, YAMS.Core.RootFolder + @"\apps\c10t");
+                        }
                     }
 
-
+                    //Update Tectonicus
+                    if (Convert.ToBoolean(Database.GetSetting("TectonicusInstalled", "YAMS")))
+                    {
+                        strTectonicusVer = dicVers["tectonicus"];
+                        if (UpdateIfNeeded(GetExternalURL("tectonicus", strTectonicusVer), YAMS.Core.RootFolder + @"\apps\tectonicus\tectonicus.jar.update", "modified"))
+                        {
+                            bolTectonicusUpdateAvailable = true;
+                            try
+                            {
+                                if (File.Exists(YAMS.Core.RootFolder + @"\apps\tectonicus\tectonicus.jar")) File.Delete(YAMS.Core.RootFolder + @"\apps\tectonicus\tectonicus.jar");
+                                File.Move(YAMS.Core.RootFolder + @"\apps\tectonicus\tectonicus.jar.update", YAMS.Core.RootFolder + @"\apps\tectonicus\tectonicus.jar");
+                            }
+                            catch (IOException e)
+                            {
+                                YAMS.Database.AddLog("Unable to update Tectonicus: " + e.Message, "updater", "warn");
+                            }
+                        }
+                    }
                 }
 
                 //Now check if we can auto-restart anything
@@ -163,10 +194,10 @@ namespace YAMS
                         else
                         {
                             kvp.Value.RestartNeeded = true;
+                            Database.AddLog("Restart deferred until server free", "updater", "info", true, kvp.Value.ServerID);
                         }
                     }
                 }
-                Database.AddLog("Completed Update Check");
             }
             else
             {
@@ -226,22 +257,11 @@ namespace YAMS
             var strReturn = "";
             switch (strApp)
             {
-                case "overviewer":
-                    strReturn = strOverviewerURL;
-                    break;
                 case "c10t":
-                    switch (YAMS.Util.GetBitness())
-                    {
-                        case "x86":
-                            strReturn = strC10tx86URL;
-                            break;
-                        case "x64":
-                            strReturn = strC10tx64URL;
-                            break;
-                    }
+                    strReturn = dicAddOnURLS[strApp + YAMS.Util.GetBitness()];
                     break;
-                case "biome-extractor":
-                    strReturn = strBiomeExtractorURL;
+                default:
+                    strReturn = dicAddOnURLS[strApp];
                     break;
             }
             strReturn = strReturn.Replace("xxx", strVersion);
