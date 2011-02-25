@@ -90,6 +90,18 @@ YAMS.admin = {
                         YAMS.admin.restartServer();
                     });
                     r.appendChild(b3);
+                    var b4 = document.createElement('button');
+                    b4.id = 'delayed-restart-server';
+                    b4.innerHTML = 'Restart After:';
+                    b4.disabled = true;
+                    YAMS.E.on(b4, 'click', function (e) {
+                        YAMS.admin.delayedRestartServer();
+                    });
+                    r.appendChild(b4);
+                    var b4i = document.createElement('input');
+                    b4i.id = 'delay-time';
+                    b4i.setAttribute('size', '3');
+                    r.appendChild(b4i);
                     var p = document.createElement('div');
                     p.id = "players";
                     r.appendChild(p);
@@ -185,9 +197,9 @@ YAMS.admin = {
         //Set the title
         YAMS.S('#main h1')[0].innerHTML = YAMS.admin.servers[serverid].name + ' (' + YAMS.admin.servers[serverid].ver + ')';
         //Load console
-		YAMS.admin.updateServerConsole();
-		YAMS.admin.checkServerStatus();
-		//Set the timer
+        YAMS.admin.updateServerConsole();
+        YAMS.admin.checkServerStatus();
+        //Set the timer
         YAMS.admin.serverTimer = setInterval("YAMS.admin.updateServerConsole();YAMS.admin.checkServerStatus();", 5000);
     },
 
@@ -236,14 +248,16 @@ YAMS.admin = {
                 document.getElementById('start-server').disabled = true;
                 document.getElementById('stop-server').disabled = false;
                 document.getElementById('restart-server').disabled = false;
+                document.getElementById('delayed-restart-server').disabled = false;
             } else {
                 document.getElementById('start-server').disabled = false;
                 document.getElementById('stop-server').disabled = true;
                 document.getElementById('restart-server').disabled = true;
+                document.getElementById('delayed-restart-server').disabled = true;
             }
 
-			//Update the player info
-			var l = YAMS.D.get('players');
+            //Update the player info
+            var l = YAMS.D.get('players');
             l.innerHTML = '';
             for (var i = 0, len = results.players.length; i < len; ++i) {
                 var r = results.players[i].name + " (" + results.players[i].level + ")";
@@ -251,7 +265,7 @@ YAMS.admin = {
                 s.innerHTML = r;
                 l.appendChild(s);
             }
-			
+
         },
         failure: function (o) {
             YAMS.admin.log('checkServerStatus failed');
@@ -259,9 +273,11 @@ YAMS.admin = {
     },
 
     mapServer: function () { var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.statusCommand_callback, 'action=gmap&serverid=' + YAMS.admin.selectedServer); },
+    imgServer: function () { var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.statusCommand_callback, 'action=c10t&serverid=' + YAMS.admin.selectedServer); },
     startServer: function () { var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.statusCommand_callback, 'action=start&serverid=' + YAMS.admin.selectedServer); },
     stopServer: function () { var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.statusCommand_callback, 'action=stop&serverid=' + YAMS.admin.selectedServer); },
     restartServer: function () { var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.statusCommand_callback, 'action=restart&serverid=' + YAMS.admin.selectedServer); },
+    delayedRestartServer: function () { var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.statusCommand_callback, 'action=delayed-restart&delay=' + YAMS.D.get('delay-time').value + '&serverid=' + YAMS.admin.selectedServer); },
     statusCommand_callback: { success: function (o) { }, failure: function (o) { YAMS.admin.log('Status Command Failed'); } },
 
     consoleSend: function () { var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.consoleSend_callback, 'action=command&serverid=' + YAMS.admin.selectedServer + '&message=' + escape(YAMS.D.get('console-input').value)); },
@@ -278,7 +294,7 @@ YAMS.admin = {
             catch (x) { YAMS.admin.log('JSON Parse Failed'); return; }
 
             var l = YAMS.D.get('console');
-			var c = YAMS.D.get('chat');
+            var c = YAMS.D.get('chat');
             if (l.scrollTop == l.scrollHeight || l.scrollTop == 0) var bolScrollL = true;
             if (c.scrollTop == c.scrollHeight || c.scrollTop == 0) var bolScrollC = true;
             for (var i = 0, len = results.Table.length - 1; len >= i; --len) {
@@ -290,10 +306,10 @@ YAMS.admin = {
                 var m = document.createTextNode('[' + d.getFullYear() + '-' + YAMS.admin.leadingZero(d.getMonth()) + '-' + YAMS.admin.leadingZero(d.getDate()) + ' ' + YAMS.admin.leadingZero(d.getHours()) + ':' + YAMS.admin.leadingZero(d.getMinutes()) + '] ' + r.LogMessage);
                 s.appendChild(m);
                 if (r.LogLevel == 'chat') {
-					c.appendChild(s);
-				} else {
-	                l.appendChild(s);
-				}
+                    c.appendChild(s);
+                } else {
+                    l.appendChild(s);
+                }
                 YAMS.admin.lastServerLogId = r.LogID;
             }
             if (bolScrollL) l.scrollTop = l.scrollHeight;
@@ -332,13 +348,13 @@ YAMS.admin = {
         }
     },
 
-	leadingZero: function(intInput) {
-		if (intInput < 10) {
-			return "0" + intInput;
-		} else {
-			return intInput;
-		}
-	},
+    leadingZero: function (intInput) {
+        if (intInput < 10) {
+            return "0" + intInput;
+        } else {
+            return intInput;
+        }
+    },
 
     server: function (id, name, ver) {
         this.id = id;
