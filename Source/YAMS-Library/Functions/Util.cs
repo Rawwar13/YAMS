@@ -129,7 +129,6 @@ namespace YAMS
             NewServer.Add(new KeyValuePair<string, string>("enable-health", "true"));
             NewServer.Add(new KeyValuePair<string, string>("hellworld", "false"));
             NewServer.Add(new KeyValuePair<string, string>("level-name", @"..\\world"));
-            NewServer.Add(new KeyValuePair<string, string>("max-connections", "1"));
             NewServer.Add(new KeyValuePair<string, string>("max-players", "20"));
             NewServer.Add(new KeyValuePair<string, string>("motd", "Welcome to a YAMS server!"));
             NewServer.Add(new KeyValuePair<string, string>("online-mode", "true"));
@@ -141,7 +140,8 @@ namespace YAMS
             NewServer.Add(new KeyValuePair<string, string>("spawn-animals", "true"));
             NewServer.Add(new KeyValuePair<string, string>("spawn-monsters", "true"));
             NewServer.Add(new KeyValuePair<string, string>("verify-names", "true"));
-            Database.NewServer(NewServer, "My First YAMS Server");
+            NewServer.Add(new KeyValuePair<string, string>("white-list", "false"));
+           Database.NewServer(NewServer, "My First YAMS Server");
 
             //Set our YAMS Defaults
             Database.SaveSetting("UpdateJAR", "true");
