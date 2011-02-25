@@ -285,12 +285,14 @@ namespace YAMS
             if (!Directory.Exists(YAMS.Core.RootFolder + @"\servers\" + intNewID.ToString() + @"\config\")) Directory.CreateDirectory(YAMS.Core.RootFolder + @"\servers\" + intNewID.ToString() + @"\config\");
             if (!Directory.Exists(YAMS.Core.RootFolder + @"\servers\" + intNewID.ToString() + @"\world\")) Directory.CreateDirectory(YAMS.Core.RootFolder + @"\servers\" + intNewID.ToString() + @"\world\");
             if (!Directory.Exists(YAMS.Core.RootFolder + @"\servers\" + intNewID.ToString() + @"\renders\")) Directory.CreateDirectory(YAMS.Core.RootFolder + @"\servers\" + intNewID.ToString() + @"\renders\");
-            if (!Directory.Exists(YAMS.Core.RootFolder + @"\servers\" + intNewID.ToString() + @"\renders\gmap\")) Directory.CreateDirectory(YAMS.Core.RootFolder + @"\servers\" + intNewID.ToString() + @"\renders\gmap\");
-            if (!Directory.Exists(YAMS.Core.RootFolder + @"\servers\" + intNewID.ToString() + @"\renders\gmap\cache\")) Directory.CreateDirectory(YAMS.Core.RootFolder + @"\servers\" + intNewID.ToString() + @"\renders\gmap\cache\");
-            if (!Directory.Exists(YAMS.Core.RootFolder + @"\servers\" + intNewID.ToString() + @"\renders\gmap\output\")) Directory.CreateDirectory(YAMS.Core.RootFolder + @"\servers\" + intNewID.ToString() + @"\renders\gmap\output\");
+            if (!Directory.Exists(YAMS.Core.RootFolder + @"\servers\" + intNewID.ToString() + @"\renders\overviewer\")) Directory.CreateDirectory(YAMS.Core.RootFolder + @"\servers\" + intNewID.ToString() + @"\renders\gmap\");
+            if (!Directory.Exists(YAMS.Core.RootFolder + @"\servers\" + intNewID.ToString() + @"\renders\overviewer\cache\")) Directory.CreateDirectory(YAMS.Core.RootFolder + @"\servers\" + intNewID.ToString() + @"\renders\overviewer\cache\");
+            if (!Directory.Exists(YAMS.Core.RootFolder + @"\servers\" + intNewID.ToString() + @"\renders\overviewer\output\")) Directory.CreateDirectory(YAMS.Core.RootFolder + @"\servers\" + intNewID.ToString() + @"\renders\overviewer\output\");
+            if (!Directory.Exists(YAMS.Core.RootFolder + @"\servers\" + intNewID.ToString() + @"\renders\tectonicus\")) Directory.CreateDirectory(YAMS.Core.RootFolder + @"\servers\" + intNewID.ToString() + @"\renders\tectonicus\");
             if (!File.Exists(YAMS.Core.RootFolder + @"\servers\" + intNewID.ToString() + @"\config\banned-ips.txt")) File.Create(YAMS.Core.RootFolder + @"\servers\" + intNewID.ToString() + @"\config\banned-ips.txt");
             if (!File.Exists(YAMS.Core.RootFolder + @"\servers\" + intNewID.ToString() + @"\config\banned-players.txt")) File.Create(YAMS.Core.RootFolder + @"\servers\" + intNewID.ToString() + @"\config\banned-players.txt");
             if (!File.Exists(YAMS.Core.RootFolder + @"\servers\" + intNewID.ToString() + @"\config\ops.txt")) File.Create(YAMS.Core.RootFolder + @"\servers\" + intNewID.ToString() + @"\config\ops.txt");
+            if (!File.Exists(YAMS.Core.RootFolder + @"\servers\" + intNewID.ToString() + @"\config\white-list.txt")) File.Create(YAMS.Core.RootFolder + @"\servers\" + intNewID.ToString() + @"\config\white-list.txt");
 
             //Create default config files
             BuildServerProperties(intNewID);
