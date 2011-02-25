@@ -50,6 +50,8 @@
             this.tipYAMSUpdate = new System.Windows.Forms.ToolTip(this.components);
             this.directorySearcher1 = new System.DirectoryServices.DirectorySearcher();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.linkLabel3 = new System.Windows.Forms.LinkLabel();
+            this.chkBiomeExtractor = new System.Windows.Forms.CheckBox();
             this.linkLabel2 = new System.Windows.Forms.LinkLabel();
             this.chkC10t = new System.Windows.Forms.CheckBox();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
@@ -57,6 +59,8 @@
             this.label9 = new System.Windows.Forms.Label();
             this.btnComplete = new System.Windows.Forms.Button();
             this.timCheckUpdate = new System.Windows.Forms.Timer(this.components);
+            this.linkLabel4 = new System.Windows.Forms.LinkLabel();
+            this.chkTectonicus = new System.Windows.Forms.CheckBox();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -254,6 +258,10 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.linkLabel4);
+            this.groupBox4.Controls.Add(this.chkTectonicus);
+            this.groupBox4.Controls.Add(this.linkLabel3);
+            this.groupBox4.Controls.Add(this.chkBiomeExtractor);
             this.groupBox4.Controls.Add(this.linkLabel2);
             this.groupBox4.Controls.Add(this.chkC10t);
             this.groupBox4.Controls.Add(this.linkLabel1);
@@ -261,10 +269,33 @@
             this.groupBox4.Controls.Add(this.label9);
             this.groupBox4.Location = new System.Drawing.Point(12, 399);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(678, 89);
+            this.groupBox4.Size = new System.Drawing.Size(678, 177);
             this.groupBox4.TabIndex = 3;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Third-party Add-Ons";
+            // 
+            // linkLabel3
+            // 
+            this.linkLabel3.AutoSize = true;
+            this.linkLabel3.Location = new System.Drawing.Point(279, 88);
+            this.linkLabel3.Name = "linkLabel3";
+            this.linkLabel3.Size = new System.Drawing.Size(301, 13);
+            this.linkLabel3.TabIndex = 16;
+            this.linkLabel3.TabStop = true;
+            this.linkLabel3.Text = "http://www.minecraftforum.net/viewtopic.php?f=1022&t=80902";
+            this.linkLabel3.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel3_LinkClicked);
+            // 
+            // chkBiomeExtractor
+            // 
+            this.chkBiomeExtractor.AutoSize = true;
+            this.chkBiomeExtractor.Checked = true;
+            this.chkBiomeExtractor.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkBiomeExtractor.Location = new System.Drawing.Point(16, 87);
+            this.chkBiomeExtractor.Name = "chkBiomeExtractor";
+            this.chkBiomeExtractor.Size = new System.Drawing.Size(188, 17);
+            this.chkBiomeExtractor.TabIndex = 15;
+            this.chkBiomeExtractor.Text = "Biome Extractor (by Donkey Kong)";
+            this.chkBiomeExtractor.UseVisualStyleBackColor = true;
             // 
             // linkLabel2
             // 
@@ -292,7 +323,7 @@
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(214, 45);
+            this.linkLabel1.Location = new System.Drawing.Point(279, 49);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(247, 13);
             this.linkLabel1.TabIndex = 12;
@@ -305,7 +336,7 @@
             this.chkOverviewer.AutoSize = true;
             this.chkOverviewer.Checked = true;
             this.chkOverviewer.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkOverviewer.Location = new System.Drawing.Point(16, 44);
+            this.chkOverviewer.Location = new System.Drawing.Point(16, 48);
             this.chkOverviewer.Name = "chkOverviewer";
             this.chkOverviewer.Size = new System.Drawing.Size(192, 17);
             this.chkOverviewer.TabIndex = 11;
@@ -324,9 +355,9 @@
             // btnComplete
             // 
             this.btnComplete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.btnComplete.Location = new System.Drawing.Point(571, 494);
+            this.btnComplete.Location = new System.Drawing.Point(571, 582);
             this.btnComplete.Name = "btnComplete";
-            this.btnComplete.Size = new System.Drawing.Size(119, 28);
+            this.btnComplete.Size = new System.Drawing.Size(119, 34);
             this.btnComplete.TabIndex = 4;
             this.btnComplete.Text = "Complete Setup";
             this.btnComplete.UseVisualStyleBackColor = true;
@@ -337,11 +368,34 @@
             this.timCheckUpdate.Enabled = true;
             this.timCheckUpdate.Interval = 10000;
             // 
+            // linkLabel4
+            // 
+            this.linkLabel4.AutoSize = true;
+            this.linkLabel4.Location = new System.Drawing.Point(279, 107);
+            this.linkLabel4.Name = "linkLabel4";
+            this.linkLabel4.Size = new System.Drawing.Size(225, 13);
+            this.linkLabel4.TabIndex = 18;
+            this.linkLabel4.TabStop = true;
+            this.linkLabel4.Text = "http://www.minecraftwiki.net/wiki/Tectonicus";
+            this.linkLabel4.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel4_LinkClicked);
+            // 
+            // chkTectonicus
+            // 
+            this.chkTectonicus.AutoSize = true;
+            this.chkTectonicus.Checked = true;
+            this.chkTectonicus.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkTectonicus.Location = new System.Drawing.Point(16, 106);
+            this.chkTectonicus.Name = "chkTectonicus";
+            this.chkTectonicus.Size = new System.Drawing.Size(161, 17);
+            this.chkTectonicus.TabIndex = 17;
+            this.chkTectonicus.Text = "Tectonicus (by OrangyTang)";
+            this.chkTectonicus.UseVisualStyleBackColor = true;
+            // 
             // frmFirstRun
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(703, 525);
+            this.ClientSize = new System.Drawing.Size(703, 619);
             this.ControlBox = false;
             this.Controls.Add(this.btnComplete);
             this.Controls.Add(this.groupBox4);
@@ -393,6 +447,10 @@
         private System.Windows.Forms.Timer timCheckUpdate;
         private System.Windows.Forms.TextBox txtAdminPassword;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.LinkLabel linkLabel3;
+        private System.Windows.Forms.CheckBox chkBiomeExtractor;
+        private System.Windows.Forms.LinkLabel linkLabel4;
+        private System.Windows.Forms.CheckBox chkTectonicus;
 
     }
 }
