@@ -72,6 +72,8 @@ namespace YAMS
 
             adminServerThread = new Thread(new ThreadStart(StartAdmin));
             publicServerThread = new Thread(new ThreadStart(StartPublic));
+            adminServerThread.Start();
+            publicServerThread.Start();
         }
 
         static void myServer_ErrorPageRequested(object sender, ErrorPageEventArgs e)
@@ -115,14 +117,6 @@ namespace YAMS
                 myLog.WriteEntry("Exception: " + e.Data, EventLogEntryType.Error);
             }
             
-            //try {
-            //    Networking.OpenFirewallPort(Convert.ToInt32(YAMS.Database.GetSetting("AdminListenPort", "YAMS")), "YAMS Admin Web Server");
-            //    Networking.OpenUPnP(Convert.ToInt32(YAMS.Database.GetSetting("AdminListenPort", "YAMS")), "YAMS Admin Web Server");
-            //} catch (Exception e) {
-            //    YAMS.Database.AddLog(e.Message);
-            //}
-
-
         }
 
         public static void StartPublic()
@@ -156,29 +150,12 @@ namespace YAMS
                 myLog.WriteEntry("Exception: " + e.Data, EventLogEntryType.Error);
             }
 
-            //try {
-            //    Networking.OpenFirewallPort(Convert.ToInt32(YAMS.Database.GetSetting("PublicListenPort", "YAMS")), "YAMS Public Web Server");
-            //    Networking.OpenUPnP(Convert.ToInt32(YAMS.Database.GetSetting("PublicListenPort", "YAMS")), "YAMS Public Web Server");
-            //} catch (Exception e) {
-            //    YAMS.Database.AddLog(e.Message);
-            //}
-        
+       
         }
 
 
         public static void Stop()
         {
-            //try
-            //{
-            //    Networking.CloseFirewallPort(Convert.ToInt32(YAMS.Database.GetSetting("AdminListenPort", "YAMS")));
-            //    Networking.CloseUPnP(Convert.ToInt32(YAMS.Database.GetSetting("AdminListenPort", "YAMS")));
-            //    Networking.CloseFirewallPort(Convert.ToInt32(YAMS.Database.GetSetting("PublicListenPort", "YAMS")));
-            //    Networking.CloseUPnP(Convert.ToInt32(YAMS.Database.GetSetting("PublicListenPort", "YAMS")));
-            //}
-            //catch (Exception e)
-            //{
-            //    YAMS.Database.AddLog(e.Message);
-            //}
             adminServerThread.Abort();
             publicServerThread.Abort();
         }
