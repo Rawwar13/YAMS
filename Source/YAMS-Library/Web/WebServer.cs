@@ -28,6 +28,9 @@ namespace YAMS
         private static Thread adminServerThread;
         private static Thread publicServerThread;
 
+        private static int AdminTryCount = 0;
+        private static int PublicTryCount = 0;
+
         //Control
         public static void Init()
         {
@@ -87,7 +90,6 @@ namespace YAMS
 
         public static void StartAdmin()
         {
-            int intTryCount = 0;
             try
             {
                 adminServer.Start(5);
@@ -97,10 +99,10 @@ namespace YAMS
             catch (System.Net.Sockets.SocketException e)
             {
                 //Previous service has not released the port, so hang on and try again.
-                intTryCount++;
+                AdminTryCount++;
                 Database.AddLog("Admin Web server port still in use, attempt " + intTryCount + ": " + e.Message, "web", "warn");
                 Thread.Sleep(1000);
-                if (intTryCount < 120)
+                if (AdminTryCount < 120)
                 {
                     StartAdmin();
                 }
@@ -121,7 +123,6 @@ namespace YAMS
 
         public static void StartPublic()
         {
-            int intTryCount = 0;
             try
             {
                 publicServer.Start(5);
@@ -129,10 +130,10 @@ namespace YAMS
             catch (System.Net.Sockets.SocketException e)
             {
                 //Previous service has not released the port, so hang on and try again.
-                intTryCount++;
+                PublicTryCount++;
                 Database.AddLog("Public Web server port still in use, attempt " + intTryCount + ": " + e.Message, "web", "warn");
                 Thread.Sleep(1000);
-                if (intTryCount < 120)
+                if (PublicTryCount < 120)
                 {
                     StartPublic();
                 }
