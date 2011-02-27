@@ -12,6 +12,7 @@ namespace YAMS
     public static class Core
     {
         public static string RootFolder = new System.IO.FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).DirectoryName;
+        public static string StoragePath = new System.IO.FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).DirectoryName + @"\servers\";
 
         public static Dictionary<int, MCServer> Servers = new Dictionary<int, MCServer> { };
 
@@ -39,6 +40,7 @@ namespace YAMS
             AutoUpdate.bolUpdateJAR = Convert.ToBoolean(Database.GetSetting("UpdateJAR", "YAMS"));
             AutoUpdate.bolUpdateSVC = Convert.ToBoolean(Database.GetSetting("UpdateSVC", "YAMS"));
             AutoUpdate.bolUpdateWeb = Convert.ToBoolean(Database.GetSetting("UpdateWeb", "YAMS"));
+            StoragePath = Database.GetSetting("StoragePath", "YAMS");
 
             //Check for updates and start a timer to do it automatically
             int UpdateTick = (60 * 60 * 1000);
@@ -60,9 +62,6 @@ namespace YAMS
 
             //Start Webserver
             WebServer.Init();
-            WebServer.StartAdmin();
-            WebServer.StartPublic();
-
         }
 
         public static void ShutDown()
