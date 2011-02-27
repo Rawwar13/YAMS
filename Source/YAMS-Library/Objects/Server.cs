@@ -22,6 +22,7 @@ namespace YAMS
         private Regex regRemoveDateStamp = new Regex(@"^([0-9]+\-[0-9]+\-[0-9]+ [0-9]+:[0-9]+:[0-9]+ ){1}");
         private Regex regErrorLevel = new Regex(@"^\[([A-Z])+\]{1}");
         private Regex regPlayerChat = new Regex(@"^(\<([A-Za-z0-9])+\>){1}");
+        private Regex regPlayerPM = new Regex(@"^(\[([\w])+\-\>(\w)+\]){1}");
         private Regex regPlayerLoggedIn = new Regex(@"^([\w]+)(?: \[\/[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+\:[0-9]+\] logged in with entity id)");
         private Regex regPlayerLoggedOut = new Regex(@"^([\w]+) ?(lost connection)");
         private Regex regServerVersion = new Regex(@"^(?:Starting minecraft server version )");
@@ -264,7 +265,7 @@ namespace YAMS
                     case "[INFO]":
                         //Check if it's player chat
                         Match regChat = this.regPlayerChat.Match(strMessage);
-                        if (regChat.Success) strLevel = "chat";
+                        if (regPlayerChat.Match(strMessage).Success || regPlayerPM.Match(strMessage).Success) strLevel = "chat";
                         else strLevel = "info";
                         
                         //See if it's a log in or log out event
