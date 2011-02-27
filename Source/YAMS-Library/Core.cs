@@ -21,7 +21,7 @@ namespace YAMS
 
         public static void StartUp()
         {
-            //Clear ouy old files if they exist, if it doesn't work we'll just do it on next startup.
+            //Clear out old files if they exist, if it doesn't work we'll just do it on next startup.
             try { if (File.Exists(RootFolder + @"\YAMS-Library.dll.OLD")) File.Delete(RootFolder + @"\YAMS-Library.dll.OLD"); }
             catch { };
             try { if (File.Exists(RootFolder + @"\YAMS-Service.exe.OLD")) File.Delete(RootFolder + @"\YAMS-Service.exe.OLD"); }
