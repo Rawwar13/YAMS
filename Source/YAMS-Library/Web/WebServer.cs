@@ -58,8 +58,7 @@ namespace YAMS
             while (readerServers.Read())
             {
                 var intServerID = readerServers["ServerID"].ToString();
-                publicModule.Resources.Add(new FileResources("/servers/" + intServerID + "/map/", YAMS.Core.RootFolder + "\\servers\\" + intServerID + "\\renders\\gmap\\output\\"));
-                publicModule.Resources.Add(new FileResources("/servers/" + intServerID + "/renders/", YAMS.Core.RootFolder + "\\servers\\" + intServerID + "\\renders\\"));
+                publicModule.Resources.Add(new FileResources("/servers/" + intServerID + "/renders/", Core.StoragePath + intServerID + "\\renders\\"));
             }
             publicServer.Add(publicModule);
 
@@ -100,7 +99,7 @@ namespace YAMS
             {
                 //Previous service has not released the port, so hang on and try again.
                 AdminTryCount++;
-                Database.AddLog("Admin Web server port still in use, attempt " + intTryCount + ": " + e.Message, "web", "warn");
+                Database.AddLog("Admin Web server port still in use, attempt " + AdminTryCount + ": " + e.Message, "web", "warn");
                 Thread.Sleep(1000);
                 if (AdminTryCount < 120)
                 {
@@ -131,7 +130,7 @@ namespace YAMS
             {
                 //Previous service has not released the port, so hang on and try again.
                 PublicTryCount++;
-                Database.AddLog("Public Web server port still in use, attempt " + intTryCount + ": " + e.Message, "web", "warn");
+                Database.AddLog("Public Web server port still in use, attempt " + PublicTryCount + ": " + e.Message, "web", "warn");
                 Thread.Sleep(1000);
                 if (PublicTryCount < 120)
                 {

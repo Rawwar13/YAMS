@@ -36,15 +36,19 @@
             this.lblStatus = new System.Windows.Forms.Label();
             this.timStatus = new System.Windows.Forms.Timer(this.components);
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btnUpdateClient = new System.Windows.Forms.Button();
             this.btnConsoleStart = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.btnResetPassword = new System.Windows.Forms.Button();
             this.txtPassword = new System.Windows.Forms.TextBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.btnSwitchBranch = new System.Windows.Forms.Button();
             this.selUpdateBranch = new System.Windows.Forms.ListBox();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.lblStoragePath = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
             this.lblPublicPort = new System.Windows.Forms.Label();
             this.lblAdminPort = new System.Windows.Forms.Label();
             this.lblGUI = new System.Windows.Forms.Label();
@@ -57,13 +61,15 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.btnSwitchBranch = new System.Windows.Forms.Button();
-            this.btnUpdateClient = new System.Windows.Forms.Button();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.btnChangePath = new System.Windows.Forms.Button();
+            this.txtStoragePath = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox5.SuspendLayout();
+            this.groupBox6.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -122,6 +128,16 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Admin";
             // 
+            // btnUpdateClient
+            // 
+            this.btnUpdateClient.Location = new System.Drawing.Point(6, 39);
+            this.btnUpdateClient.Name = "btnUpdateClient";
+            this.btnUpdateClient.Size = new System.Drawing.Size(104, 23);
+            this.btnUpdateClient.TabIndex = 1;
+            this.btnUpdateClient.Text = "Update Client";
+            this.btnUpdateClient.UseVisualStyleBackColor = true;
+            this.btnUpdateClient.Click += new System.EventHandler(this.btnUpdateClient_Click);
+            // 
             // btnConsoleStart
             // 
             this.btnConsoleStart.Location = new System.Drawing.Point(6, 15);
@@ -173,6 +189,16 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Update Branch";
             // 
+            // btnSwitchBranch
+            // 
+            this.btnSwitchBranch.Location = new System.Drawing.Point(186, 19);
+            this.btnSwitchBranch.Name = "btnSwitchBranch";
+            this.btnSwitchBranch.Size = new System.Drawing.Size(98, 31);
+            this.btnSwitchBranch.TabIndex = 3;
+            this.btnSwitchBranch.Text = "Set";
+            this.btnSwitchBranch.UseVisualStyleBackColor = true;
+            this.btnSwitchBranch.Click += new System.EventHandler(this.btnSwitchBranch_Click);
+            // 
             // selUpdateBranch
             // 
             this.selUpdateBranch.FormattingEnabled = true;
@@ -206,6 +232,8 @@
             // 
             // groupBox5
             // 
+            this.groupBox5.Controls.Add(this.lblStoragePath);
+            this.groupBox5.Controls.Add(this.label10);
             this.groupBox5.Controls.Add(this.lblPublicPort);
             this.groupBox5.Controls.Add(this.lblAdminPort);
             this.groupBox5.Controls.Add(this.lblGUI);
@@ -218,12 +246,30 @@
             this.groupBox5.Controls.Add(this.label3);
             this.groupBox5.Controls.Add(this.label2);
             this.groupBox5.Controls.Add(this.label1);
-            this.groupBox5.Location = new System.Drawing.Point(13, 262);
+            this.groupBox5.Location = new System.Drawing.Point(12, 331);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(294, 121);
+            this.groupBox5.Size = new System.Drawing.Size(294, 157);
             this.groupBox5.TabIndex = 6;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Information";
+            // 
+            // lblStoragePath
+            // 
+            this.lblStoragePath.AutoSize = true;
+            this.lblStoragePath.Location = new System.Drawing.Point(99, 126);
+            this.lblStoragePath.Name = "lblStoragePath";
+            this.lblStoragePath.Size = new System.Drawing.Size(13, 13);
+            this.lblStoragePath.TabIndex = 13;
+            this.lblStoragePath.Text = "0";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(20, 126);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(72, 13);
+            this.label10.TabIndex = 12;
+            this.label10.Text = "Storage Path:";
             // 
             // lblPublicPort
             // 
@@ -333,38 +379,49 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "DB Schema:";
             // 
-            // btnSwitchBranch
+            // groupBox6
             // 
-            this.btnSwitchBranch.Location = new System.Drawing.Point(186, 19);
-            this.btnSwitchBranch.Name = "btnSwitchBranch";
-            this.btnSwitchBranch.Size = new System.Drawing.Size(98, 31);
-            this.btnSwitchBranch.TabIndex = 3;
-            this.btnSwitchBranch.Text = "Set";
-            this.btnSwitchBranch.UseVisualStyleBackColor = true;
-            this.btnSwitchBranch.Click += new System.EventHandler(this.btnSwitchBranch_Click);
+            this.groupBox6.Controls.Add(this.txtStoragePath);
+            this.groupBox6.Controls.Add(this.btnChangePath);
+            this.groupBox6.Location = new System.Drawing.Point(13, 259);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(292, 68);
+            this.groupBox6.TabIndex = 7;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Change Storage Path";
             // 
-            // btnUpdateClient
+            // btnChangePath
             // 
-            this.btnUpdateClient.Location = new System.Drawing.Point(6, 39);
-            this.btnUpdateClient.Name = "btnUpdateClient";
-            this.btnUpdateClient.Size = new System.Drawing.Size(104, 23);
-            this.btnUpdateClient.TabIndex = 1;
-            this.btnUpdateClient.Text = "Update Client";
-            this.btnUpdateClient.UseVisualStyleBackColor = true;
-            this.btnUpdateClient.Click += new System.EventHandler(this.btnUpdateClient_Click);
+            this.btnChangePath.Location = new System.Drawing.Point(209, 39);
+            this.btnChangePath.Name = "btnChangePath";
+            this.btnChangePath.Size = new System.Drawing.Size(75, 23);
+            this.btnChangePath.TabIndex = 0;
+            this.btnChangePath.Text = "Move Path";
+            this.btnChangePath.UseVisualStyleBackColor = true;
+            this.btnChangePath.Click += new System.EventHandler(this.btnChangePath_Click);
+            // 
+            // txtStoragePath
+            // 
+            this.txtStoragePath.Location = new System.Drawing.Point(10, 39);
+            this.txtStoragePath.Name = "txtStoragePath";
+            this.txtStoragePath.Size = new System.Drawing.Size(193, 20);
+            this.txtStoragePath.TabIndex = 1;
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(319, 392);
+            this.ClientSize = new System.Drawing.Size(319, 500);
+            this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MinimumSize = new System.Drawing.Size(335, 430);
             this.Name = "frmMain";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "YAMS Control";
             this.groupBox1.ResumeLayout(false);
@@ -376,6 +433,8 @@
             this.groupBox4.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -411,6 +470,11 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnSwitchBranch;
         private System.Windows.Forms.Button btnUpdateClient;
+        private System.Windows.Forms.Label lblStoragePath;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.Button btnChangePath;
+        private System.Windows.Forms.TextBox txtStoragePath;
 
     }
 }

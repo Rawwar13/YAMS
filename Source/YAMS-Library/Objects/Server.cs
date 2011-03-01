@@ -48,7 +48,7 @@ namespace YAMS
         public MCServer(int intServerID)
         {
             this.ServerID = intServerID;
-            this.strWorkingDir = YAMS.Core.RootFolder + "\\servers\\" + this.ServerID.ToString() + "\\config\\";
+            this.strWorkingDir = Core.StoragePath + this.ServerID.ToString() + "\\config\\";
 
             this.bolEnableJavaOptimisations = Convert.ToBoolean(Database.GetSetting(this.ServerID, "ServerEnableOptimisations"));
             this.intAssignedMem = Convert.ToInt32(Database.GetSetting(this.ServerID, "ServerAssignedMemory"));
@@ -56,7 +56,7 @@ namespace YAMS
             this.ServerType = Convert.ToString(Database.GetSetting(this.ServerID, "ServerType"));
             this.LogonMode = Convert.ToString(Database.GetSetting(this.ServerID, "ServerLogonMode"));
 
-            this.ServerDirectory = YAMS.Core.RootFolder + "\\servers\\" + this.ServerID.ToString() + @"\";
+            this.ServerDirectory = Core.StoragePath + this.ServerID.ToString() + @"\";
         }
 
         public void Start()
@@ -74,7 +74,7 @@ namespace YAMS
             try
             {
                 //Basic arguments in all circumstances
-                var strArgs = "-Xmx" + intAssignedMem + "M -Xms" + intAssignedMem + @"M -jar ..\..\..\lib\";
+                var strArgs = "-Xmx" + intAssignedMem + "M -Xms" + intAssignedMem + @"M -jar " + "\"" + Core.RootFolder + "\\lib\\";
                 switch (this.ServerType) {
                     case "vanilla":
                         strArgs += "minecraft_server.jar";
@@ -86,7 +86,7 @@ namespace YAMS
                         strArgs += "minecraft_server.jar";
                         break;
                 }
-                strArgs += " nogui";
+                strArgs += "\" nogui";
                 var strFileName = YAMS.Util.JavaPath() + "java.exe";
 
                 //If we have enabled the java optimisations add the additional

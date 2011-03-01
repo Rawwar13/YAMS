@@ -42,7 +42,7 @@ namespace YAMS.AddOns
             Process prcBiomeExtractor = new Process();
             prcBiomeExtractor.StartInfo.UseShellExecute = false;
             prcBiomeExtractor.StartInfo.FileName = YAMS.Util.JavaPath() + "java.exe";
-            prcBiomeExtractor.StartInfo.Arguments = "-jar MinecraftBiomeExtractor.jar -nogui \"" + Core.RootFolder + "\\servers\\" + this.Server.ServerID + "\\world\"";
+            prcBiomeExtractor.StartInfo.Arguments = "-jar MinecraftBiomeExtractor.jar -nogui \"" + Core.StoragePath + this.Server.ServerID + "\\world\"";
             prcBiomeExtractor.StartInfo.CreateNoWindow = true;
             prcBiomeExtractor.StartInfo.RedirectStandardError = true;
             prcBiomeExtractor.StartInfo.RedirectStandardInput = true;

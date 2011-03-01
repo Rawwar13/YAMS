@@ -50,7 +50,7 @@ namespace YAMS_Updater
             WorkingForm.prgCurrentTask.Value = 33;
             if (!Directory.Exists(Core.RootFolder + @"\lib\")) Directory.CreateDirectory(Core.RootFolder + @"\lib\");
             WorkingForm.prgCurrentTask.Value = 66;
-            if (!Directory.Exists(Core.RootFolder + @"\servers\")) Directory.CreateDirectory(Core.RootFolder + @"\servers\");
+            if (!Directory.Exists(Core.StoragePath)) Directory.CreateDirectory(Core.StoragePath);
             WorkingForm.prgCurrentTask.Value = 100;
 
             //Grab latest web app

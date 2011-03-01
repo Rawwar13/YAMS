@@ -25,6 +25,10 @@ namespace YAMS_Updater
             lblAdminPort.Text = YAMS.Database.GetSetting("AdminListenPort", "YAMS");
             lblPublicPort.Text = YAMS.Database.GetSetting("PublicListenPort", "YAMS");
 
+            //Storage Path
+            lblStoragePath.Text = YAMS.Database.GetSetting("StoragePath", "YAMS");
+            txtStoragePath.Text = YAMS.Database.GetSetting("StoragePath", "YAMS");
+
             //Set current update branch
             switch (YAMS.Database.GetSetting("UpdateBranch", "YAMS")) {
                 case "live":
@@ -130,5 +134,34 @@ namespace YAMS_Updater
             MessageBox.Show("Please be aware if you have large worlds or mods, this can take a long time\n\nThe app may report \"Not Responding\" but it is still copying.");
             YAMS.Util.CopyMCClient();
         }
+
+        private void btnChangePath_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("This will stop all servers and move their files to the new location", "Confirm move", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                //Stop the service, which in turn stops all the servers
+                Program.StopService();
+                bool bolStopped = false;
+                while (!bolStopped)
+                {
+                    ServiceController svcYAMS = new ServiceController("YAMS_Service");
+                    if (svcYAMS.Status.Equals(ServiceControllerStatus.Stopped))
+                    {
+                        bolStopped = true;
+                    }
+                    else { System.Threading.Thread.Sleep(1000); }
+                }
+
+                //Copy all files to the new location
+                YAMS.Util.Copy(YAMS.Database.GetSetting("StoragePath", "YAMS"), txtStoragePath.Text);
+
+                //Set the DB path
+                YAMS.Database.SaveSetting("StoragePath", txtStoragePath.Text);
+
+                //Start the service back up
+                Program.StartService();
+            }
+        }
+
     }
 }
