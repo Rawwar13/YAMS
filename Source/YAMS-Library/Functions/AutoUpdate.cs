@@ -144,6 +144,7 @@ namespace YAMS
                     //Update Tectonicus
                     if (Convert.ToBoolean(Database.GetSetting("TectonicusInstalled", "YAMS")))
                     {
+                        if (!Directory.Exists(YAMS.Core.RootFolder + @"\apps\tectonicus\")) Directory.CreateDirectory(YAMS.Core.RootFolder + @"\apps\tectonicus\");
                         strTectonicusVer = dicVers["tectonicus"];
                         if (UpdateIfNeeded(GetExternalURL("tectonicus", strTectonicusVer), YAMS.Core.RootFolder + @"\apps\tectonicus\tectonicus.jar.update", "modified"))
                         {
@@ -258,7 +259,7 @@ namespace YAMS
             switch (strApp)
             {
                 case "c10t":
-                    strReturn = dicAddOnURLS[strApp + YAMS.Util.GetBitness()];
+                    strReturn = dicAddOnURLS[strApp + "-" + YAMS.Util.GetBitness()];
                     break;
                 default:
                     strReturn = dicAddOnURLS[strApp];
