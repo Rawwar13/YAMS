@@ -76,19 +76,24 @@
     <Compile Include="AddOns\App.cs" />
     <Compile Include="AddOns\BiomeExtractor.cs" />
     <Compile Include="AddOns\c10t.cs" />
+    <Compile Include="AddOns\NBToolkit.cs" />
     <Compile Include="AddOns\Overviewer.cs" />
+    <Compile Include="AddOns\Tectonicus.cs" />
     <Compile Include="Functions\AutoUpdate.cs" />
     <Compile Include="Core.cs" />
+    <Compile Include="Functions\Backup.cs" />
     <Compile Include="Functions\JobEngine.cs" />
     <Compile Include="Functions\Networking.cs" />
-    <Compile Include="Functions\WebTemplate.cs" />
+    <Compile Include="Web\AdminAPI.cs" />
+    <Compile Include="Web\PublicAPI.cs" />
+    <Compile Include="Web\WebTemplate.cs" />
     <Compile Include="Objects\Client.cs" />
     <Compile Include="Functions\Database.cs" />
     <Compile Include="Objects\Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Objects\Server.cs" />
     <Compile Include="Functions\Util.cs" />
-    <Compile Include="Functions\Web.cs" />
+    <Compile Include="Web\WebServer.cs" />
     <Compile Include="Objects\Wrapper.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -128,7 +133,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_BuildVersioningStyle="None.None.Increment.TimeStamp" BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" />
+      <UserProperties BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" BuildVersion_BuildVersioningStyle="None.None.Increment.TimeStamp" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>

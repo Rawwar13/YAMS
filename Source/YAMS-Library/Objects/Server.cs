@@ -122,21 +122,6 @@ namespace YAMS
                 this.Running = true;
                 Database.AddLog("Server Started", "server", "info", false, this.ServerID);
 
-                //Open Firewall and try a portforward
-                //try
-                //{
-                //    Networking.OpenFirewallPort(Convert.ToInt32(YAMS.Database.GetSetting("server-port", "MC", this.ServerID)), this.ServerTitle);
-                //    Networking.OpenUPnP(Convert.ToInt32(YAMS.Database.GetSetting("server-port", "MC", this.ServerID)), this.ServerTitle);
-                //}
-                //catch (Exception e)
-                //{
-                //    YAMS.Database.AddLog(e.Message);
-                //}
-
-
-                //Start our wrapper
-                //YAMS.Wrapper.Listen wrapper = new YAMS.Wrapper.Listen(IPAddress.Parse(YAMS.Database.GetSetting("ListenIP", "YAMS")), Convert.ToInt32(YAMS.Database.GetSetting("ListenPort", "YAMS")));
-
             }
             catch (Exception e)
             {
