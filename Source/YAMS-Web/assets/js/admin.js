@@ -47,14 +47,14 @@ YAMS.admin = {
         panelLoader.insert();
 
         var loader = new YAMS.L({
-            require: ["layout", "connection", "json", "tabview"],
+            require: ["layout", "connection", "json", "tabview", "menu"],
             loadOptional: true,
             combine: true,
             filter: 'debug',
             onSuccess: function () {
                 YAMS.admin.layout = new YAHOO.widget.Layout({
                     units: [
-						{ position: 'top', height: 40, header: 'Yet Another Minecraft Server', collapse: false, resize: false },
+						{ position: 'top', height: 27, body: 'header', collapse: false, resize: false, scroll: null, zIndex: 2 },
 						{ position: 'right', header: 'Server Status', width: 300, resize: false, gutter: '0px 5px', collapse: true, scroll: false, body: 'server-status', animate: true },
 						{ position: 'bottom', header: 'Global Log', height: 200, resize: true, body: 'yams-log', gutter: '5px', collapse: true, scroll: true },
 						{ position: 'left', header: 'Menu', width: 200, resize: false, body: 'left-menu', gutter: '0px 5px', collapse: true, close: false, scroll: true, animate: true },
@@ -62,6 +62,17 @@ YAMS.admin = {
 					]
                 });
                 YAMS.admin.layout.on('render', function () {
+                    //Build Menu
+                    YAMS.admin.menuBar = new YAHOO.widget.MenuBar("top-menu", {
+                        lazyload: true,
+                        autosubmenudisplay: true,
+                        hidedelay: 750,
+                        itemdata: YAMS.admin.menuData
+                    });
+
+                    YAMS.admin.menuBar.render(YAMS.admin.layout.getUnitByPosition('top').body);
+
+                    //Build server controls
                     var r = YAMS.admin.layout.getUnitByPosition('right').body;
                     var s = document.createElement('div');
                     s.id = 'status';
@@ -191,6 +202,7 @@ YAMS.admin = {
         //Clear out any previous contents
         YAMS.D.get('console').innerHTML = '';
         YAMS.D.get('chat').innerHTML = '';
+        YAMS.admin.lastServerLogId = 0;
         clearInterval(YAMS.admin.serverTimer);
         //Fix the server
         YAMS.admin.selectedServer = YAMS.admin.servers[serverid].id;
@@ -295,8 +307,8 @@ YAMS.admin = {
 
             var l = YAMS.D.get('console');
             var c = YAMS.D.get('chat');
-            if (l.scrollTop == l.scrollHeight || l.scrollTop == 0) var bolScrollL = true;
-            if (c.scrollTop == c.scrollHeight || c.scrollTop == 0) var bolScrollC = true;
+            //if (l.scrollTop == l.scrollHeight || l.scrollTop == 0) var bolScrollL = true;
+            //if (c.scrollTop == c.scrollHeight || c.scrollTop == 0) var bolScrollC = true;
             for (var i = 0, len = results.Table.length - 1; len >= i; --len) {
                 var r = results.Table[len];
                 var s = document.createElement('div');
@@ -312,8 +324,8 @@ YAMS.admin = {
                 }
                 YAMS.admin.lastServerLogId = r.LogID;
             }
-            if (bolScrollL) l.scrollTop = l.scrollHeight;
-            if (bolScrollC) c.scrollTop = c.scrollHeight;
+            l.scrollTop = l.scrollHeight;
+            c.scrollTop = c.scrollHeight;
             YAMS.admin.loading.cfg.setProperty('visible', false);
         },
         failure: function (o) {
@@ -330,7 +342,7 @@ YAMS.admin = {
             catch (x) { YAMS.admin.log('JSON Parse Failed'); return; }
 
             var l = YAMS.admin.layout.getUnitByPosition('bottom').body;
-            if (l.scrollTop == l.scrollHeight) var bolScroll = true;
+            //if (l.scrollTop == l.scrollHeight) var bolScroll = true;
             for (var i = 0, len = results.Table.length - 1; len >= i; --len) {
                 var r = results.Table[len];
                 var s = document.createElement('div');
@@ -356,14 +368,81 @@ YAMS.admin = {
         }
     },
 
+    menuData: [
+        {
+            text: "<em id=\"yahoolabel\">Yahoo!</em>",
+            submenu: {
+                id: "yahoo",
+                itemdata: [
+                    "About Yahoo!",
+                    "YUI Team Info",
+                    "Preferences"
+                ]
+            }
+        },
+        {
+            text: "File",
+            submenu: {
+                id: "filemenu",
+                itemdata: [
+                    { text: "New File", helptext: "Ctrl + N", onclick: { fn: onMenuItemClick }, keylistener: { ctrl: true, keys: 78} },
+                    "New Folder",
+                    { text: "Open", helptext: "Ctrl + O", onclick: { fn: onMenuItemClick }, keylistener: { ctrl: true, keys: 79} },
+                    {
+                        text: "Open With...",
+                        submenu: {
+                            id: "applications",
+                            itemdata: [
+                                "Application 1",
+                                "Application 2",
+                                "Application 3",
+                                "Application 4"
+                            ]
+                        }
+                    },
+                    { text: "Print", helptext: "Ctrl + P", onclick: { fn: onMenuItemClick }, keylistener: { ctrl: true, keys: 80} }
+                ]
+            }
+        },
+        {
+            text: "Edit",
+            submenu: {
+                id: "editmenu",
+                itemdata: [
+                    [
+                        { text: "Undo", helptext: "Ctrl + Z", onclick: { fn: onMenuItemClick }, keylistener: { ctrl: true, keys: 90} },
+                        { text: "Redo", helptext: "Ctrl + Y", disabled: true }
+                    ],
+                    [
+                        { text: "Cut", helptext: "Ctrl + X", disabled: true },
+                        { text: "Copy", helptext: "Ctrl + C", disabled: true },
+                        { text: "Paste", helptext: "Ctrl + V", onclick: { fn: onMenuItemClick }, keylistener: { ctrl: true, keys: 86} },
+                        { text: "Delete", helptext: "Del", disabled: true }
+                    ],
+                    [{ text: "Select All", helptext: "Ctrl + A", onclick: { fn: onMenuItemClick }, keylistener: { ctrl: true, keys: 65}}],
+                    [
+                        { text: "Find", helptext: "Ctrl + F", onclick: { fn: onMenuItemClick }, keylistener: { ctrl: true, keys: 70} },
+                        { text: "Find Again", helptext: "Ctrl + G", onclick: { fn: onMenuItemClick }, keylistener: { ctrl: true, keys: 71} }
+                    ]
+            ]
+            }
+        },
+        "View",
+        "Favorites",
+        "Tools",
+        "Help"
+    ],
+
     server: function (id, name, ver) {
         this.id = id;
         this.name = name;
         this.ver = ver;
     }
-
 }
 
+function onMenuItemClick() {
+    alert("Callback for MenuItem: " + this.cfg.getProperty("text"));
+};
 
 YAMS.E.onDOMReady(YAMS.admin.init);
 
