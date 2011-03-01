@@ -158,6 +158,15 @@ namespace YAMS.Web
                         case "upload-world":
                             var test = context.Request.Files["new-world"];
                             break;
+                        case "about":
+                            Dictionary<string, string> dicAbout = new Dictionary<string, string> {
+                                { "dll" , FileVersionInfo.GetVersionInfo(Path.Combine(Core.RootFolder, "YAMS-Library.dll")).FileVersion },
+                                { "svc" , FileVersionInfo.GetVersionInfo(Path.Combine(Core.RootFolder, "YAMS-Service.exe")).FileVersion },
+                                { "gui" , FileVersionInfo.GetVersionInfo(Path.Combine(Core.RootFolder, "YAMS-Updater.exe")).FileVersion },
+                                { "db" , Database.GetSetting("DBSchema", "YAMS") }
+                            };
+                            strResponse = JsonConvert.SerializeObject(dicAbout, Formatting.Indented);
+                            break;
                         default:
                             return ProcessingResult.Abort;
                     }
