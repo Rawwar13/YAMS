@@ -82,7 +82,7 @@ namespace YAMS
         {
             foreach (KeyValuePair<int, MCServer> kvp in Core.Servers)
             {
-                Backup.BackupNow(kvp.Value);
+                Backup.BackupIfNeeded(kvp.Value);
             }
         }
     }

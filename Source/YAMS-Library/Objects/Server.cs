@@ -40,6 +40,7 @@ namespace YAMS
         public string ServerVersion = "";
         public string ServerTitle = "";
         public string LogonMode = "blacklist";
+        public bool HasChanged = false;
 
         public bool RestartNeeded = false;
 
@@ -302,6 +303,7 @@ namespace YAMS
         private void PlayerLogin(string strName)
         {
             this.Players.Add(strName, new Objects.Player(strName, this));
+            this.HasChanged = true;
         }
         private void PlayerLogout(string strName)
         {
