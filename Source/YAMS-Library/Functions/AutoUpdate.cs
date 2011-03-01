@@ -62,14 +62,14 @@ namespace YAMS
         public static Dictionary<string, string> dicAddOnURLS = new Dictionary<string, string>
         {
             { "tectonicus", "http://www.triangularpixels.com/Tectonicus/Tectonicus_vxxx.jar" },
-            { "overviewer", "https://github.com/downloads/brownan/Minecraft-Overviewer/Overviewer-xxx.zip" },
+            { "overviewer", "https://github.com/downloads/brownan/Minecraft-Overviewer/nightly-release-xxx.zip" },
             { "biome-extractor", "http://dl.dropbox.com/u/107712/MCMap/Minecraft-Biome-Extractor-vxxx.zip" },
             { "c10t-x86", "http://toolchain.eu/minecraft/c10t/releases/c10t-xxx-windows-x86.zip" },
             { "c10t-x64", "http://toolchain.eu/minecraft/c10t/releases/c10t-xxx-windows-x86_64.zip" }
         };
 
         //Default versions
-        private static string strOverviewerVer = "0.0.5";
+        private static string strOverviewerVer = "0.0.5-87-gcaa1ef1";
         private static string strC10tVer = "1.4";
         private static string strBiomeExtractorVer = "071a";
         private static string strTectonicusVer = "1.19";
@@ -103,6 +103,7 @@ namespace YAMS
                     string json = File.ReadAllText(YAMS.Core.RootFolder + @"\lib\versions.json");
                     Dictionary<string, string> dicVers = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
 
+                    //Update overviewer
                     if (Convert.ToBoolean(Database.GetSetting("OverviewerInstalled", "YAMS"))) {
                         strOverviewerVer = dicVers["overviewer"];
                         if (UpdateIfNeeded(GetExternalURL("overviewer", strOverviewerVer), YAMS.Core.RootFolder + @"\apps\overviewer.zip"))

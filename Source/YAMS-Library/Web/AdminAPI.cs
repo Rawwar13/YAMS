@@ -82,7 +82,7 @@ namespace YAMS.Web
                         case "gmap":
                             //Maps a server
                             s = Core.Servers[Convert.ToInt32(context.Request.Parameters["serverid"])];
-                            AddOns.Tectonicus gmap = new AddOns.Tectonicus(s);
+                            AddOns.Overviewer gmap = new AddOns.Overviewer(s);
                             gmap.Start();
                             strResponse = "{ \"result\" : \"sent\" }";
                             break;
