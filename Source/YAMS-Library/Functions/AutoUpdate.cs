@@ -31,10 +31,14 @@ namespace YAMS
         public static bool bolC10tUpdateAvailable = false;
         public static bool bolTectonicusUpdateAvailable = false;
         public static bool bolRestartNeeded = false;
+        public static bool bolBukkitUpdateAvailable = false;
 
         //Minecraft URLs
         public static string strMCServerURL = "http://www.minecraft.net/download/minecraft_server.jar";
         public static string strMCClientURL = "http://minecraft.net/download/Minecraft.jar";
+
+        //Bukkit URLs
+        public static string strBukkitServerURL = "http://ci.bukkit.org/job/dev-CraftBukkit/lastSuccessfulBuild/artifact/target/craftbukkit-0.0.1-SNAPSHOT.jar";
 
         //YAMS URLs
         public static Dictionary<string, string> strYAMSDLLURL = new Dictionary<string, string>() {
@@ -85,6 +89,12 @@ namespace YAMS
                 //Check Minecraft server first
                 if (bolUpdateJAR) bolServerUpdateAvailable = UpdateIfNeeded(strMCServerURL, YAMS.Core.RootFolder + @"\lib\minecraft_server.jar.UPDATE");
 
+                //Have they opted for bukkit? If so, update that too
+                if (Convert.ToBoolean(Database.GetSetting("BukkitInstalled", "YAMS")))
+                {
+                    bolBukkitUpdateAvailable = UpdateIfNeeded(strBukkitServerURL, Core.RootFolder + @"\lib\craftbukkit.jar.UPDATE", "modified");
+                }
+                
                 //Now update self
                 if (bolUpdateSVC)
                 {
@@ -185,11 +195,11 @@ namespace YAMS
                 }
 
                 //Restart individual servers?
-                if ((bolServerUpdateAvailable) && Convert.ToBoolean(Database.GetSetting("RestartOnJarUpdate", "YAMS")))
+                if ((bolServerUpdateAvailable || bolBukkitUpdateAvailable) && Convert.ToBoolean(Database.GetSetting("RestartOnJarUpdate", "YAMS")))
                 {
                     foreach (KeyValuePair<int, MCServer> kvp in Core.Servers)
                     {
-                        if (kvp.Value.Players.Count == 0)
+                        if (kvp.Value.Players.Count == 0 && ((kvp.Value.ServerType == "vanilla" && bolServerUpdateAvailable) || (kvp.Value.ServerType == "bukkit" && bolBukkitUpdateAvailable)))
                         {
                             kvp.Value.Restart();
                         }

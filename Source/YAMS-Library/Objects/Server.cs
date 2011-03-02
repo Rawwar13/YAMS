@@ -27,7 +27,7 @@ namespace YAMS
         private Regex regPlayerLoggedOut = new Regex(@"^([\w]+) ?(lost connection)");
         private Regex regServerVersion = new Regex(@"^(?:Starting minecraft server version )");
 
-        private string ServerType = "vanilla";
+        public string ServerType = "vanilla";
 
         private AddOns.Overviewer gmap;
 
