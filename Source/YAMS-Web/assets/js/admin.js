@@ -54,7 +54,7 @@ YAMS.admin = {
             onSuccess: function () {
                 YAMS.admin.layout = new YAHOO.widget.Layout({
                     units: [
-						{ position: 'top', height: 27, body: 'header', collapse: false, resize: false, scroll: null, zIndex: 2 },
+						{ position: 'top', height: 30, body: 'header', collapse: false, resize: false, scroll: null, zIndex: 2 },
 						{ position: 'right', header: 'Server Status', width: 300, resize: false, gutter: '0px 5px', collapse: true, scroll: false, body: 'server-status', animate: true },
 						{ position: 'bottom', header: 'Global Log', height: 200, resize: true, body: 'yams-log', gutter: '5px', collapse: true, scroll: true },
 						//{ position: 'left', header: 'Menu', width: 200, resize: false, body: 'left-menu', gutter: '0px 5px', collapse: true, close: false, scroll: true, animate: true },
@@ -360,6 +360,45 @@ YAMS.admin = {
     },
 	
 	aboutYAMS: function() {
+		YAMS.admin.about = new YAHOO.widget.Panel("about-panel", {
+			width: "240px",
+			fixedcenter: true,
+			close: true,
+			draggable: false,
+			zindex: 4,
+			modal: true,
+			visible: true,
+			filterWord: true
+		});
+		YAMS.admin.about.setHeader("About YAMS");
+		YAMS.admin.about.setBody('<img src="http://l.yimg.com/a/i/us/per/gr/gp/rel_interstitial_loading.gif" />');
+		YAMS.admin.about.render(document.body);
+		YAMS.admin.about.show();
+		
+		YAMS.admin.about.subscribe("close", YAMS.admin.about.destroy);
+		
+		var trans = YAHOO.util.Connect.asyncRequest('GET', '/assets/parts/about.html', {
+			success: function(o) {
+				YAMS.admin.about.setBody(o.responseText);
+				var trans2 = YAHOO.util.Connect.asyncRequest('POST', '/api/', {
+					success: function(o) {
+						var results = [];
+						try { results = YAHOO.lang.JSON.parse(o.responseText); }
+						catch (x) { YAMS.admin.log('JSON Parse Failed'); return; }
+						YAMS.S('#dll-ver .version-number')[0].innerHTML = results.dll;
+						YAMS.S('#svc-ver .version-number')[0].innerHTML = results.svc;
+						YAMS.S('#gui-ver .version-number')[0].innerHTML = results.gui;
+						YAMS.S('#db-ver .version-number')[0].innerHTML = results.db;
+					},
+					failure: function(o) {
+						YAMS.admin.about.setBody("Error getting about data;");
+					}
+				}, 'action=about');
+			},
+			failure: function(o) {
+				YAMS.admin.about.setBody("Error getting about template;");
+			}
+		})
 		
 	},
 
@@ -376,18 +415,6 @@ YAMS.admin = {
 		var oIFrame,
 			oElement,
 			nOffsetWidth;
-		// Keep the left-most submenu against the left edge of the browser viewport
-
-		if (this.id == "yams") {
-			YAHOO.util.Dom.setX(this.element, 0);
-
-			oIFrame = this.iframe;            
-
-			if (oIFrame) {
-				YAHOO.util.Dom.setX(oIFrame, 0);
-			}
-			this.cfg.setProperty("x", 0, true);
-		}
 		/*
 			Need to set the width for submenus of submenus in IE to prevent the mouseout 
 			event from firing prematurely when the user mouses off of a MenuItem's 
@@ -410,14 +437,7 @@ YAMS.admin = {
     menuData: [
         {
             text: "<em id=\"yamslabel\">YAMS</em>",
-            submenu: {
-                id: "yams",
-                itemdata: [
-                    { text: "About YAMS", onclick : { fn: YAMS.admin.aboutYAMS }},
-                    { text: "YAMS Website", url: "http://richardbenson.github.com/YAMS" },
-                    { text: "YAMS GitHub", url: "https://github.com/richardbenson/YAMS" }
-                ]
-            }
+			onclick : { fn: aboutYAMS }
         },
         {
             text: "Servers",
@@ -467,6 +487,8 @@ YAMS.admin = {
 function onMenuItemClick() {
     alert("Callback for MenuItem: " + this.cfg.getProperty("text"));
 };
+
+function aboutYAMS() {YAMS.admin.aboutYAMS() };
 
 YAMS.E.onDOMReady(YAMS.admin.init);
 

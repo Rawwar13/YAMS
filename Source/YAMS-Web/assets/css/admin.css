@@ -16,6 +16,13 @@ h1 { margin: 0 0 0.5em 0; }
 
 #players { background-color: #fff; margin: 5px; overflow: auto; border: 1px solid #000; }
 
+.version-label, .version-number { width: 48%; float: left; }
+.version-label { font-weight: bold; text-align: right; padding-right: 5px; }
+.version-number { text-align: left; }
+
+.bd fieldset { border: 1px solid #999; text-align: left; }
+.bd legend { margin: 0px 5px; padding: 0px 2px; font-size: 80%; }
+
 /* Menu */
 em#yamslabel { text-indent: -6em; display: block; background: url(../images/YAMS-Icon.png) center center no-repeat; width: 2em; overflow: hidden; }
 #filemenu.visible .yuimenuitemlabel, #editmenu.visible .yuimenuitemlabel { *zoom: 1; }
