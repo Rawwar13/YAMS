@@ -167,6 +167,17 @@ namespace YAMS.Web
                             };
                             strResponse = JsonConvert.SerializeObject(dicAbout, Formatting.Indented);
                             break;
+                        case "installed-apps":
+                            Dictionary<string, string> dicApps = new Dictionary<string, string> {
+                                { "bukkit" , Database.GetSetting("BukkitInstalled", "YAMS") },
+                                { "overviewer" , Database.GetSetting("OverviewerInstalled", "YAMS") },
+                                { "c10t" , Database.GetSetting("C10tInstalled", "YAMS") },
+                                { "biome-extractor" , Database.GetSetting("BiomeExtractorInstalled", "YAMS") },
+                                { "tectonicus" , Database.GetSetting("TectonicusInstalled", "YAMS") },
+                                { "nbtoolkit" , Database.GetSetting("NBToolkitInstalled", "YAMS") }
+                            };
+                            strResponse = JsonConvert.SerializeObject(dicApps, Formatting.Indented);
+                            break;
                         default:
                             return ProcessingResult.Abort;
                     }
