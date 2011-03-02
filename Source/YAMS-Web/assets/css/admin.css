@@ -17,44 +17,7 @@ h1 { margin: 0 0 0.5em 0; }
 #players { background-color: #fff; margin: 5px; overflow: auto; border: 1px solid #000; }
 
 /* Menu */
-            em#yahoolabel {
- 
-                text-indent: -6em;
-                display: block;
-                background: url(../images/YAMS-Icon.png) center center no-repeat;
-                width: 2em;
-                overflow: hidden;
- 
-            }
- 
- 
-            /*
-                Setting the "zoom" property to "1" triggers the "hasLayout" 
-                property in IE.  This is necessary to fix a bug IE where 
-                mousing mousing off a the text node of MenuItem instance's 
-                text label, or help text without the mouse actually exiting the
-                boundaries of the MenuItem instance will result in the losing  
-                the background color applied when it is selected.
-            */
-            
-            #filemenu.visible .yuimenuitemlabel,
-            #editmenu.visible .yuimenuitemlabel {
- 
-                *zoom: 1;
- 
-            }
- 
- 
-			/*
-				Remove "hasLayout" from the submenu of the file menu.			
-			*/
- 
-            #filemenu.visible .yuimenu .yuimenuitemlabel {
- 
-                *zoom: normal;
- 
-            }
-            
-    .yui-skin-sam .yui-layout .yui-layout-unit-top .yui-layout-wrap div.yui-layout-bd {
-        border: none;
-    }            
+em#yamslabel { text-indent: -6em; display: block; background: url(../images/YAMS-Icon.png) center center no-repeat; width: 2em; overflow: hidden; }
+#filemenu.visible .yuimenuitemlabel, #editmenu.visible .yuimenuitemlabel { *zoom: 1; }
+#filemenu.visible .yuimenu .yuimenuitemlabel { *zoom: normal; }            
+.yui-skin-sam .yui-layout .yui-layout-unit-top .yui-layout-wrap div.yui-layout-bd {	border: none; }            

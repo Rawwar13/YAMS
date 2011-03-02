@@ -57,8 +57,8 @@ YAMS.admin = {
 						{ position: 'top', height: 27, body: 'header', collapse: false, resize: false, scroll: null, zIndex: 2 },
 						{ position: 'right', header: 'Server Status', width: 300, resize: false, gutter: '0px 5px', collapse: true, scroll: false, body: 'server-status', animate: true },
 						{ position: 'bottom', header: 'Global Log', height: 200, resize: true, body: 'yams-log', gutter: '5px', collapse: true, scroll: true },
-						{ position: 'left', header: 'Menu', width: 200, resize: false, body: 'left-menu', gutter: '0px 5px', collapse: true, close: false, scroll: true, animate: true },
-						{ position: 'center', body: 'main' }
+						//{ position: 'left', header: 'Menu', width: 200, resize: false, body: 'left-menu', gutter: '0px 5px', collapse: true, close: false, scroll: true, animate: true },
+						{ position: 'center', body: 'main', gutter: '0px 0px 0px 5px' }
 					]
                 });
                 YAMS.admin.layout.on('render', function () {
@@ -71,6 +71,7 @@ YAMS.admin = {
                     });
 
                     YAMS.admin.menuBar.render(YAMS.admin.layout.getUnitByPosition('top').body);
+					YAMS.admin.menuBar.subscribe("show", YAMS.admin.onSubmenuShow);
 
                     //Build server controls
                     var r = YAMS.admin.layout.getUnitByPosition('right').body;
@@ -139,15 +140,13 @@ YAMS.admin = {
             for (var i = 0, len = results.servers.length; i < len; ++i) {
                 var s = new YAMS.admin.server(results.servers[i].id, results.servers[i].title, results.servers[i].ver);
                 YAMS.admin.servers.push(s);
-                var li = document.createElement('li');
-                var a = document.createElement('a');
-                a.href = "#";
-                a.innerHTML = results.servers[i].title;
-                YAMS.E.on(a, 'click', YAMS.admin.setServer, YAMS.admin.servers.length - 1);
-                li.appendChild(a);
-                ul.appendChild(li);
             }
-            YAMS.admin.layout.getUnitByPosition('left').body.appendChild(ul);
+			YAMS.admin.menuBar.subscribe("render", function() {
+				for (var i = 0, len = YAMS.admin.servers.length; i < len; i++) {
+					var subMenu = YAMS.admin.menuBar.getItem(1).cfg.getProperty("submenu");
+					subMenu.addItems([{ text: YAMS.admin.servers[i].name, onclick: { fn: YAMS.admin.setServer, obj: i } }]);
+				}
+			});
             //Build Tab view
             YAMS.admin.serverTabs = new YAHOO.widget.TabView('server-console');
             YAMS.admin.serverTabs.addTab(new YAHOO.widget.Tab({
@@ -191,13 +190,13 @@ YAMS.admin = {
             YAMS.admin.layout.resize();
 
             //Set initial server
-            YAMS.admin.setServer(0, 0);
+            YAMS.admin.setServer(0, 0, 0);
 
         },
         failure: function () { YAMS.admin.log('Failed to list servers'); }
     },
 
-    setServer: function (e, serverid) {
+    setServer: function (e, b, serverid) {
         YAHOO.util.Event.preventDefault(e);
         //Clear out any previous contents
         YAMS.D.get('console').innerHTML = '';
@@ -359,6 +358,10 @@ YAMS.admin = {
             YAMS.admin.log('updateGlobalLog failed');
         }
     },
+	
+	aboutYAMS: function() {
+		
+	},
 
     leadingZero: function (intInput) {
         if (intInput < 10) {
@@ -367,40 +370,61 @@ YAMS.admin = {
             return intInput;
         }
     },
+	
+	onSubmenuShow: function() {
+
+		var oIFrame,
+			oElement,
+			nOffsetWidth;
+		// Keep the left-most submenu against the left edge of the browser viewport
+
+		if (this.id == "yams") {
+			YAHOO.util.Dom.setX(this.element, 0);
+
+			oIFrame = this.iframe;            
+
+			if (oIFrame) {
+				YAHOO.util.Dom.setX(oIFrame, 0);
+			}
+			this.cfg.setProperty("x", 0, true);
+		}
+		/*
+			Need to set the width for submenus of submenus in IE to prevent the mouseout 
+			event from firing prematurely when the user mouses off of a MenuItem's 
+			text node.
+		*/
+		if ((this.id == "serversmenu" || this.id == "editmenu") && YAHOO.env.ua.ie) {
+			oElement = this.element;
+			nOffsetWidth = oElement.offsetWidth;
+			/*
+				Measuring the difference of the offsetWidth before and after
+				setting the "width" style attribute allows us to compute the 
+				about of padding and borders applied to the element, which in 
+				turn allows us to set the "width" property correctly.
+			*/
+			oElement.style.width = nOffsetWidth + "px";
+			oElement.style.width = (nOffsetWidth - (oElement.offsetWidth - nOffsetWidth)) + "px";
+		}
+	},
 
     menuData: [
         {
-            text: "<em id=\"yahoolabel\">Yahoo!</em>",
+            text: "<em id=\"yamslabel\">YAMS</em>",
             submenu: {
-                id: "yahoo",
+                id: "yams",
                 itemdata: [
-                    "About Yahoo!",
-                    "YUI Team Info",
-                    "Preferences"
+                    { text: "About YAMS", onclick : { fn: YAMS.admin.aboutYAMS }},
+                    { text: "YAMS Website", url: "http://richardbenson.github.com/YAMS" },
+                    { text: "YAMS GitHub", url: "https://github.com/richardbenson/YAMS" }
                 ]
             }
         },
         {
-            text: "File",
+            text: "Servers",
             submenu: {
-                id: "filemenu",
+                id: "serversmenu",
                 itemdata: [
-                    { text: "New File", helptext: "Ctrl + N", onclick: { fn: onMenuItemClick }, keylistener: { ctrl: true, keys: 78} },
-                    "New Folder",
-                    { text: "Open", helptext: "Ctrl + O", onclick: { fn: onMenuItemClick }, keylistener: { ctrl: true, keys: 79} },
-                    {
-                        text: "Open With...",
-                        submenu: {
-                            id: "applications",
-                            itemdata: [
-                                "Application 1",
-                                "Application 2",
-                                "Application 3",
-                                "Application 4"
-                            ]
-                        }
-                    },
-                    { text: "Print", helptext: "Ctrl + P", onclick: { fn: onMenuItemClick }, keylistener: { ctrl: true, keys: 80} }
+                    { text: "New Server", onclick: { fn: onMenuItemClick } }
                 ]
             }
         },
