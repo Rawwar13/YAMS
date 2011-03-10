@@ -308,10 +308,12 @@ namespace YAMS
                     //Update from Schema 1
                     Database.SaveSetting("StoragePath", Core.RootFolder + @"\servers\");
                     Database.SaveSetting("DBSchema", "2");
-                    break;
-                    //goto case 2;
-                //case 2:
+                    goto case 2;
+                case 2:
                     //Update from Schema 2
+                    Database.SaveSetting("UsageData", "true");
+                    Database.SaveSetting("DBSchema", "3");
+                    break;    
                     //goto case 3; //etc
                 default:
                     break;

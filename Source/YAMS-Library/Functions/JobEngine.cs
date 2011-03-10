@@ -8,22 +8,27 @@ using YAMS;
 
 namespace YAMS
 {
-    public class JobEngine
+    public static class JobEngine
     {
 
-        public Timer timJob;
+        public static Timer timJob;
 
-        public void Init()
+        public static void Init()
         {
             //Tick every minute
             timJob = new Timer(new TimerCallback(Tick), null, 0, 1 * 60 * 1000);
         }
 
-        public void Tick(object t)
+        public static void Tick(object t)
         {
             DateTime datNow = DateTime.Now;
             int intMinutes = datNow.Minute;
             int intHour = datNow.Hour;
+
+            //is it time to phone home?
+            if (Database.GetSetting("UsageData", "YAMS") == "true" && intHour == 12) Util.PhoneHome();
+
+            //Get jobs for current minute
             SqlCeDataReader rdJobs = Database.GetJobs(intHour, intMinutes);
 
             MCServer s;

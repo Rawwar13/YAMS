@@ -248,6 +248,46 @@ namespace YAMS
                 CopyAll(diSourceSubDir, nextTargetSubDir);
             }
         }
+
+        public static void PhoneHome()
+        {
+            //Count online players
+            int intPlayers = 0;
+            foreach (KeyValuePair<int, MCServer> kvp in Core.Servers) {
+                intPlayers = intPlayers + kvp.Value.Players.Count;
+            }
+            
+            //Collect Data
+            string strVars = "servers=" + Core.Servers.Count +
+                             "&players=" + intPlayers +
+                             "&overviewer=" + Database.GetSetting("OverviewerInstalled", "YAMS") +
+                             "&c10t=" + Database.GetSetting("C10tInstalled", "YAMS") +
+                             "&tectonicus=" + Database.GetSetting("TectonicusInstalled", "YAMS") +
+                             "&biomeextractor=" + Database.GetSetting("BiomeExtractorInstalled", "YAMS") +
+                             "&nbtoolkit=" + Database.GetSetting("NBToolkitInstalled", "YAMS") +
+                             "&bukkit=" + Database.GetSetting("BukkitInstalled", "YAMS") +
+                             "&updateapps=" + Database.GetSetting("UpdateAddons", "YAMS") +
+                             "&updatejar=" + Database.GetSetting("UpdateJAR", "YAMS") +
+                             "&updategui=" + Database.GetSetting("UpdateGUI", "YAMS") +
+                             "&updatesvc=" + Database.GetSetting("UpdateSVC", "YAMS") +
+                             "&updateweb=" + Database.GetSetting("UpdateWeb", "YAMS");
+
+            //Send info
+            try
+            {
+                HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create("http://www.richardbenson.co.uk/yams/phonehome.php?" + strVars);
+                request.Method = "GET";
+
+                //Grab the response
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+            }
+            catch (System.Net.WebException ex)
+            {
+                Database.AddLog("Couldn't phone home");
+            }
+        }
+        }
    
     }
 }

@@ -60,6 +60,9 @@ namespace YAMS
             int BackupTick = (60 * 60 * 1000);
             timBackup = new Timer(new TimerCallback(timBackup_Tick), null, 5*60*1000, BackupTick);
 
+            //Start job engine
+            JobEngine.Init();
+
             //Start Webserver
             WebServer.Init();
         }
