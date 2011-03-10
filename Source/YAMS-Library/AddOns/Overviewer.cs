@@ -15,6 +15,7 @@ namespace YAMS.AddOns
 
         public override void DoWork()
         {
+
             //Force a server save and turn off level saving
             this.Server.Save();
             this.Server.DisableSaving();
@@ -28,7 +29,11 @@ namespace YAMS.AddOns
             }
 
             string ServerRoot = this.Server.ServerDirectory;
-            string strArgs = "--lighting --cachedir=\"" + ServerRoot + "\\renders\\gmap\\cache\" \"" + ServerRoot + "\\world\" \"" + ServerRoot + "\\renders\\gmap\\output\"";
+            //Check the proper folders exist
+            if (!Directory.Exists(ServerRoot + @"\renders\overviewer\")) Directory.CreateDirectory(ServerRoot + @"\renders\gmap\");
+            if (!Directory.Exists(ServerRoot + @"\renders\overviewer\cache\")) Directory.CreateDirectory(ServerRoot + @"\renders\overviewer\cache\");
+            if (!Directory.Exists(ServerRoot + @"\renders\overviewer\output\")) Directory.CreateDirectory(ServerRoot + @"\renders\overviewer\output\");
+            string strArgs = "--lighting --cachedir=\"" + ServerRoot + "renders\\overviewer\\cache\" \"" + ServerRoot + "\\world\" \"" + ServerRoot + "renders\\overviewer\\output\"";
 
             //First run the biome extractor tool
             Process prcOverviewer = new Process();
