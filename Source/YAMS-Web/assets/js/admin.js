@@ -57,8 +57,8 @@ YAMS.admin = {
 						{ position: 'top', height: 30, body: 'header', collapse: false, resize: false, scroll: null, zIndex: 2 },
 						{ position: 'right', header: 'Server Status', width: 300, resize: false, gutter: '0px 5px', collapse: true, scroll: false, body: 'server-status', animate: true },
 						{ position: 'bottom', header: 'Global Log', height: 200, resize: true, body: 'yams-log', gutter: '5px', collapse: true, scroll: true },
-						//{ position: 'left', header: 'Menu', width: 200, resize: false, body: 'left-menu', gutter: '0px 5px', collapse: true, close: false, scroll: true, animate: true },
-						{ position: 'center', body: 'main', gutter: '0px 0px 0px 5px' }
+                    //{ position: 'left', header: 'Menu', width: 200, resize: false, body: 'left-menu', gutter: '0px 5px', collapse: true, close: false, scroll: true, animate: true },
+						{position: 'center', body: 'main', gutter: '0px 0px 0px 5px' }
 					]
                 });
                 YAMS.admin.layout.on('render', function () {
@@ -71,7 +71,7 @@ YAMS.admin = {
                     });
 
                     YAMS.admin.menuBar.render(YAMS.admin.layout.getUnitByPosition('top').body);
-					YAMS.admin.menuBar.subscribe("show", YAMS.admin.onSubmenuShow);
+                    YAMS.admin.menuBar.subscribe("show", YAMS.admin.onSubmenuShow);
 
                     //Build server controls
                     var r = YAMS.admin.layout.getUnitByPosition('right').body;
@@ -141,12 +141,12 @@ YAMS.admin = {
                 var s = new YAMS.admin.server(results.servers[i].id, results.servers[i].title, results.servers[i].ver);
                 YAMS.admin.servers.push(s);
             }
-			YAMS.admin.menuBar.subscribe("render", function() {
-				for (var i = 0, len = YAMS.admin.servers.length; i < len; i++) {
-					var subMenu = YAMS.admin.menuBar.getItem(1).cfg.getProperty("submenu");
-					subMenu.addItems([{ text: YAMS.admin.servers[i].name, onclick: { fn: YAMS.admin.setServer, obj: i } }]);
-				}
-			});
+            YAMS.admin.menuBar.subscribe("render", function () {
+                for (var i = 0, len = YAMS.admin.servers.length; i < len; i++) {
+                    var subMenu = YAMS.admin.menuBar.getItem(1).cfg.getProperty("submenu");
+                    subMenu.addItems([{ text: YAMS.admin.servers[i].name, onclick: { fn: YAMS.admin.setServer, obj: i}}]);
+                }
+            });
             //Build Tab view
             YAMS.admin.serverTabs = new YAHOO.widget.TabView('server-console');
             YAMS.admin.serverTabs.addTab(new YAHOO.widget.Tab({
@@ -358,49 +358,107 @@ YAMS.admin = {
             YAMS.admin.log('updateGlobalLog failed');
         }
     },
-	
-	aboutYAMS: function() {
-		YAMS.admin.about = new YAHOO.widget.Panel("about-panel", {
-			width: "240px",
-			fixedcenter: true,
-			close: true,
-			draggable: false,
-			zindex: 4,
-			modal: true,
-			visible: true,
-			filterWord: true
-		});
-		YAMS.admin.about.setHeader("About YAMS");
-		YAMS.admin.about.setBody('<img src="http://l.yimg.com/a/i/us/per/gr/gp/rel_interstitial_loading.gif" />');
-		YAMS.admin.about.render(document.body);
-		YAMS.admin.about.show();
-		
-		YAMS.admin.about.subscribe("close", YAMS.admin.about.destroy);
-		
-		var trans = YAHOO.util.Connect.asyncRequest('GET', '/assets/parts/about.html', {
-			success: function(o) {
-				YAMS.admin.about.setBody(o.responseText);
-				var trans2 = YAHOO.util.Connect.asyncRequest('POST', '/api/', {
-					success: function(o) {
-						var results = [];
-						try { results = YAHOO.lang.JSON.parse(o.responseText); }
-						catch (x) { YAMS.admin.log('JSON Parse Failed'); return; }
-						YAMS.S('#dll-ver .version-number')[0].innerHTML = results.dll;
-						YAMS.S('#svc-ver .version-number')[0].innerHTML = results.svc;
-						YAMS.S('#gui-ver .version-number')[0].innerHTML = results.gui;
-						YAMS.S('#db-ver .version-number')[0].innerHTML = results.db;
-					},
-					failure: function(o) {
-						YAMS.admin.about.setBody("Error getting about data;");
-					}
-				}, 'action=about');
-			},
-			failure: function(o) {
-				YAMS.admin.about.setBody("Error getting about template;");
-			}
-		})
-		
-	},
+
+    aboutYAMS: function () {
+        YAMS.admin.about = new YAHOO.widget.Panel("about-panel", {
+            width: "240px",
+            fixedcenter: true,
+            close: true,
+            draggable: false,
+            zindex: 4,
+            modal: true,
+            visible: true,
+            filterWord: true
+        });
+        YAMS.admin.about.setHeader("About YAMS");
+        YAMS.admin.about.setBody('<img src="http://l.yimg.com/a/i/us/per/gr/gp/rel_interstitial_loading.gif" />');
+        YAMS.admin.about.render(document.body);
+        YAMS.admin.about.show();
+
+        YAMS.admin.about.subscribe("close", YAMS.admin.about.destroy);
+
+        var trans = YAHOO.util.Connect.asyncRequest('GET', '/assets/parts/about.html', {
+            success: function (o) {
+                YAMS.admin.about.setBody(o.responseText);
+                var trans2 = YAHOO.util.Connect.asyncRequest('POST', '/api/', {
+                    success: function (o) {
+                        var results = [];
+                        try { results = YAHOO.lang.JSON.parse(o.responseText); }
+                        catch (x) { YAMS.admin.log('JSON Parse Failed'); return; }
+                        YAMS.S('#dll-ver .version-number')[0].innerHTML = results.dll;
+                        YAMS.S('#svc-ver .version-number')[0].innerHTML = results.svc;
+                        YAMS.S('#gui-ver .version-number')[0].innerHTML = results.gui;
+                        YAMS.S('#db-ver .version-number')[0].innerHTML = results.db;
+                    },
+                    failure: function (o) {
+                        YAMS.admin.about.setBody("Error getting about data;");
+                    }
+                }, 'action=about');
+            },
+            failure: function (o) {
+                YAMS.admin.about.setBody("Error getting about template;");
+            }
+        })
+
+    },
+
+    installedApps: function () {
+        YAMS.admin.apps = new YAHOO.widget.Panel("apps-panel", {
+            width: "340px",
+            fixedcenter: true,
+            close: true,
+            draggable: false,
+            zindex: 4,
+            modal: true,
+            visible: true,
+            filterWord: true
+        });
+        YAMS.admin.apps.setHeader("Installed Apps");
+        YAMS.admin.apps.setBody('<img src="http://l.yimg.com/a/i/us/per/gr/gp/rel_interstitial_loading.gif" />');
+        YAMS.admin.apps.render(document.body);
+        YAMS.admin.apps.show();
+
+        YAMS.admin.apps.subscribe("close", YAMS.admin.apps.destroy);
+
+        var trans = YAHOO.util.Connect.asyncRequest('GET', '/assets/parts/apps.html', {
+            success: function (o) {
+                YAMS.admin.apps.setBody(o.responseText);
+                var trans2 = YAHOO.util.Connect.asyncRequest('POST', '/api/', {
+                    success: function (o) {
+                        var results = [];
+                        try { results = YAHOO.lang.JSON.parse(o.responseText); }
+                        catch (x) { YAMS.admin.log('JSON Parse Failed'); return; }
+                        if (results.overviewer === "true") YAMS.D.get('overviewer-installed').checked = true;
+                        if (results.c10t === "true") YAMS.D.get('c10t-installed').checked = true;
+                        if (results.biomeextractor === "true") YAMS.D.get('biomeextractor-installed').checked = true;
+                        if (results.tectonicus === "true") YAMS.D.get('tectonicus-installed').checked = true;
+                        if (results.nbtoolkit === "true") YAMS.D.get('nbtoolkit-installed').checked = true;
+                    },
+                    failure: function (o) {
+                        YAMS.admin.about.setBody("Error getting apps data;");
+                    }
+                }, 'action=installed-apps');
+            },
+            failure: function (o) {
+                YAMS.admin.about.setBody("Error getting apps template;");
+            }
+        })
+    },
+
+    updateApps: function () {
+        var values = "overviewer=" + YAMS.D.get('overviewer-installed').checked + "&" +
+                     "c10t=" + YAMS.D.get('c10t-installed').checked + "&" +
+                     "biomeextractor=" + YAMS.D.get('biomeextractor-installed').checked + "&" +
+                     "tectonicus=" + YAMS.D.get('tectonicus-installed').checked + "&" +
+                     "nbtoolkit=" + YAMS.D.get('nbtoolkit-installed').checked;
+        var trans = YAHOO.util.Connect.asyncRequest('POST', '/api/', {
+            success: function (o) {
+                alert("Selected apps will be downloaded on next update check.");
+                YAMS.admin.apps.destroy();
+            },
+            failure: function (o) { alert("apps not set") }
+        }, 'action=update-apps&' + values);
+    },
 
     leadingZero: function (intInput) {
         if (intInput < 10) {
@@ -409,72 +467,56 @@ YAMS.admin = {
             return intInput;
         }
     },
-	
-	onSubmenuShow: function() {
 
-		var oIFrame,
+    onSubmenuShow: function () {
+
+        var oIFrame,
 			oElement,
 			nOffsetWidth;
-		/*
-			Need to set the width for submenus of submenus in IE to prevent the mouseout 
-			event from firing prematurely when the user mouses off of a MenuItem's 
-			text node.
-		*/
-		if ((this.id == "serversmenu" || this.id == "editmenu") && YAHOO.env.ua.ie) {
-			oElement = this.element;
-			nOffsetWidth = oElement.offsetWidth;
-			/*
-				Measuring the difference of the offsetWidth before and after
-				setting the "width" style attribute allows us to compute the 
-				about of padding and borders applied to the element, which in 
-				turn allows us to set the "width" property correctly.
-			*/
-			oElement.style.width = nOffsetWidth + "px";
-			oElement.style.width = (nOffsetWidth - (oElement.offsetWidth - nOffsetWidth)) + "px";
-		}
-	},
+        /*
+        Need to set the width for submenus of submenus in IE to prevent the mouseout 
+        event from firing prematurely when the user mouses off of a MenuItem's 
+        text node.
+        */
+        if ((this.id == "serversmenu" || this.id == "editmenu") && YAHOO.env.ua.ie) {
+            oElement = this.element;
+            nOffsetWidth = oElement.offsetWidth;
+            /*
+            Measuring the difference of the offsetWidth before and after
+            setting the "width" style attribute allows us to compute the 
+            about of padding and borders applied to the element, which in 
+            turn allows us to set the "width" property correctly.
+            */
+            oElement.style.width = nOffsetWidth + "px";
+            oElement.style.width = (nOffsetWidth - (oElement.offsetWidth - nOffsetWidth)) + "px";
+        }
+    },
 
     menuData: [
         {
             text: "<em id=\"yamslabel\">YAMS</em>",
-			onclick : { fn: aboutYAMS }
+            onclick: { fn: aboutYAMS }
         },
         {
             text: "Servers",
             submenu: {
                 id: "serversmenu",
                 itemdata: [
-                    { text: "New Server", onclick: { fn: onMenuItemClick } }
+                    { text: "New Server", onclick: { fn: onMenuItemClick} }
                 ]
             }
         },
         {
-            text: "Edit",
+            text: "Settings",
             submenu: {
-                id: "editmenu",
+                id: "settingsmenu",
                 itemdata: [
                     [
-                        { text: "Undo", helptext: "Ctrl + Z", onclick: { fn: onMenuItemClick }, keylistener: { ctrl: true, keys: 90} },
-                        { text: "Redo", helptext: "Ctrl + Y", disabled: true }
-                    ],
-                    [
-                        { text: "Cut", helptext: "Ctrl + X", disabled: true },
-                        { text: "Copy", helptext: "Ctrl + C", disabled: true },
-                        { text: "Paste", helptext: "Ctrl + V", onclick: { fn: onMenuItemClick }, keylistener: { ctrl: true, keys: 86} },
-                        { text: "Delete", helptext: "Del", disabled: true }
-                    ],
-                    [{ text: "Select All", helptext: "Ctrl + A", onclick: { fn: onMenuItemClick }, keylistener: { ctrl: true, keys: 65}}],
-                    [
-                        { text: "Find", helptext: "Ctrl + F", onclick: { fn: onMenuItemClick }, keylistener: { ctrl: true, keys: 70} },
-                        { text: "Find Again", helptext: "Ctrl + G", onclick: { fn: onMenuItemClick }, keylistener: { ctrl: true, keys: 71} }
+                        { text: "Installed Apps", onclick: { fn: installedApps} }
                     ]
             ]
             }
-        },
-        "View",
-        "Favorites",
-        "Tools",
-        "Help"
+        }
     ],
 
     server: function (id, name, ver) {
@@ -488,7 +530,9 @@ function onMenuItemClick() {
     alert("Callback for MenuItem: " + this.cfg.getProperty("text"));
 };
 
-function aboutYAMS() {YAMS.admin.aboutYAMS() };
+//YUI menu not liking the namespace for some reason
+function aboutYAMS() { YAMS.admin.aboutYAMS() };
+function installedApps() { YAMS.admin.installedApps() };
 
 YAMS.E.onDOMReady(YAMS.admin.init);
 

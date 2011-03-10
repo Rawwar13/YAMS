@@ -172,11 +172,19 @@ namespace YAMS.Web
                                 { "bukkit" , Database.GetSetting("BukkitInstalled", "YAMS") },
                                 { "overviewer" , Database.GetSetting("OverviewerInstalled", "YAMS") },
                                 { "c10t" , Database.GetSetting("C10tInstalled", "YAMS") },
-                                { "biome-extractor" , Database.GetSetting("BiomeExtractorInstalled", "YAMS") },
+                                { "biomeextractor" , Database.GetSetting("BiomeExtractorInstalled", "YAMS") },
                                 { "tectonicus" , Database.GetSetting("TectonicusInstalled", "YAMS") },
                                 { "nbtoolkit" , Database.GetSetting("NBToolkitInstalled", "YAMS") }
                             };
                             strResponse = JsonConvert.SerializeObject(dicApps, Formatting.Indented);
+                            break;
+                        case "update-apps":
+                            Database.SaveSetting("OverviewerInstalled", param["overviewer"]);
+                            Database.SaveSetting("C10tInstalled", param["c10t"]);
+                            Database.SaveSetting("BiomeExtractorInstalled", param["biomeextractor"]);
+                            Database.SaveSetting("TectonicusInstalled", param["tectonicus"]);
+                            Database.SaveSetting("NBToolkitInstalled", param["nbtoolkit"]);
+                            strResponse = "done";
                             break;
                         default:
                             return ProcessingResult.Abort;

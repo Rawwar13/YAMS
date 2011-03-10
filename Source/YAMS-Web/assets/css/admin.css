@@ -16,9 +16,11 @@ h1 { margin: 0 0 0.5em 0; }
 
 #players { background-color: #fff; margin: 5px; overflow: auto; border: 1px solid #000; }
 
-.version-label, .version-number { width: 48%; float: left; }
-.version-label { font-weight: bold; text-align: right; padding-right: 5px; }
-.version-number { text-align: left; }
+.version-label, .version-number, .app-label, .app-checkbox { width: 48%; float: left; }
+.version-label, .app-label { font-weight: bold; text-align: right; padding-right: 5px; }
+.version-number, .app-checkbox { text-align: left; }
+
+.app-label { clear: both; }
 
 .bd fieldset { border: 1px solid #999; text-align: left; }
 .bd legend { margin: 0px 5px; padding: 0px 2px; font-size: 80%; }
