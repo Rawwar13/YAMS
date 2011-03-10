@@ -245,6 +245,10 @@ namespace YAMS.Web
                     return ProcessingResult.SendResponse;
                 }
             }
+            else if (context.Request.Uri.AbsoluteUri.Equals(@"/")) {
+                    context.Response.Redirect(@"/admin");
+                    return ProcessingResult.SendResponse;
+            }
             else
             {
                 return ProcessingResult.Abort;
