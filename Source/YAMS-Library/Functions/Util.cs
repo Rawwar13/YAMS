@@ -282,10 +282,11 @@ namespace YAMS
                 //Grab the response
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
 
+                Database.AddLog("Phoned home with data: " + strVars);
             }
             catch (System.Net.WebException ex)
             {
-                Database.AddLog("Couldn't phone home");
+                Database.AddLog("Couldn't phone home: " + ex.Message);
             }
         
         }
