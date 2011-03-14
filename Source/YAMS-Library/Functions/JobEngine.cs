@@ -26,7 +26,7 @@ namespace YAMS
             int intHour = datNow.Hour;
 
             //is it time to phone home?
-            if (Database.GetSetting("UsageData", "YAMS") == "true" && intHour == 12) Util.PhoneHome();
+            if (Database.GetSetting("UsageData", "YAMS") == "true" && intHour == 12 && intMinutes == 0) Util.PhoneHome();
 
             //Get jobs for current minute
             SqlCeDataReader rdJobs = Database.GetJobs(intHour, intMinutes);
