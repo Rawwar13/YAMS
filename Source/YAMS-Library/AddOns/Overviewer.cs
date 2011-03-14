@@ -4,6 +4,7 @@ using System.Text;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
+using System.Text.RegularExpressions;
 using YAMS;
 
 namespace YAMS.AddOns
@@ -111,7 +112,31 @@ namespace YAMS.AddOns
         }
         private void OverviewerError(object sender, DataReceivedEventArgs e) {
             DateTime datTimeStamp = DateTime.Now;
-            if (e.Data != null) Database.AddLog(datTimeStamp, e.Data, this.BaseName, "error");
+            if (e.Data != null)
+            {
+                string strMessage = e.Data;
+                string strLevel = "info";
+
+                //strip date/time
+                strMessage = new Regex(@"^(([0-9]+)-([0-9]+)-([0-9]+) ([0-9]+):([0-9]+):([0-9]+),([0-9]+) )").Replace(strMessage, "");
+
+                Regex regLevel = new Regex(@"^\[([A-Z]+)\] ");
+                if (regLevel.Match(strMessage).Success)
+                {
+                    switch (regLevel.Match(strMessage).Groups[1].Value)
+                    {
+                        case "INFO":
+                            strLevel = "info";
+                            break;
+                        default:
+                            strLevel = "warn";
+                            break;
+                    }
+                }
+                strMessage = regLevel.Replace(strMessage, "");
+
+                Database.AddLog(datTimeStamp, strMessage, this.BaseName, strLevel);
+            }
         }
 
     }
