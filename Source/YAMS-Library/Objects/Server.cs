@@ -99,10 +99,7 @@ namespace YAMS
 
             try
             {
-                //Basic arguments in all circumstances
-                var strArgs = "-Xmx" + intAssignedMem + "M -Xms" + intAssignedMem + @"M -jar " + "\"" + Core.RootFolder + "\\lib\\";
-                strArgs += strFile;
-                strArgs += "\" nogui";
+                var strArgs = "";
                 var strFileName = YAMS.Util.JavaPath() + "java.exe";
 
                 //If we have enabled the java optimisations add the additional
@@ -111,9 +108,21 @@ namespace YAMS
                 {
                     var intGCCores = Environment.ProcessorCount - 1;
                     if (intGCCores == 0) intGCCores = 1;
-                    strArgs = "-server -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+CMSIncrementalPacing -XX:ParallelGCThreads=" + intGCCores + " -XX:+AggressiveOpts " + strArgs;
+                    strArgs += "-server -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+CMSIncrementalPacing -XX:ParallelGCThreads=" + intGCCores + " -XX:+AggressiveOpts";
                     strFileName = YAMS.Util.JavaPath("jdk") + "java.exe";
                 }
+
+                //Some specials for bukkit
+                if (this.ServerType == "bukkit")
+                {
+                    strArgs += " -Djline.terminal=jline.UnsupportedTerminal";
+                }
+
+                //Basic arguments in all circumstances
+                strArgs += " -Xmx" + intAssignedMem + "M -Xms" + intAssignedMem + @"M -jar " + "\"" + Core.RootFolder + "\\lib\\";
+                strArgs += strFile;
+                strArgs += "\" nogui";
+
                 this.prcMinecraft.StartInfo.UseShellExecute = false;
                 this.prcMinecraft.StartInfo.FileName = strFileName;
                 this.prcMinecraft.StartInfo.Arguments = strArgs;
@@ -135,7 +144,7 @@ namespace YAMS
                 this.prcMinecraft.BeginErrorReadLine();
 
                 this.Running = true;
-                Database.AddLog("Server Started", "server", "info", false, this.ServerID);
+                Database.AddLog("Server Started: " + strArgs, "server", "info", false, this.ServerID);
 
                 //Save the process ID so we can kill if there is a crash
                 this.PID = this.prcMinecraft.Id;
@@ -252,13 +261,13 @@ namespace YAMS
         }
 
         //Catch the output from the server process
-        private void ServerOutput(object sender, DataReceivedEventArgs e) { if (e.Data != null) YAMS.Database.AddLog(DateTime.Now, e.Data, "server", "out", false, this.ServerID); }
+        private void ServerOutput(object sender, DataReceivedEventArgs e) { if (e.Data != null && e.Data != ">") YAMS.Database.AddLog(DateTime.Now, e.Data, "server", "out", false, this.ServerID); }
         private void ServerError(object sender, DataReceivedEventArgs e)
         {
             DateTime datTimeStamp = DateTime.Now;
 
             //Catch null messages (usually as server is going down)
-            if (e.Data == null) return;
+            if (e.Data == null || e.Data == ">") return;
            
             //MC's server seems to use stderr for things that aren't really errors, so we need some logic to catch that.
             string strLevel = "info";
