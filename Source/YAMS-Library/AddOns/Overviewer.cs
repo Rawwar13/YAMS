@@ -10,7 +10,7 @@ namespace YAMS.AddOns
 {
     class Overviewer : App
     {
-        public Overviewer(MCServer s, string strParams = "lighting=true&night=false")
+        public Overviewer(MCServer s, string strParams = "lighting=false&night=false&delete=false")
             : base(s, "overviewer", @"gmap.exe", "Overviewer", true, strParams) {}
 
         public override void DoWork()
@@ -33,9 +33,32 @@ namespace YAMS.AddOns
             if (!Directory.Exists(ServerRoot + @"\renders\overviewer\")) Directory.CreateDirectory(ServerRoot + @"\renders\gmap\");
             if (!Directory.Exists(ServerRoot + @"\renders\overviewer\cache\")) Directory.CreateDirectory(ServerRoot + @"\renders\overviewer\cache\");
             if (!Directory.Exists(ServerRoot + @"\renders\overviewer\output\")) Directory.CreateDirectory(ServerRoot + @"\renders\overviewer\output\");
-            string strArgs = "--lighting --cachedir=\"" + ServerRoot + "renders\\overviewer\\cache\" \"" + ServerRoot + "\\world\" \"" + ServerRoot + "renders\\overviewer\\output\"";
+            string strArgs = "";
 
-            //First run the biome extractor tool
+            if (this.jobParams.ContainsKey("lighting"))
+            {
+                if (jobParams["lighting"] == "true")
+                {
+                    strArgs += " --lighting";
+                }
+            }
+            if (this.jobParams.ContainsKey("night"))
+            {
+                if (jobParams["night"] == "true")
+                {
+                    strArgs += " --night";
+                }
+            }
+            if (this.jobParams.ContainsKey("delete"))
+            {
+                if (jobParams["delete"] == "true")
+                {
+                    strArgs += " --delete";
+                }
+            }
+            
+            strArgs += " --cachedir=\"" + ServerRoot + "renders\\overviewer\\cache\" \"" + ServerRoot + "\\world\" \"" + ServerRoot + "renders\\overviewer\\output\"";
+
             Process prcOverviewer = new Process();
             prcOverviewer.StartInfo.UseShellExecute = false;
             prcOverviewer.StartInfo.FileName = this.FullExePath;
