@@ -237,33 +237,43 @@ YAMS.admin = {
         YAMS.admin.serverTimer = setInterval("YAMS.admin.updateServerConsole();YAMS.admin.checkServerStatus();", 5000);
     },
 
-    getServerSettings: function (e) { var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.getServerSettings_callback, 'action=get-server-settings&serverid=' + YAMS.admin.selectedServer); },
+    getServerSettings: function (e) {
+        var transaction = YAHOO.util.Connect.asyncRequest('GET', '/assets/parts/server-settings.html', {
+            success: function (o) {
+                YAMS.admin.serverTabs.getTab(2).set('content', o.responseText);
+                var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', {
+                    success: function (o) {
+                        var results = [];
+                        try { results = YAHOO.lang.JSON.parse(o.responseText); }
+                        catch (x) { YAMS.admin.log('JSON Parse Failed'); return; }
 
-    getServerSettings_callback: {
-        success: function (o) {
-            var results = [];
-            try { results = YAHOO.lang.JSON.parse(o.responseText); }
-            catch (x) { YAMS.admin.log('JSON Parse Failed'); return; }
+                        YAMS.D.get('cfg_title').value = results.title;
+                        if (results.optimisations === "True") YAMS.D.get('cfg_optimisations').checked = true;
+                        YAMS.D.get('cfg_memory').value = results.memory;
+                        if (results.autostart === "True") YAMS.D.get('cfg_autostart').checked = true;
+                        var typeSelect = YAMS.D.get('cfg_type');
+                        for (var i = 0, len = typeSelect.options.length; i < len; i++) {
+                            if (typeSelect.options[i].value === results.type) typeSelect.options[i].selected = true;
+                        }
+                    },
+                    failure: function (o) {
+                        YAMS.admin.log('getServerSettings failed');
+                    }
+                }, 'action=get-server-settings&serverid=' + YAMS.admin.selectedServer);
+            },
+            failure: function (o) { YAMS.admin.log("Couldn't get settings part") }
+        });
+    },
 
-            var strSettingsForm = '<p><label for="title">Title</label><input type="text" id="cfg_title" name="title" value="' + results.title + '" /></p>' +
-                                  '<p><label for="optimisations">Java Optimisations</label><input type="text" id="cfg_optimisations" name="optimisations" value="' + results.optimisations + '" /></p>' +
-                                  '<p><label for="memory">Assigned Memory</label><input type="text" id="cfg_memory" name="memory" value="' + results.memory + '" /></p>' +
-                                  '<p><label for="autostart">Auto Start Server</label><input type="text" id="cfg_autostart" name="autostart" value="' + results.autostart + '" /></p>' +
-                                  '<p><label for="logonmode">Logon Mode</label><input type="text" id="cfg_logonmode" name="logonmode" value="' + results.logonmode + '" /></p>' +
-                                  '<p><label for="hellworld">Hellworld</label><input type="text" id="cfg_hellworld" name="hellworld" value="' + results.hellworld + '" /></p>' +
-                                  '<p><label for="spawnmonsters">Spawn Monsters</label><input type="text" id="cfg_spawnmonsters" name="spawnmonsters" value="' + results.spawnmonsters + '" /></p>' +
-                                  '<p><label for="onlinemode">Online Mode</label><input type="text" id="cfg_onlinemode" name="onlinemode" value="' + results.onlinemode + '" /></p>' +
-                                  '<p><label for="spawnanimals">Spawn Animals</label><input type="text" id="cfg_spawnanimals" name="spawnanimals" value="' + results.spawnanimals + '" /></p>' +
-                                  '<p><label for="maxplayers">Max online players</label><input type="text" id="cfg_maxplayers" name="maxplayers" value="' + results.maxplayers + '" /></p>' +
-                                  '<p><label for="serverip">Server IP</label><input type="text" id="cfg_serverip" name="serverip" value="' + results.serverip + '" /></p>' +
-                                  '<p><label for="pvp">PvP</label><input type="text" id="cfg_pvp" name="pvp" value="' + results.pvp + '" /></p>' +
-                                  '<p><label for="serverport">Server Port</label><input type="text" id="cfg_serverport" name="serverport" value="' + results.serverport + '" /></p>';
-
-            YAMS.admin.serverTabs.getTab(2).set('content', strSettingsForm);
-        },
-        failure: function (o) {
-            YAMS.admin.log('updateServerConsole failed');
-        }
+    saveServerSettings: function () {
+        var strVars = "serverid=" + YAMS.admin.selectedServer + "&" +
+                      "action=save-server-settings&" +
+                      "title=" + YAMS.D.get('cfg_title').value + "&" +
+                      "type=" + YAMS.D.get('cfg_type').value;
+        var trans = YAHOO.util.Connect.asyncRequest('POST', '/api/', {
+            success: function (o) { },
+            failure: function (o) { }
+        }, strVars);
     },
 
     checkServerStatus: function () { var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.checkServerStatus_callback, 'action=status&serverid=' + YAMS.admin.selectedServer); },
@@ -479,7 +489,8 @@ YAMS.admin = {
                      "c10t=" + YAMS.D.get('c10t-installed').checked + "&" +
                      "biomeextractor=" + YAMS.D.get('biomeextractor-installed').checked + "&" +
                      "tectonicus=" + YAMS.D.get('tectonicus-installed').checked + "&" +
-                     "nbtoolkit=" + YAMS.D.get('nbtoolkit-installed').checked;
+                     "nbtoolkit=" + YAMS.D.get('nbtoolkit-installed').checked + "&" +
+                     "bukkit=" + YAMS.D.get('bukkit-installed').checked;
         var trans = YAHOO.util.Connect.asyncRequest('POST', '/api/', {
             success: function (o) {
                 alert("Selected apps will be downloaded on next update check.");

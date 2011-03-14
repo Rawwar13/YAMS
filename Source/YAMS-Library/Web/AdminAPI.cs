@@ -143,7 +143,7 @@ namespace YAMS.Web
                                               "\"optimisations\" : \"" + Database.GetSetting(intServerID, "ServerEnableOptimisations") + "\"," +
                                               "\"memory\" : \"" + Database.GetSetting(intServerID, "ServerAssignedMemory") + "\"," +
                                               "\"autostart\" : \"" + Database.GetSetting(intServerID, "ServerAutoStart") + "\"," +
-                                              "\"logonmode\" : \"" + Database.GetSetting(intServerID, "ServerLogonMode") + "\",";
+                                              "\"type\" : \"" + Database.GetSetting(intServerID, "ServerType") + "\",";
                             //Minecraft Settings
                             strResponse += "\"hellworld\" : \"" + Database.GetSetting("hellworld", "MC", intServerID) + "\"," +
                                            "\"spawnmonsters\" : \"" + Database.GetSetting("spawn-monsters", "MC", intServerID) + "\"," +
@@ -156,6 +156,11 @@ namespace YAMS.Web
                                            "\"whitelist\" : \"" + Database.GetSetting("white-list", "MC", intServerID) + "\"";
 
                             strResponse += "}";
+                            break;
+                        case "save-server-settings":
+                            intServerID = Convert.ToInt32(param["serverid"]);
+                            Database.UpdateServer(intServerID, "ServerTitle", param["title"]);
+                            Database.UpdateServer(intServerID, "ServerType", param["type"]);
                             break;
                         case "get-config-file":
                             List<string> listConfig = Core.Servers[Convert.ToInt32(context.Request.Parameters["serverid"])].ReadConfig(param["file"]);
@@ -190,6 +195,7 @@ namespace YAMS.Web
                             Database.SaveSetting("BiomeExtractorInstalled", param["biomeextractor"]);
                             Database.SaveSetting("TectonicusInstalled", param["tectonicus"]);
                             Database.SaveSetting("NBToolkitInstalled", param["nbtoolkit"]);
+                            Database.SaveSetting("BukkitInstalled", param["bukkit"]);
                             strResponse = "done";
                             break;
                         default:

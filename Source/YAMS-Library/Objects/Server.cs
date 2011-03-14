@@ -66,11 +66,31 @@ namespace YAMS
         public void Start()
         {
             if (this.Running) return;
+            //Refresh Variables
+            this.bolEnableJavaOptimisations = Convert.ToBoolean(Database.GetSetting(this.ServerID, "ServerEnableOptimisations"));
+            this.intAssignedMem = Convert.ToInt32(Database.GetSetting(this.ServerID, "ServerAssignedMemory"));
+            this.ServerTitle = Convert.ToString(Database.GetSetting(this.ServerID, "ServerTitle"));
+            this.ServerType = Convert.ToString(Database.GetSetting(this.ServerID, "ServerType"));
             this.RestartWhenFree = false;
             this.RestartNeeded = false;
 
+            //What type of server are we running?
+            string strFile = "";
+            switch (this.ServerType)
+            {
+                case "vanilla":
+                    strFile = "minecraft_server.jar";
+                    break;
+                case "bukkit":
+                    strFile = "craftbukkit.jar";
+                    break;
+                default:
+                    strFile = "minecraft_server.jar";
+                    break;
+            }
+
             //First check if an update is waiting to be applied
-            if (!Util.ReplaceFile(Core.RootFolder + "\\lib\\minecraft_server.jar", Core.RootFolder + "\\lib\\minecraft_server.jar.UPDATE")) return;
+            if (!Util.ReplaceFile(Core.RootFolder + "\\lib\\" + strFile, Core.RootFolder + "\\lib\\" + strFile + ".UPDATE")) return;
 
             //Also check if a new properties file is to be applied
             if (!Util.ReplaceFile(this.strWorkingDir + "server.properties", this.strWorkingDir + "server.properties.UPDATE")) return;
@@ -81,17 +101,7 @@ namespace YAMS
             {
                 //Basic arguments in all circumstances
                 var strArgs = "-Xmx" + intAssignedMem + "M -Xms" + intAssignedMem + @"M -jar " + "\"" + Core.RootFolder + "\\lib\\";
-                switch (this.ServerType) {
-                    case "vanilla":
-                        strArgs += "minecraft_server.jar";
-                        break;
-                    case "bukkit":
-                        strArgs += "craftbukkit.jar";
-                        break;
-                    default:
-                        strArgs += "minecraft_server.jar";
-                        break;
-                }
+                strArgs += strFile;
                 strArgs += "\" nogui";
                 var strFileName = YAMS.Util.JavaPath() + "java.exe";
 
@@ -152,7 +162,7 @@ namespace YAMS
         public void Restart()
         {
             this.Stop();
-            System.Threading.Thread.Sleep(5000);
+            System.Threading.Thread.Sleep(10000);
             this.Start();
         }
 
@@ -164,6 +174,7 @@ namespace YAMS
             }
             else
             {
+                Database.AddLog("Deferred Restart until empty", "app", "warn", true, this.ServerID);
                 this.RestartWhenFree = true;
             }
         }
@@ -197,7 +208,7 @@ namespace YAMS
             else if (this.intRestartSeconds <= 0)
             {
                timRestarter.Enabled = false;
-               Restart();
+               this.Restart();
             }
 
             this.intRestartSeconds--;
@@ -310,10 +321,7 @@ namespace YAMS
         {
             this.Players.Remove(strName);
             //Check if we should restart the server for an update or a request
-            if (this.Players.Count == 0 && ((this.RestartNeeded && Convert.ToBoolean(Database.GetSetting("RestartOnJarUpdate", "YAMS"))) || this.RestartWhenFree))
-            {
-                this.Restart();
-            }
+            if (this.RestartWhenFree) this.RestartIfEmpty();
         }
 
         //Returns the amount of RAM being used by this server
