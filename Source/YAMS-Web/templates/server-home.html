@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
  "http://www.w3.org/TR/html4/strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -6,21 +6,26 @@
 <title>{?Y:PageTitle?}</title>
 
 <!-- Combo-handled YUI CSS files: -->
-<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.2r1/build/reset-fonts-grids/reset-fonts-grids.css&2.8.2r1/build/base/base-min.css">
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.2r1/build/reset-fonts-grids/reset-fonts-grids.css&2.8.2r1/build/base/base-min.css" />
 
 </head>
 <body class="root">
     <div id="doc4" class="yui-t7">
         <div id="hd">
-            <h1>Header</h1>
+            <h1>{?Y:PageTitle?} - Home</h1>
         </div>
     <div id="bd">
         <div class="yui-g">
-        <!-- YOUR DATA GOES HERE -->
+            <h2>About</h2>
+            {?Y:PageBody?}
+            <h2>Renders</h2>
+            {?Y:RenderOverviewer?}
+            {?Y:RenderTectonicus?}
+            {?Y:RenderImages?}
         </div>
     </div>
     <div id="ft">
-        <p>Footer</p>
+        <p>Powered by YAMS</p>
     </div>
     </div>
 </body>

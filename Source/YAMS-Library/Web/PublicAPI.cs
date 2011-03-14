@@ -63,9 +63,37 @@ namespace YAMS.Web
                 else if (regServerHome.Match(context.Request.Uri.AbsolutePath).Success)
                 {
                     //Individual Server home
+                    Match matServerHome = regServerHome.Match(context.Request.Uri.AbsolutePath);
+                    int intServerID = Convert.ToInt32(matServerHome.Groups[1].Value);
+                    MCServer s = Core.Servers[intServerID];
+
+                    string strOverviewer = "";
+                    string strTectonicus = "";
+                    string strImages = "";
+
+                    if (File.Exists(s.ServerDirectory + @"\renders\overviewer\output\index.html")) {
+                        strOverviewer = "<h3>Overviewer Map</h3><div><a href=\"renders/overviewer/output/index.html\">Click here to open map</a>";
+                    }
+                    if (File.Exists(s.ServerDirectory + @"\renders\tectonicus\index.html"))
+                    {
+                        strTectonicus = "<h3>Tectonicus Map</h3><div><a href=\"renders/tectonicus/index.html\">Click here to open map</a>";
+                    }
+
+                    strImages = "<h3>Images</h3><ul>";
+                    DirectoryInfo di = new DirectoryInfo(s.ServerDirectory + @"\renders\");
+                    FileInfo[] fileEntries = di.GetFiles();
+                    foreach (FileInfo fi in fileEntries)
+                    {
+                        strImages += "<li><a href=\"renders/" + fi.Name + "\">" + fi.Name + "</a></li>";
+                    }
+                    strImages += "</ul>";
+
                     strTemplate = File.ReadAllText(Core.RootFolder + @"\web\templates\server-home.html");
-                    dicTags.Add("PageTitle", "Server Home");
-                    dicTags.Add("PageBody", "test");
+                    dicTags.Add("PageTitle", s.ServerTitle);
+                    dicTags.Add("RenderOverviewer", strOverviewer);
+                    dicTags.Add("RenderTectonicus", strTectonicus);
+                    dicTags.Add("RenderImages", strImages);
+                    dicTags.Add("PageBody", "Body");
                 }
                 else
                 {
