@@ -38,7 +38,7 @@ namespace YAMS
         public static string strMCClientURL = "http://minecraft.net/download/Minecraft.jar";
 
         //Bukkit URLs
-        public static string strBukkitServerURL = "http://ci.bukkit.org/job/dev-CraftBukkit/lastSuccessfulBuild/artifact/target/craftbukkit-0.0.1-SNAPSHOT.jar";
+        public static string strBukkitServerURL = "http://ci.bukkit.org/job/dev-CraftBukkit/promotion/latest/Recommended/artifact/target/craftbukkit-0.0.1-SNAPSHOT.jar";
 
         //YAMS URLs
         public static Dictionary<string, string> strYAMSDLLURL = new Dictionary<string, string>() {
@@ -200,14 +200,9 @@ namespace YAMS
                 {
                     foreach (KeyValuePair<int, MCServer> kvp in Core.Servers)
                     {
-                        if (kvp.Value.Players.Count == 0 && ((kvp.Value.ServerType == "vanilla" && bolServerUpdateAvailable) || (kvp.Value.ServerType == "bukkit" && bolBukkitUpdateAvailable)))
+                        if (((kvp.Value.ServerType == "vanilla" && bolServerUpdateAvailable) || (kvp.Value.ServerType == "bukkit" && bolBukkitUpdateAvailable)))
                         {
-                            kvp.Value.Restart();
-                        }
-                        else
-                        {
-                            kvp.Value.RestartNeeded = true;
-                            Database.AddLog("Restart deferred until server free", "updater", "info", true, kvp.Value.ServerID);
+                            kvp.Value.RestartIfEmpty();
                         }
                     }
                 }
