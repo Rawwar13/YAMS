@@ -300,6 +300,18 @@ namespace YAMS
             return intNewID;
         }
 
+        public static bool UpdateServer(int intServerID, string strSettingName, object strSettingValue)
+        {
+            SqlCeCommand cmd = new SqlCeCommand();
+            cmd.Connection = connLocal;
+
+            cmd.CommandText = "UPDATE MCServers SET " + strSettingName + "=@value WHERE ServerID=@id;";
+            cmd.Parameters.Add("@value", strSettingValue);
+            cmd.Parameters.Add("@id", intServerID);
+            cmd.ExecuteNonQuery();
+            return true;
+        }
+
         public static void UpdateDB()
         {
             switch (Convert.ToInt32(GetSetting("DBSchema", "YAMS")))
