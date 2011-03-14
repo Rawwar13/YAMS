@@ -84,14 +84,14 @@ namespace YAMS.Web
                         case "gmap":
                             //Maps a server
                             s = Core.Servers[Convert.ToInt32(context.Request.Parameters["serverid"])];
-                            AddOns.Overviewer gmap = new AddOns.Overviewer(s);
+                            AddOns.Overviewer gmap = new AddOns.Overviewer(s, "lighting=" + param["lighting"] + "&night=" + param["night"] + "&delete=" + param["delete"]);
                             gmap.Start();
                             strResponse = "{ \"result\" : \"sent\" }";
                             break;
                         case "c10t":
-                            //Maps a server
+                            //Images a server
                             s = Core.Servers[Convert.ToInt32(context.Request.Parameters["serverid"])];
-                            AddOns.c10t c10t = new AddOns.c10t(s);
+                            AddOns.c10t c10t = new AddOns.c10t(s, "night=" + param["night"] + "&mode=" + param["mode"]);
                             c10t.Start();
                             strResponse = "{ \"result\" : \"sent\" }";
                             break;
@@ -161,6 +161,9 @@ namespace YAMS.Web
                             intServerID = Convert.ToInt32(param["serverid"]);
                             Database.UpdateServer(intServerID, "ServerTitle", param["title"]);
                             Database.UpdateServer(intServerID, "ServerType", param["type"]);
+                            Database.UpdateServer(intServerID, "ServerEnableOptimisations", Convert.ToBoolean(param["optimisations"]));
+                            Database.UpdateServer(intServerID, "ServerAssignedMemory", Convert.ToInt32(param["memory"]));
+                            Database.UpdateServer(intServerID, "ServerAutoStart", Convert.ToBoolean(param["autostart"]));
                             break;
                         case "get-config-file":
                             List<string> listConfig = Core.Servers[Convert.ToInt32(context.Request.Parameters["serverid"])].ReadConfig(param["file"]);

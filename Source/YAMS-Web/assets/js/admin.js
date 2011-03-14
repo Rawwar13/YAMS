@@ -183,11 +183,17 @@ YAMS.admin = {
             }));
             YAMS.admin.serverTabs.addTab(new YAHOO.widget.Tab({
                 label: "Settings",
-                content: 'Some Settings'
+                content: '<img src="http://l.yimg.com/a/i/us/per/gr/gp/rel_interstitial_loading.gif" />'
             }));
             var settingsTab = YAMS.admin.serverTabs.getTab(2);
             settingsTab.addListener('click', YAMS.admin.getServerSettings);
             YAMS.D.setStyle(settingsTab.get('contentEl'), 'overflow', 'auto');
+            YAMS.admin.serverTabs.addTab(new YAHOO.widget.Tab({
+                label: "Apps",
+                content: '<img src="http://l.yimg.com/a/i/us/per/gr/gp/rel_interstitial_loading.gif" />'
+            }));
+            var appsTab = YAMS.admin.serverTabs.getTab(3);
+            appsTab.addListener('click', YAMS.admin.getApps);
 
             //Configure buttons
             YAMS.E.on('console-send', 'click', YAMS.admin.consoleSend);
@@ -237,6 +243,15 @@ YAMS.admin = {
         YAMS.admin.serverTimer = setInterval("YAMS.admin.updateServerConsole();YAMS.admin.checkServerStatus();", 5000);
     },
 
+    getApps: function (e) {
+        var transaction = YAHOO.util.Connect.asyncRequest('GET', '/assets/parts/apps-page.html', {
+            success: function (o) {
+                YAMS.admin.serverTabs.getTab(3).set('content', o.responseText);
+            },
+            failure: function (o) { YAMS.admin.log("Couldn't get apps part") }
+        });
+    },
+
     getServerSettings: function (e) {
         var transaction = YAHOO.util.Connect.asyncRequest('GET', '/assets/parts/server-settings.html', {
             success: function (o) {
@@ -269,7 +284,10 @@ YAMS.admin = {
         var strVars = "serverid=" + YAMS.admin.selectedServer + "&" +
                       "action=save-server-settings&" +
                       "title=" + YAMS.D.get('cfg_title').value + "&" +
-                      "type=" + YAMS.D.get('cfg_type').value;
+                      "type=" + YAMS.D.get('cfg_type').value + "&" +
+                      "optimisations=" + YAMS.D.get('cfg_optimisations').checked + "&" +
+                      "memory=" + YAMS.D.get('cfg_memory').value + "&" +
+                      "autostart=" + YAMS.D.get('cfg_autostart').checked;
         var trans = YAHOO.util.Connect.asyncRequest('POST', '/api/', {
             success: function (o) { },
             failure: function (o) { }
@@ -319,8 +337,8 @@ YAMS.admin = {
         timeout: 4500
     },
 
-    mapServer: function () { var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.statusCommand_callback, 'action=gmap&serverid=' + YAMS.admin.selectedServer); },
-    imgServer: function () { var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.statusCommand_callback, 'action=c10t&serverid=' + YAMS.admin.selectedServer); },
+    mapServer: function () { var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.statusCommand_callback, 'action=gmap&serverid=' + YAMS.admin.selectedServer + "&lighting=" + YAMS.D.get('overviewer-lighting').checked + "&night=" + YAMS.D.get('overviewer-night').checked + "&delete=" + YAMS.D.get('overviewer-delete').checked); },
+    imgServer: function () { var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.statusCommand_callback, 'action=c10t&serverid=' + YAMS.admin.selectedServer + "&mode=" + YAMS.D.get('c10t-mode').value + "&night=" + YAMS.D.get('c10t-night').value); },
     startServer: function () { var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.statusCommand_callback, 'action=start&serverid=' + YAMS.admin.selectedServer); },
     stopServer: function () { var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.statusCommand_callback, 'action=stop&serverid=' + YAMS.admin.selectedServer); },
     restartServer: function () { var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.statusCommand_callback, 'action=restart&serverid=' + YAMS.admin.selectedServer); },

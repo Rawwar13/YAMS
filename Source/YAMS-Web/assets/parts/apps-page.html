@@ -1,0 +1,20 @@
+﻿<h2>Overviewer</h2>
+<div>
+    <input type="checkbox" id="overviewer-lighting" />Lighting |
+    <input type="checkbox" id="overviewer-night" /> Night |
+    <input type="checkbox" id="overviewer-delete" />Delete Cache
+</div>
+<button onclick="YAMS.admin.mapServer()">Render Now</button>
+<h2>c10t</h2>
+<div>
+    <select id="c10t-night">
+        <option value="false">Day</option>
+        <option value="true">Night</option>
+    </select>
+    <select id="c10t-mode">
+        <option value="normal">Normal</option>
+        <option value="oblique">Oblique</option>
+        <option value="isometric">Isometric</option>
+    </select>
+</div>
+<button onclick="YAMS.admin.imgServer()">Render Now</button>
