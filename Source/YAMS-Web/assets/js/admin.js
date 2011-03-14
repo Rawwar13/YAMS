@@ -57,8 +57,7 @@ YAMS.admin = {
 						{ position: 'top', height: 30, body: 'header', collapse: false, resize: false, scroll: null, zIndex: 2 },
 						{ position: 'right', header: 'Server Status', width: 300, resize: false, gutter: '0px 5px', collapse: true, scroll: false, body: 'server-status', animate: true },
 						{ position: 'bottom', header: 'Global Log', height: 200, resize: true, body: 'yams-log', gutter: '5px', collapse: true, scroll: true },
-                    //{ position: 'left', header: 'Menu', width: 200, resize: false, body: 'left-menu', gutter: '0px 5px', collapse: true, close: false, scroll: true, animate: true },
-						{position: 'center', body: 'main', gutter: '0px 0px 0px 5px' }
+						{ position: 'center', body: 'main', gutter: '0px 0px 0px 5px' }
 					]
                 });
                 YAMS.admin.layout.on('render', function () {
@@ -78,6 +77,8 @@ YAMS.admin = {
                     var s = document.createElement('div');
                     s.id = 'status';
                     r.appendChild(s);
+
+                    //Start Server
                     var b1 = document.createElement('button');
                     b1.id = 'start-server';
                     b1.innerHTML = 'Start';
@@ -86,6 +87,8 @@ YAMS.admin = {
                         YAMS.admin.startServer();
                     });
                     r.appendChild(b1);
+
+                    //Stop Server
                     var b2 = document.createElement('button');
                     b2.id = 'stop-server';
                     b2.innerHTML = 'Stop';
@@ -94,6 +97,8 @@ YAMS.admin = {
                         YAMS.admin.stopServer();
                     });
                     r.appendChild(b2);
+
+                    //Restart Server
                     var b3 = document.createElement('button');
                     b3.id = 'restart-server';
                     b3.innerHTML = 'Restart';
@@ -102,6 +107,22 @@ YAMS.admin = {
                         YAMS.admin.restartServer();
                     });
                     r.appendChild(b3);
+
+                    //Break
+                    var brk = document.createElement('br');
+                    r.appendChild(brk);
+
+                    //Restart When Free
+                    var b5 = document.createElement('button');
+                    b5.id = 'restart-server-when-free';
+                    b5.innerHTML = 'Restart When Free';
+                    b5.disabled = true;
+                    YAMS.E.on(b5, 'click', function (e) {
+                        YAMS.admin.restartServerWhenFree();
+                    });
+                    r.appendChild(b5);
+
+                    //Delayed Restart
                     var b4 = document.createElement('button');
                     b4.id = 'delayed-restart-server';
                     b4.innerHTML = 'Restart After:';
@@ -117,6 +138,8 @@ YAMS.admin = {
                     var p = document.createElement('div');
                     p.id = "players";
                     r.appendChild(p);
+
+
                     YAMS.admin.getServers();
                     YAMS.admin.updateGlobalLog();
                     YAMS.admin.timer = setInterval("YAMS.admin.updateGlobalLog();", 10000);
@@ -253,18 +276,20 @@ YAMS.admin = {
 
             var s = document.getElementById('status');
             s.innerHTML = '<p>Running: ' + results.status + '</p>' +
-                    '<p>RAM: ' + results.ram + 'MB</p>' +
-                    '<p>VM: ' + results.vm + 'MB</p>'
+                    '<p>Restart Needed: ' + results.restartneeded + '</p>' +
+                    '<p>Restarting When Free: ' + results.restartwhenfree + '</p>'
             if (results.status == "True") {
                 document.getElementById('start-server').disabled = true;
                 document.getElementById('stop-server').disabled = false;
                 document.getElementById('restart-server').disabled = false;
                 document.getElementById('delayed-restart-server').disabled = false;
+                document.getElementById('restart-server-when-free').disabled = false;
             } else {
                 document.getElementById('start-server').disabled = false;
                 document.getElementById('stop-server').disabled = true;
                 document.getElementById('restart-server').disabled = true;
                 document.getElementById('delayed-restart-server').disabled = true;
+                document.getElementById('restart-server-when-free').disabled = true;
             }
 
             //Update the player info
@@ -280,7 +305,8 @@ YAMS.admin = {
         },
         failure: function (o) {
             YAMS.admin.log('checkServerStatus failed');
-        }
+        },
+        timeout: 4500
     },
 
     mapServer: function () { var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.statusCommand_callback, 'action=gmap&serverid=' + YAMS.admin.selectedServer); },
@@ -289,6 +315,7 @@ YAMS.admin = {
     stopServer: function () { var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.statusCommand_callback, 'action=stop&serverid=' + YAMS.admin.selectedServer); },
     restartServer: function () { var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.statusCommand_callback, 'action=restart&serverid=' + YAMS.admin.selectedServer); },
     delayedRestartServer: function () { var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.statusCommand_callback, 'action=delayed-restart&delay=' + YAMS.D.get('delay-time').value + '&serverid=' + YAMS.admin.selectedServer); },
+    restartServerWhenFree: function () { var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.statusCommand_callback, 'action=restart-when-free&serverid=' + YAMS.admin.selectedServer); },
     statusCommand_callback: { success: function (o) { }, failure: function (o) { YAMS.admin.log('Status Command Failed'); } },
 
     consoleSend: function () { var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.consoleSend_callback, 'action=command&serverid=' + YAMS.admin.selectedServer + '&message=' + escape(YAMS.D.get('console-input').value)); },
@@ -329,7 +356,8 @@ YAMS.admin = {
         },
         failure: function (o) {
             YAMS.admin.log('updateServerConsole failed');
-        }
+        },
+        timeout: 4500
     },
 
     updateGlobalLog: function () { var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.updateGlobalLog_callback, 'action=log&start=' + YAMS.admin.lastLogId + '&rows=200&serverid=0&level=all'); },
@@ -356,7 +384,8 @@ YAMS.admin = {
         },
         failure: function (o) {
             YAMS.admin.log('updateGlobalLog failed');
-        }
+        },
+        timeout: 9500
     },
 
     aboutYAMS: function () {

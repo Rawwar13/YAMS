@@ -68,6 +68,8 @@ namespace YAMS.Web
                                             "\"status\" : \"" + s.Running + "\"," +
                                             "\"ram\" : " + s.GetMemory() + "," +
                                             "\"vm\" : " + s.GetVMemory() + "," +
+                                            "\"restartneeded\" : \"" + s.RestartNeeded + "\"," +
+                                            "\"restartwhenfree\" : \"" + s.RestartWhenFree + "\"," +
                                             "\"players\" : [";
                             if (s.Players.Count > 0)
                             {
@@ -113,6 +115,10 @@ namespace YAMS.Web
                             Core.Servers[Convert.ToInt32(context.Request.Parameters["serverid"])].DelayedRestart(Convert.ToInt32(param["delay"]));
                             strResponse = "{ \"result\" : \"sent\" }";
                             break;
+                        case "restart-when-free":
+                            Core.Servers[Convert.ToInt32(context.Request.Parameters["serverid"])].RestartIfEmpty();
+                            strResponse = "{ \"result\" : \"sent\" }";
+                            break;
                         case "command":
                             //Sends literal command to a server
                             Core.Servers[Convert.ToInt32(context.Request.Parameters["serverid"])].Send(context.Request.Parameters["message"]);
@@ -146,7 +152,7 @@ namespace YAMS.Web
                                            "\"maxplayers\" : \"" + Database.GetSetting("max-players", "MC", intServerID) + "\"," +
                                            "\"serverip\" : \"" + Database.GetSetting("server-ip", "MC", intServerID) + "\"," +
                                            "\"pvp\" : \"" + Database.GetSetting("pvp", "MC", intServerID) + "\"," +
-                                           "\"serverport\" : \"" + Database.GetSetting("server-port", "MC", intServerID) + "\"" +
+                                           "\"serverport\" : \"" + Database.GetSetting("server-port", "MC", intServerID) + "\"," +
                                            "\"whitelist\" : \"" + Database.GetSetting("white-list", "MC", intServerID) + "\"";
 
                             strResponse += "}";
