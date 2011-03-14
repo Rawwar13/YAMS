@@ -307,7 +307,7 @@ namespace YAMS
                 twPids.WriteLine(intID);
                 twPids.Close();
             } catch (Exception e) {
-                Database.AddLog(e.Message, "pids", "warn");
+                Database.AddLog("Adding PID: " + e.Message, "pids", "warn");
             }
         }
 
@@ -330,16 +330,24 @@ namespace YAMS
 
                 //delete pids file and recreate
                 File.Delete(Core.RootFolder + "\\pids");
-                File.CreateText(Core.RootFolder + "\\pids");
-                StreamWriter twPids = File.AppendText(Core.RootFolder + "\\pids");
+                StreamWriter twPids;
+                if (!File.Exists(Core.RootFolder + "\\pids"))
+                {
+                    twPids = File.CreateText(Core.RootFolder + "\\pids");
+                }
+                else
+                {
+                    twPids = File.AppendText(Core.RootFolder + "\\pids");
+                }
                 foreach (string l in lines)
                 {
                     twPids.WriteLine(l);
                 }
+                twPids.Close();
             }
             catch (Exception e)
             {
-                Database.AddLog(e.Message, "pids", "warn");
+                Database.AddLog("Removing PID: " + e.Message, "pids", "warn");
             }
         }
    
