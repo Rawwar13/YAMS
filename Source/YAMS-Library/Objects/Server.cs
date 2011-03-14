@@ -19,8 +19,9 @@ namespace YAMS
         private string strWorkingDir = "";
         public string ServerDirectory;
 
-        private Regex regRemoveDateStamp = new Regex(@"^([0-9]+\-[0-9]+\-[0-9]+ [0-9]+:[0-9]+:[0-9]+ ){1}");
-        private Regex regErrorLevel = new Regex(@"^\[([A-Z])+\]{1}");
+        private Regex regRemoveDateStamp = new Regex(@"^([0-9]+\-[0-9]+\-[0-9]+ )");
+        private Regex regRemoveTimeStamp = new Regex(@"^([0-9]+:[0-9]+:[0-9]+ )");
+        private Regex regErrorLevel = new Regex(@"^\[([A-Z]+)\]{1}");
         private Regex regPlayerChat = new Regex(@"^(\<([A-Za-z0-9])+\>){1}");
         private Regex regPlayerPM = new Regex(@"^(\[([\w])+\-\>(\w)+\]){1}");
         private Regex regPlayerLoggedIn = new Regex(@"^([\w]+)(?: \[\/[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+\:[0-9]+\] logged in with entity id)");
@@ -274,6 +275,7 @@ namespace YAMS
             string strMessage = e.Data;
             //Strip out date and time info
             strMessage = this.regRemoveDateStamp.Replace(strMessage, "");
+            strMessage = this.regRemoveTimeStamp.Replace(strMessage, "");
 
             //Work out the error level then remove it from the string
             Match regMatch = this.regErrorLevel.Match(strMessage);
@@ -281,9 +283,9 @@ namespace YAMS
 
             if (regMatch.Success)
             {
-                switch (regMatch.Groups[0].Value)
+                switch (regMatch.Groups[1].Value)
                 {
-                    case "[INFO]":
+                    case "INFO":
                         //Check if it's player chat
                         Match regChat = this.regPlayerChat.Match(strMessage);
                         if (regPlayerChat.Match(strMessage).Success || regPlayerPM.Match(strMessage).Success) strLevel = "chat";
@@ -299,7 +301,7 @@ namespace YAMS
                         Match regVersion = this.regServerVersion.Match(strMessage);
                         if (regVersion.Success) this.ServerVersion = strMessage.Replace("Starting minecraft server version ", "");
                         break;
-                    case "[WARNING]":
+                    case "WARNING":
                         strLevel = "warn";
                         break;
                     default:
