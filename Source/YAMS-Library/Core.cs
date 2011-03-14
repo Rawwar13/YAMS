@@ -28,26 +28,6 @@ namespace YAMS
             try { if (File.Exists(RootFolder + @"\YAMS-Service.exe.OLD")) File.Delete(RootFolder + @"\YAMS-Service.exe.OLD"); }
             catch { };
 
-            //Are there any PIDs we previously started still running?
-            if (File.Exists(Core.RootFolder + "\\pids"))
-            {
-                try
-                {
-                    StreamReader trPids = new StreamReader(Core.RootFolder + "\\pids");
-                    string line;
-                    while ((line = trPids.ReadLine()) != null)
-                    {
-                        Process.GetProcessById(Convert.ToInt32(line)).Kill();
-                    }
-                    trPids.Close();
-                }
-                catch
-                {
-                    Database.AddLog("Not all processes killed");
-                }
-                File.Delete(Core.RootFolder + "\\pids");
-            };
-
             //Start DB Connection
             Database.init();
             Database.AddLog("Starting Up");
@@ -63,6 +43,26 @@ namespace YAMS
             AutoUpdate.bolUpdateWeb = Convert.ToBoolean(Database.GetSetting("UpdateWeb", "YAMS"));
             StoragePath = Database.GetSetting("StoragePath", "YAMS");
 
+            //Are there any PIDs we previously started still running?
+            if (File.Exists(Core.RootFolder + "\\pids"))
+            {
+                try
+                {
+                    StreamReader trPids = new StreamReader(Core.RootFolder + "\\pids");
+                    string line;
+                    while ((line = trPids.ReadLine()) != null)
+                    {
+                        Process.GetProcessById(Convert.ToInt32(line)).Kill();
+                    }
+                    trPids.Close();
+                    File.Delete(Core.RootFolder + "\\pids");
+                }
+                catch
+                {
+                    Database.AddLog("Not all processes killed");
+                }
+            };
+            
             //Check for updates and start a timer to do it automatically
             int UpdateTick = (60 * 60 * 1000);
             if (Database.GetSetting("UpdateBranch", "YAMS") == "dev") UpdateTick = (15 * 60 * 1000);
