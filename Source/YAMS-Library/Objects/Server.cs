@@ -41,8 +41,11 @@ namespace YAMS
         public string ServerTitle = "";
         public string LogonMode = "blacklist";
         public bool HasChanged = false;
+        public int PID;
 
         public bool RestartNeeded = false;
+
+        public bool RestartWhenFree = false;
 
         public Dictionary<string, Player> Players = new Dictionary<string, Player> { };
 
@@ -63,6 +66,8 @@ namespace YAMS
         public void Start()
         {
             if (this.Running) return;
+            this.RestartWhenFree = false;
+            this.RestartNeeded = false;
 
             //First check if an update is waiting to be applied
             if (!Util.ReplaceFile(Core.RootFolder + "\\lib\\minecraft_server.jar", Core.RootFolder + "\\lib\\minecraft_server.jar.UPDATE")) return;
@@ -122,6 +127,9 @@ namespace YAMS
                 this.Running = true;
                 Database.AddLog("Server Started", "server", "info", false, this.ServerID);
 
+                //Save the process ID so we can kill if there is a crash
+                this.PID = this.prcMinecraft.Id;
+                Util.AddPID(this.prcMinecraft.Id);
             }
             catch (Exception e)
             {
@@ -150,7 +158,14 @@ namespace YAMS
 
         public void RestartIfEmpty()
         {
-            if (this.Players.Count == 0) this.Restart();
+            if (this.Players.Count == 0)
+            {
+                this.Restart();
+            }
+            else
+            {
+                this.RestartWhenFree = true;
+            }
         }
 
         //Restart the server after specified number of seconds and warn users it's going to happen
@@ -282,6 +297,7 @@ namespace YAMS
             DateTime datTimeStamp = DateTime.Now;
             Database.AddLog(datTimeStamp, "Server Exited", "server", "warn", false, this.ServerID);
             this.Running = false;
+            Util.RemovePID(this.PID);
         }
 
         //Login and out events
@@ -293,8 +309,11 @@ namespace YAMS
         private void PlayerLogout(string strName)
         {
             this.Players.Remove(strName);
-            //Check if we should restart the server for an update
-            if (this.Players.Count == 0 && this.RestartNeeded && Convert.ToBoolean(Database.GetSetting("RestartOnJarUpdate", "YAMS"))) this.Restart();
+            //Check if we should restart the server for an update or a request
+            if (this.Players.Count == 0 && ((this.RestartNeeded && Convert.ToBoolean(Database.GetSetting("RestartOnJarUpdate", "YAMS"))) || this.RestartWhenFree))
+            {
+                this.Restart();
+            }
         }
 
         //Returns the amount of RAM being used by this server

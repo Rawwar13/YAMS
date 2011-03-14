@@ -5,6 +5,7 @@ using System.Text;
 using System.Data.SqlServerCe;
 using System.Threading;
 using System.IO;
+using System.Diagnostics;
 using YAMS;
 
 namespace YAMS
@@ -26,6 +27,26 @@ namespace YAMS
             catch { };
             try { if (File.Exists(RootFolder + @"\YAMS-Service.exe.OLD")) File.Delete(RootFolder + @"\YAMS-Service.exe.OLD"); }
             catch { };
+
+            //Are there any PIDs we previously started still running?
+            if (File.Exists(Core.RootFolder + "\\pids"))
+            {
+                try
+                {
+                    StreamReader trPids = new StreamReader(Core.RootFolder + "\\pids");
+                    string line;
+                    while ((line = trPids.ReadLine()) != null)
+                    {
+                        Process.GetProcessById(Convert.ToInt32(line)).Kill();
+                    }
+                    trPids.Close();
+                }
+                catch
+                {
+                    Database.AddLog("Not all processes killed");
+                }
+                File.Delete(Core.RootFolder + "\\pids");
+            };
 
             //Start DB Connection
             Database.init();

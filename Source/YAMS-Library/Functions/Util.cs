@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Net;
 using System.Text;
 using System.Collections.Generic;
+using System.Collections;
 
 namespace YAMS
 {
@@ -286,7 +287,60 @@ namespace YAMS
             {
                 Database.AddLog("Couldn't phone home");
             }
+        
         }
+
+        //Add a process id to our list
+        public static void AddPID(int intID)
+        {
+            try
+            {
+                StreamWriter twPids;
+                if (!File.Exists(Core.RootFolder + "\\pids"))
+                {
+                    twPids = File.CreateText(Core.RootFolder + "\\pids");
+                }
+                else
+                {
+                    twPids = File.AppendText(Core.RootFolder + "\\pids");
+                }
+                twPids.WriteLine(intID);
+                twPids.Close();
+            } catch (Exception e) {
+                Database.AddLog(e.Message, "pids", "warn");
+            }
+        }
+
+        //Remove a process ID if it exists
+        public static void RemovePID(int intID)
+        {
+            try
+            {
+                if (!File.Exists(Core.RootFolder + "\\pids")) return;
+            
+                //Read all pids into an array, except the one we want
+                ArrayList lines = new ArrayList();
+                StreamReader trPids = new StreamReader(Core.RootFolder + "\\pids");
+                string line;
+                while ((line = trPids.ReadLine()) != null)
+                {
+                    if (line != intID.ToString()) lines.Add(line);
+                }
+                trPids.Close();
+
+                //delete pids file and recreate
+                File.Delete(Core.RootFolder + "\\pids");
+                File.CreateText(Core.RootFolder + "\\pids");
+                StreamWriter twPids = File.AppendText(Core.RootFolder + "\\pids");
+                foreach (string l in lines)
+                {
+                    twPids.WriteLine(l);
+                }
+            }
+            catch (Exception e)
+            {
+                Database.AddLog(e.Message, "pids", "warn");
+            }
         }
    
     }
