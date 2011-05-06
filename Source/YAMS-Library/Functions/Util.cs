@@ -3,6 +3,7 @@ using Microsoft.Win32;
 using System;
 using System.Text.RegularExpressions;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Collections.Generic;
 using System.Collections;
@@ -350,6 +351,18 @@ namespace YAMS
             {
                 Database.AddLog("Removing PID: " + e.Message, "pids", "warn");
             }
+        }
+
+        //Check if a port is available
+        public static bool PortIsBusy(int port)
+        {
+            IPGlobalProperties ipGP = IPGlobalProperties.GetIPGlobalProperties();
+            IPEndPoint[] endpoints = ipGP.GetActiveTcpListeners();
+            if (endpoints == null || endpoints.Length == 0) return false;
+            for (int i = 0; i < endpoints.Length; i++)
+                if (endpoints[i].Port == port)
+                    return true;
+            return false;
         }
    
     }
