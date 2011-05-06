@@ -44,6 +44,9 @@ namespace YAMS
         public bool HasChanged = false;
         public int PID;
 
+        private bool SafeStop = false;
+        public bool AutoRestart = true;
+
         public bool RestartNeeded = false;
 
         public bool RestartWhenFree = false;
@@ -145,6 +148,7 @@ namespace YAMS
                 this.prcMinecraft.BeginErrorReadLine();
 
                 this.Running = true;
+                this.SafeStop = false;
                 Database.AddLog("Server Started: " + strArgs, "server", "info", false, this.ServerID);
 
                 //Save the process ID so we can kill if there is a crash
@@ -161,6 +165,7 @@ namespace YAMS
         public void Stop()
         {
             if (!Running) return;
+            this.SafeStop = true;
             this.Send("stop");
             this.prcMinecraft.WaitForExit();
             this.prcMinecraft.CancelErrorRead();
@@ -320,6 +325,13 @@ namespace YAMS
             Database.AddLog(datTimeStamp, "Server Exited", "server", "warn", false, this.ServerID);
             this.Running = false;
             Util.RemovePID(this.PID);
+
+            //Did the server stop safely?
+            if (!this.SafeStop)
+            {
+                System.Threading.Thread.Sleep(10000);
+                this.Start();
+            }
         }
 
         //Login and out events
