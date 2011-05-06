@@ -384,8 +384,7 @@ YAMS.admin = {
         },
         failure: function (o) {
             YAMS.admin.log('updateServerConsole failed');
-        },
-        timeout: 4500
+        }
     },
 
     updateGlobalLog: function () { var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.updateGlobalLog_callback, 'action=log&start=' + YAMS.admin.lastLogId + '&rows=200&serverid=0&level=all'); },
@@ -412,8 +411,7 @@ YAMS.admin = {
         },
         failure: function (o) {
             YAMS.admin.log('updateGlobalLog failed');
-        },
-        timeout: 9500
+        }
     },
 
     aboutYAMS: function () {
