@@ -91,6 +91,12 @@ namespace YAMS
         {
             try
             {
+                while(Util.PortIsBusy(Convert.ToInt32(YAMS.Database.GetSetting("AdminListenPort", "YAMS"))) && AdminTryCount < 120) {
+                    AdminTryCount++;
+                    Database.AddLog("Admin Web server port still in use, attempt " + AdminTryCount, "web", "warn");
+                    Thread.Sleep(5000);
+                }
+
                 adminServer.Start(5);
                 //Start our session provider
                 WebSession.Start(adminServer);
@@ -98,19 +104,7 @@ namespace YAMS
             catch (System.Net.Sockets.SocketException e)
             {
                 //Previous service has not released the port, so hang on and try again.
-                AdminTryCount++;
                 Database.AddLog("Admin Web server port still in use, attempt " + AdminTryCount + ": " + e.Message, "web", "warn");
-                Thread.Sleep(1000);
-                if (AdminTryCount < 120)
-                {
-                    StartAdmin();
-                }
-                else
-                {
-                    EventLog myLog = new EventLog();
-                    myLog.Source = "YAMS";
-                    myLog.WriteEntry("Unable to start admin web server", EventLogEntryType.Error);
-                }
             }
             catch (Exception e) {
                 EventLog myLog = new EventLog();
@@ -124,24 +118,18 @@ namespace YAMS
         {
             try
             {
+                while (Util.PortIsBusy(Convert.ToInt32(YAMS.Database.GetSetting("PublicListenPort", "YAMS"))) && PublicTryCount < 120)
+                {
+                    PublicTryCount++;
+                    Database.AddLog("Public Web server port still in use, attempt " + PublicTryCount, "web", "warn");
+                    Thread.Sleep(5000);
+                }
                 publicServer.Start(5);
             }
             catch (System.Net.Sockets.SocketException e)
             {
                 //Previous service has not released the port, so hang on and try again.
-                PublicTryCount++;
                 Database.AddLog("Public Web server port still in use, attempt " + PublicTryCount + ": " + e.Message, "web", "warn");
-                Thread.Sleep(1000);
-                if (PublicTryCount < 120)
-                {
-                    StartPublic();
-                }
-                else
-                {
-                    EventLog myLog = new EventLog();
-                    myLog.Source = "YAMS";
-                    myLog.WriteEntry("Unable to start public web server", EventLogEntryType.Error);
-                }
             }
             catch (Exception e)
             {
