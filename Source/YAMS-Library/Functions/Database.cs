@@ -68,6 +68,7 @@ namespace YAMS
             string sqlIns = "INSERT INTO Log (LogSource, LogMessage, LogLevel, ServerID) VALUES (@source, @msg, @level, @serverid)";
             try
             {
+                if (strMessage.Length > 255) strMessage = strMessage.Substring(0, 255);
                 SqlCeCommand cmdIns = new SqlCeCommand(sqlIns, connLocal);
                 cmdIns.Parameters.Add("@source", strSource);
                 cmdIns.Parameters.Add("@msg", strMessage);
