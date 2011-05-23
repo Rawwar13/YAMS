@@ -20,11 +20,10 @@ namespace YAMS.AddOns
             this.Server.DisableSaving();
 
             string ServerRoot = this.Server.ServerDirectory;
-            string strArgs = "-Dorg.lwjgl.opengl.Display.allowSoftwareOpenGL=true -Dorg.lwjgl.opengl.Display.noinput=true " + 
-                "-jar tectonicus.jar " + 
+            string strArgs = "-jar tectonicus.jar " + 
                 "worldDir=\"" + ServerRoot + "\\world\" " + 
                 "outputDir=\"" + ServerRoot + "\\renders\\tectonicus\" " +
-                "mode=cmd verbose=true numSamples=0";
+                "mode=cmd verbose=true";
 
             //First run the biome extractor tool
             Process prc = new Process();

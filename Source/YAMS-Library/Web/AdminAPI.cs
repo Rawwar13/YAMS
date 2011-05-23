@@ -95,6 +95,13 @@ namespace YAMS.Web
                             c10t.Start();
                             strResponse = "{ \"result\" : \"sent\" }";
                             break;
+                        case "tectonicus":
+                            //Maps a server
+                            s = Core.Servers[Convert.ToInt32(context.Request.Parameters["serverid"])];
+                            AddOns.Tectonicus tecton = new AddOns.Tectonicus(s, "lighting=" + param["lighting"] + "&night=" + param["night"] + "&delete=" + param["delete"]);
+                            tecton.Start();
+                            strResponse = "{ \"result\" : \"sent\" }";
+                            break;
                         case "start":
                             //Starts a server
                             Core.Servers[Convert.ToInt32(context.Request.Parameters["serverid"])].Start();

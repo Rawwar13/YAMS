@@ -74,9 +74,9 @@ namespace YAMS.Web
                     if (File.Exists(s.ServerDirectory + @"\renders\overviewer\output\index.html")) {
                         strOverviewer = "<h3>Overviewer Map</h3><div><a href=\"renders/overviewer/output/index.html\">Click here to open map</a>";
                     }
-                    if (File.Exists(s.ServerDirectory + @"\renders\tectonicus\index.html"))
+                    if (File.Exists(s.ServerDirectory + @"\renders\tectonicus\map.html"))
                     {
-                        strTectonicus = "<h3>Tectonicus Map</h3><div><a href=\"renders/tectonicus/index.html\">Click here to open map</a>";
+                        strTectonicus = "<h3>Tectonicus Map</h3><div><a href=\"renders/tectonicus/map.html\">Click here to open map</a>";
                     }
 
                     strImages = "<h3>Images</h3><ul>";

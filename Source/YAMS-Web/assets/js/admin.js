@@ -339,6 +339,7 @@ YAMS.admin = {
 
     mapServer: function () { var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.statusCommand_callback, 'action=gmap&serverid=' + YAMS.admin.selectedServer + "&lighting=" + YAMS.D.get('overviewer-lighting').checked + "&night=" + YAMS.D.get('overviewer-night').checked + "&delete=" + YAMS.D.get('overviewer-delete').checked); },
     imgServer: function () { var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.statusCommand_callback, 'action=c10t&serverid=' + YAMS.admin.selectedServer + "&mode=" + YAMS.D.get('c10t-mode').value + "&night=" + YAMS.D.get('c10t-night').value); },
+    tectonicusServer: function () { var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.statusCommand_callback, 'action=tectonicus&serverid=' + YAMS.admin.selectedServer); },
     startServer: function () { var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.statusCommand_callback, 'action=start&serverid=' + YAMS.admin.selectedServer); },
     stopServer: function () { var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.statusCommand_callback, 'action=stop&serverid=' + YAMS.admin.selectedServer); },
     restartServer: function () { var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.statusCommand_callback, 'action=restart&serverid=' + YAMS.admin.selectedServer); },
