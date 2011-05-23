@@ -61,6 +61,10 @@ namespace YAMS
             { "live", "https://github.com/richardbenson/YAMS/raw/updater/versions.json" },
             { "dev", "https://github.com/richardbenson/YAMS/raw/updater/development/versions.json" }
         };
+        public static Dictionary<string, string> strYAMSPropertiesURL = new Dictionary<string, string>() {
+            { "live", "https://github.com/richardbenson/YAMS/raw/updater/properties.json" },
+            { "dev", "https://github.com/richardbenson/YAMS/raw/updater/development/properties.json" }
+        };
 
         //Third party URLS
         public static Dictionary<string, string> dicAddOnURLS = new Dictionary<string, string>
@@ -87,7 +91,11 @@ namespace YAMS
                 string strBranch = Database.GetSetting("UpdateBranch", "YAMS");
 
                 //Check Minecraft server first
-                if (bolUpdateJAR) bolServerUpdateAvailable = UpdateIfNeeded(strMCServerURL, YAMS.Core.RootFolder + @"\lib\minecraft_server.jar.UPDATE");
+                if (bolUpdateJAR)
+                {
+                    bolServerUpdateAvailable = UpdateIfNeeded(strMCServerURL, YAMS.Core.RootFolder + @"\lib\minecraft_server.jar.UPDATE");
+                    UpdateIfNeeded(strYAMSPropertiesURL[strBranch], YAMS.Core.RootFolder + @"\lib\properties.json");
+                }
 
                 //Have they opted for bukkit? If so, update that too
                 if (Convert.ToBoolean(Database.GetSetting("BukkitInstalled", "YAMS")))
