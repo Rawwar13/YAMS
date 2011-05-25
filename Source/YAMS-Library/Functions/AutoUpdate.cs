@@ -70,17 +70,18 @@ namespace YAMS
         public static Dictionary<string, string> dicAddOnURLS = new Dictionary<string, string>
         {
             { "tectonicus", "http://www.triangularpixels.com/Tectonicus/Tectonicus_vxxx.jar" },
-            { "overviewer", "https://github.com/downloads/brownan/Minecraft-Overviewer/Overviewer-xxx.zip" },
+            { "overviewer-x86", "https://github.com/downloads/brownan/Minecraft-Overviewer/win86_32-release-xxx.zip" },
+            { "overviewer-x64", "https://github.com/downloads/brownan/Minecraft-Overviewer/win86_64-release-xxx.zip" },
             { "biome-extractor", "http://dl.dropbox.com/u/107712/MCMap/Minecraft-Biome-Extractor-vxxx.zip" },
             { "c10t-x86", "http://toolchain.eu/minecraft/c10t/releases/c10t-xxx-windows-x86.zip" },
             { "c10t-x64", "http://toolchain.eu/minecraft/c10t/releases/c10t-xxx-windows-x86_64.zip" }
         };
 
         //Default versions
-        private static string strOverviewerVer = "0.0.6";
-        private static string strC10tVer = "1.4";
-        private static string strBiomeExtractorVer = "071a";
-        private static string strTectonicusVer = "1.19";
+        private static string strOverviewerVer = "0.1.4";
+        private static string strC10tVer = "1.7";
+        private static string strBiomeExtractorVer = "080";
+        private static string strTectonicusVer = "1.38";
 
         //Checks for available updates
         public static void CheckUpdates()
