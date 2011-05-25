@@ -111,12 +111,12 @@ namespace YAMS.AddOns
         private void AppOutput(object sender, DataReceivedEventArgs e)
         {
             DateTime datTimeStamp = DateTime.Now;
-            if (e.Data != null) Database.AddLog(datTimeStamp, e.Data, this.BaseName);
+            if (e.Data != null) Database.AddLog(datTimeStamp, e.Data, this.BaseName, "info", false, this.Server.ServerID);
         }
         private void AppError(object sender, DataReceivedEventArgs e)
         {
             DateTime datTimeStamp = DateTime.Now;
-            if (e.Data != null) Database.AddLog(datTimeStamp, e.Data, this.BaseName, "error");
+            if (e.Data != null) Database.AddLog(datTimeStamp, e.Data, this.BaseName, "error", false, this.Server.ServerID);
         }
 
     }

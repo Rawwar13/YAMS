@@ -91,12 +91,12 @@ namespace YAMS.AddOns
         private void BiomeExtractorOutput(object sender, DataReceivedEventArgs e)
         {
             DateTime datTimeStamp = DateTime.Now;
-            if (e.Data != null) Database.AddLog(datTimeStamp, e.Data, this.BaseName);
+            if (e.Data != null) Database.AddLog(datTimeStamp, e.Data, this.BaseName, "info", false, this.Server.ServerID);
         }
         private void BiomeExtractorError(object sender, DataReceivedEventArgs e)
         {
             DateTime datTimeStamp = DateTime.Now;
-            if (e.Data != null) Database.AddLog(datTimeStamp, e.Data, this.BaseName, "error");
+            if (e.Data != null) Database.AddLog(datTimeStamp, e.Data, this.BaseName, "error", false, this.Server.ServerID);
         }
 
     }
