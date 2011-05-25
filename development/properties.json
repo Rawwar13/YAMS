@@ -45,6 +45,12 @@
 	  "type":"boolean",
 	  "default":"false",
 	  "description":"Allow the use of flight and speed mods",
-	  "name":"Allow Flight/Speed hacks" }
+	  "name":"Allow Flight/Speed hacks" },
+	  
+	{ "key":"view-distance",
+	  "type":"integer",
+	  "default":"10",
+	  "description":"Sets the radius of terrain updates sent to players",
+	  "name":"View Distance" }
 	  
 ] }
