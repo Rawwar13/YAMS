@@ -275,6 +275,7 @@ namespace YAMS
             switch (strApp)
             {
                 case "c10t":
+                case "overviewer":
                     strReturn = dicAddOnURLS[strApp + "-" + YAMS.Util.GetBitness()];
                     break;
                 default:
@@ -304,7 +305,11 @@ namespace YAMS
                     }
                     else
                     {
-                        request.IfModifiedSince = Convert.ToDateTime(strETag);
+                        try
+                        {
+                            request.IfModifiedSince = Convert.ToDateTime(strETag);
+                        }
+                        catch { Database.AddLog("Unable to set modified date for URL: " + strURL, "updater", "warn"); }
                     }
                 }
                 //if (strETag != null) request.Headers[HttpRequestHeader.IfModifiedSince] = strETag;
