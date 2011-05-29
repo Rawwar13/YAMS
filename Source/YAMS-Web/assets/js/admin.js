@@ -18,6 +18,7 @@ YAMS.admin = {
     selectedServer: 0,
     lastServerLogId: 0,
     serverTimer: 0,
+    serverUpdateInProgress: false,
 
     log: function (strMessage) {
         if (typeof (console) != "undefined") console.log(strMessage);
@@ -352,7 +353,12 @@ YAMS.admin = {
     consoleSend_callback: { success: function (o) { YAMS.D.get('console-input').value = ''; }, failure: function (o) { YAMS.admin.log('ConsoleSend Failed'); } },
     chatSend_callback: { success: function (o) { YAMS.D.get('chat-input').value = ''; }, failure: function (o) { YAMS.admin.log('ChatSend Failed'); } },
 
-    updateServerConsole: function () { var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.updateServerConsole_callback, 'action=log&start=' + YAMS.admin.lastServerLogId + '&rows=0&serverid=' + YAMS.admin.selectedServer + '&level=all'); },
+    updateServerConsole: function () { 
+        if (!YAMS.admin.serverUpdateInProgress) {
+            YAMS.admin.serverUpdateInProgress = true;
+            var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.updateServerConsole_callback, 'action=log&start=' + YAMS.admin.lastServerLogId + '&rows=0&serverid=' + YAMS.admin.selectedServer + '&level=all');
+        }
+    },
 
     updateServerConsole_callback: {
         success: function (o) {
@@ -377,14 +383,17 @@ YAMS.admin = {
                 } else {
                     l.appendChild(s);
                 }
+
                 YAMS.admin.lastServerLogId = r.LogID;
             }
             l.scrollTop = l.scrollHeight;
             c.scrollTop = c.scrollHeight;
             YAMS.admin.loading.cfg.setProperty('visible', false);
+            YAMS.admin.serverUpdateInProgress = false;
         },
         failure: function (o) {
             YAMS.admin.log('updateServerConsole failed');
+            YAMS.admin.serverUpdateInProgress = false;
         }
     },
 
