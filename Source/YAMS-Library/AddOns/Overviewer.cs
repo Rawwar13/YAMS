@@ -11,8 +11,8 @@ namespace YAMS.AddOns
 {
     class Overviewer : App
     {
-        public Overviewer(MCServer s, string strParams = "lighting=false&night=false&delete=false")
-            : base(s, "overviewer", @"gmap.exe", "Overviewer", true, strParams) {}
+        public Overviewer(MCServer s, string strParams = "rendermodes=normal,lighting,night")
+            : base(s, "overviewer", @"overviewer.exe", "Overviewer", true, strParams) {}
 
         public override void DoWork()
         {
@@ -31,34 +31,17 @@ namespace YAMS.AddOns
 
             string ServerRoot = this.Server.ServerDirectory;
             //Check the proper folders exist
-            if (!Directory.Exists(ServerRoot + @"\renders\overviewer\")) Directory.CreateDirectory(ServerRoot + @"\renders\gmap\");
+            if (!Directory.Exists(ServerRoot + @"\renders\overviewer\")) Directory.CreateDirectory(ServerRoot + @"\renders\overviewer\");
             if (!Directory.Exists(ServerRoot + @"\renders\overviewer\cache\")) Directory.CreateDirectory(ServerRoot + @"\renders\overviewer\cache\");
             if (!Directory.Exists(ServerRoot + @"\renders\overviewer\output\")) Directory.CreateDirectory(ServerRoot + @"\renders\overviewer\output\");
             string strArgs = "";
 
-            if (this.jobParams.ContainsKey("lighting"))
+            if (this.jobParams.ContainsKey("rendermodes"))
             {
-                if (jobParams["lighting"] == "true")
-                {
-                    strArgs += " --lighting";
-                }
-            }
-            if (this.jobParams.ContainsKey("night"))
-            {
-                if (jobParams["night"] == "true")
-                {
-                    strArgs += " --night";
-                }
-            }
-            if (this.jobParams.ContainsKey("delete"))
-            {
-                if (jobParams["delete"] == "true")
-                {
-                    strArgs += " --delete";
-                }
+                strArgs += " --rendermodes=" + jobParams["rendermodes"];
             }
             
-            strArgs += " --cachedir=\"" + ServerRoot + "renders\\overviewer\\cache\" \"" + ServerRoot + "\\world\" \"" + ServerRoot + "renders\\overviewer\\output\"";
+            strArgs += " \"" + ServerRoot + "\\world\" \"" + ServerRoot + "renders\\overviewer\\output\"";
 
             Process prcOverviewer = new Process();
             prcOverviewer.StartInfo.UseShellExecute = false;

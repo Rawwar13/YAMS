@@ -81,11 +81,33 @@ namespace YAMS.Web
                             }
                             strResponse += "]}";
                             break;
-                        case "gmap":
+                        case "overviewer":
                             //Maps a server
                             s = Core.Servers[Convert.ToInt32(context.Request.Parameters["serverid"])];
-                            AddOns.Overviewer gmap = new AddOns.Overviewer(s, "lighting=" + param["lighting"] + "&night=" + param["night"] + "&delete=" + param["delete"]);
-                            gmap.Start();
+                            string strRenderModes = "";
+                            if (param["normal"] == "true") strRenderModes += "normal";
+                            if (param["lighting"] == "true")
+                            {
+                                if (strRenderModes != "") strRenderModes += ",";
+                                strRenderModes += "lighting";
+                            }
+                            if (param["night"] == "true")
+                            {
+                                if (strRenderModes != "") strRenderModes += ",";
+                                strRenderModes += "night";
+                            }
+                            if (param["spawn"] == "true")
+                            {
+                                if (strRenderModes != "") strRenderModes += ",";
+                                strRenderModes += "spawn";
+                            }
+                            if (param["cave"] == "true")
+                            {
+                                if (strRenderModes != "") strRenderModes += ",";
+                                strRenderModes += "cave";
+                            }
+                            AddOns.Overviewer over = new AddOns.Overviewer(s, "rendermodes=" + strRenderModes);
+                            over.Start();
                             strResponse = "{ \"result\" : \"sent\" }";
                             break;
                         case "c10t":
