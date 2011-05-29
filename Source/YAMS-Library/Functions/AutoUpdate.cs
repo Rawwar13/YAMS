@@ -307,9 +307,10 @@ namespace YAMS
                     {
                         try
                         {
+                            strETag.Replace("UTC", "GMT"); //Fix for weird servers not sending correct formate datetime
                             request.IfModifiedSince = Convert.ToDateTime(strETag);
                         }
-                        catch { Database.AddLog("Unable to set modified date for URL: " + strURL, "updater", "warn"); }
+                        catch { Database.AddLog("Unable to set modified date for URL: " + strURL, "updater", "warn"); return false; }
                     }
                 }
                 //if (strETag != null) request.Headers[HttpRequestHeader.IfModifiedSince] = strETag;
