@@ -375,8 +375,8 @@ YAMS.admin = {
                 var s = document.createElement('div');
                 YAMS.D.addClass(s, 'message');
                 YAMS.D.addClass(s, r.LogLevel);
-                var d = eval('new ' + r.LogDateTime.replace(/\//g, '').replace('+0000', ''));
-                var m = document.createTextNode('[' + d.getFullYear() + '-' + YAMS.admin.leadingZero(d.getMonth()) + '-' + YAMS.admin.leadingZero(d.getDate()) + ' ' + YAMS.admin.leadingZero(d.getHours()) + ':' + YAMS.admin.leadingZero(d.getMinutes()) + '] ' + r.LogMessage);
+                var d = eval('new ' + r.LogDateTime.replace(/\//g, '').replace('+0000', '').replace('+0100', ''));
+                var m = document.createTextNode('[' + d.getFullYear() + '-' + YAMS.admin.leadingZero(d.getMonth() + 1) + '-' + YAMS.admin.leadingZero(d.getDate()) + ' ' + YAMS.admin.leadingZero(d.getHours()) + ':' + YAMS.admin.leadingZero(d.getMinutes()) + '] ' + r.LogMessage);
                 s.appendChild(m);
                 if (r.LogLevel == 'chat') {
                     c.appendChild(s);
@@ -413,7 +413,7 @@ YAMS.admin = {
                 YAMS.D.addClass(s, 'message');
                 YAMS.D.addClass(s, r.LogLevel);
                 var d = eval('new ' + r.LogDateTime.replace(/\//g, '').replace('+0000', ''));
-                s.innerHTML = '[' + YAMS.admin.leadingZero(d.getFullYear()) + '-' + YAMS.admin.leadingZero(d.getMonth()) + '-' + YAMS.admin.leadingZero(d.getDate()) + ' ' + YAMS.admin.leadingZero(d.getHours()) + ':' + YAMS.admin.leadingZero(d.getMinutes()) + '] (' + r.LogSource + ') ' + r.LogMessage;
+                s.innerHTML = '[' + YAMS.admin.leadingZero(d.getFullYear()) + '-' + YAMS.admin.leadingZero(d.getMonth() + 1) + '-' + YAMS.admin.leadingZero(d.getDate()) + ' ' + YAMS.admin.leadingZero(d.getHours()) + ':' + YAMS.admin.leadingZero(d.getMinutes()) + '] (' + r.LogSource + ') ' + r.LogMessage;
                 l.appendChild(s);
                 YAMS.admin.lastLogId = r.LogID;
             }
