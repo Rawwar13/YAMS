@@ -70,6 +70,7 @@ namespace YAMS.Web
                     string strOverviewer = "";
                     string strTectonicus = "";
                     string strImages = "";
+                    string strBackups = "";
 
                     if (File.Exists(s.ServerDirectory + @"\renders\overviewer\output\index.html")) {
                         strOverviewer = "<h3>Overviewer Map</h3><div><a href=\"renders/overviewer/output/index.html\">Click here to open map</a>";
@@ -88,11 +89,21 @@ namespace YAMS.Web
                     }
                     strImages += "</ul>";
 
+                    strBackups = "<h3>Backups</h3><ul>";
+                    DirectoryInfo di2 = new DirectoryInfo(s.ServerDirectory + @"\backups\");
+                    FileInfo[] fileEntries2 = di2.GetFiles();
+                    foreach (FileInfo fi in fileEntries2)
+                    {
+                        strBackups += "<li><a href=\"backups/" + fi.Name + "\">" + fi.Name + "</a></li>";
+                    }
+                    strBackups += "</ul>";
+
                     strTemplate = File.ReadAllText(Core.RootFolder + @"\web\templates\server-home.html");
                     dicTags.Add("PageTitle", s.ServerTitle);
                     dicTags.Add("RenderOverviewer", strOverviewer);
                     dicTags.Add("RenderTectonicus", strTectonicus);
                     dicTags.Add("RenderImages", strImages);
+                    dicTags.Add("BackupList", strBackups);
                     dicTags.Add("PageBody", "Body");
                 }
                 else

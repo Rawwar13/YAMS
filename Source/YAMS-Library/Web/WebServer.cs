@@ -59,6 +59,7 @@ namespace YAMS
             {
                 var intServerID = readerServers["ServerID"].ToString();
                 publicModule.Resources.Add(new FileResources("/servers/" + intServerID + "/renders/", Core.StoragePath + intServerID + "\\renders\\"));
+                publicModule.Resources.Add(new FileResources("/servers/" + intServerID + "/backups/", Core.StoragePath + intServerID + "\\backups\\"));
             }
             publicServer.Add(publicModule);
 
