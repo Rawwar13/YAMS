@@ -308,7 +308,9 @@ YAMS.admin = {
             var s = document.getElementById('status');
             s.innerHTML = '<p>Running: ' + results.status + '</p>' +
                     '<p>Restart Needed: ' + results.restartneeded + '</p>' +
-                    '<p>Restarting When Free: ' + results.restartwhenfree + '</p>'
+                    '<p>Restarting When Free: ' + results.restartwhenfree + '</p>' +
+                    '<p>RAM: ' + results.ram + '</p>' +
+                    '<p>VM: ' + results.vm + '</p>'
             if (results.status == "True") {
                 document.getElementById('start-server').disabled = true;
                 document.getElementById('stop-server').disabled = false;
@@ -355,7 +357,7 @@ YAMS.admin = {
     consoleSend_callback: { success: function (o) { YAMS.D.get('console-input').value = ''; }, failure: function (o) { YAMS.admin.log('ConsoleSend Failed'); } },
     chatSend_callback: { success: function (o) { YAMS.D.get('chat-input').value = ''; }, failure: function (o) { YAMS.admin.log('ChatSend Failed'); } },
 
-    updateServerConsole: function () { 
+    updateServerConsole: function () {
         if (!YAMS.admin.serverUpdateInProgress) {
             YAMS.admin.serverUpdateInProgress = true;
             var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.updateServerConsole_callback, 'action=log&start=' + YAMS.admin.lastServerLogId + '&rows=0&serverid=' + YAMS.admin.selectedServer + '&level=all');
