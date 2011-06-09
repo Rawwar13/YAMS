@@ -57,9 +57,9 @@ namespace YAMS
                     trPids.Close();
                     File.Delete(Core.RootFolder + "\\pids");
                 }
-                catch
+                catch (Exception e)
                 {
-                    Database.AddLog("Not all processes killed");
+                    Database.AddLog("Not all processes killed: " + e.Message);
                 }
             };
             
