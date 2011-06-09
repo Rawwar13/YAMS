@@ -271,6 +271,7 @@ YAMS.admin = {
                         for (var i = 0, len = typeSelect.options.length; i < len; i++) {
                             if (typeSelect.options[i].value === results.type) typeSelect.options[i].selected = true;
                         }
+                        YAMS.D.get('cfg_motd').value = results.motd;
                     },
                     failure: function (o) {
                         YAMS.admin.log('getServerSettings failed');
@@ -288,7 +289,8 @@ YAMS.admin = {
                       "type=" + YAMS.D.get('cfg_type').value + "&" +
                       "optimisations=" + YAMS.D.get('cfg_optimisations').checked + "&" +
                       "memory=" + YAMS.D.get('cfg_memory').value + "&" +
-                      "autostart=" + YAMS.D.get('cfg_autostart').checked;
+                      "autostart=" + YAMS.D.get('cfg_autostart').checked +
+                      "motd=" + YAMS.D.get('cfg_motd').value;
         var trans = YAHOO.util.Connect.asyncRequest('POST', '/api/', {
             success: function (o) { },
             failure: function (o) { }

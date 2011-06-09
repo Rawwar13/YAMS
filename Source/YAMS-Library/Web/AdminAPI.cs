@@ -172,7 +172,8 @@ namespace YAMS.Web
                                               "\"optimisations\" : \"" + Database.GetSetting(intServerID, "ServerEnableOptimisations") + "\"," +
                                               "\"memory\" : \"" + Database.GetSetting(intServerID, "ServerAssignedMemory") + "\"," +
                                               "\"autostart\" : \"" + Database.GetSetting(intServerID, "ServerAutoStart") + "\"," +
-                                              "\"type\" : \"" + Database.GetSetting(intServerID, "ServerType") + "\",";
+                                              "\"type\" : \"" + Database.GetSetting(intServerID, "ServerType") + "\"," +
+                                              "\"motd\" : \"" + Database.GetSetting("motd", "MC", intServerID) + "\",";
                             //Minecraft Settings
                             strResponse += "\"hellworld\" : \"" + Database.GetSetting("hellworld", "MC", intServerID) + "\"," +
                                            "\"spawnmonsters\" : \"" + Database.GetSetting("spawn-monsters", "MC", intServerID) + "\"," +
@@ -193,6 +194,7 @@ namespace YAMS.Web
                             Database.UpdateServer(intServerID, "ServerEnableOptimisations", Convert.ToBoolean(param["optimisations"]));
                             Database.UpdateServer(intServerID, "ServerAssignedMemory", Convert.ToInt32(param["memory"]));
                             Database.UpdateServer(intServerID, "ServerAutoStart", Convert.ToBoolean(param["autostart"]));
+                            Database.SaveSetting(intServerID, "motd", param["motd"]);
                             break;
                         case "get-config-file":
                             List<string> listConfig = Core.Servers[Convert.ToInt32(context.Request.Parameters["serverid"])].ReadConfig(param["file"]);
