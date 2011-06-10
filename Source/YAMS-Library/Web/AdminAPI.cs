@@ -232,6 +232,9 @@ namespace YAMS.Web
                             Database.SaveSetting("BukkitInstalled", param["bukkit"]);
                             strResponse = "done";
                             break;
+                        case "force-autoupdate":
+                            AutoUpdate.CheckUpdates();
+                            break;
                         default:
                             return ProcessingResult.Abort;
                     }

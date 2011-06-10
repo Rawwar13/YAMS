@@ -538,6 +538,15 @@ YAMS.admin = {
         }
     },
 
+    forceUpdate: function() {
+        var trans = YAHOO.util.Connect.asyncRequest('POST', '/api/', {
+            success: function (o) {
+            },
+            failure: function (o) {
+            }
+        }, 'action=force-autoupdate');
+    },
+
     onSubmenuShow: function () {
 
         var oIFrame,
@@ -582,7 +591,8 @@ YAMS.admin = {
                 id: "settingsmenu",
                 itemdata: [
                     [
-                        { text: "Installed Apps", onclick: { fn: installedApps} }
+                        { text: "Installed Apps", onclick: { fn: installedApps} },
+                        { text: "Run Updates Now", onclick: { fn: forceUpdate} }
                     ]
             ]
             }
@@ -603,6 +613,7 @@ function onMenuItemClick() {
 //YUI menu not liking the namespace for some reason
 function aboutYAMS() { YAMS.admin.aboutYAMS() };
 function installedApps() { YAMS.admin.installedApps() };
+function forceUpdate() { YAMS.admin.forceUpdate() };
 
 YAMS.E.onDOMReady(YAMS.admin.init);
 
