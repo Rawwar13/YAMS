@@ -33,6 +33,9 @@ namespace YAMS
             DataSet ds = new DataSet();
             SqlCeCommand command = connLocal.CreateCommand();
 
+            //We need to limit the number of rows or requests take an age and crash browsers
+            if (intNumRows == 0) intNumRows = 1000;
+
             //Build our SQL
             StringBuilder strSQL = new StringBuilder();
             strSQL.Append("SELECT ");
