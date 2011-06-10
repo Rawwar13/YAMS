@@ -159,7 +159,7 @@ namespace YAMS
             Database.SaveSetting("PublicListenPort", Convert.ToString(Networking.TcpPort.FindNextAvailablePort(80))); //Find nearest open port to 80 for public site
             Database.SaveSetting("ExternalIP", GetExternalIP().ToString());
             Database.SaveSetting("ListenIP", GetListenIP().ToString());
-            Database.SaveSetting("UpdateBranch", "dev");
+            Database.SaveSetting("UpdateBranch", "live");
 
             //Run an update now
             AutoUpdate.CheckUpdates();
