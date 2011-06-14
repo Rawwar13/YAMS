@@ -158,7 +158,9 @@ namespace YAMS
                             ExtractZip(YAMS.Core.RootFolder + @"\apps\c10t.zip", YAMS.Core.RootFolder + @"\apps\");
                             File.Delete(YAMS.Core.RootFolder + @"\apps\c10t.zip");
                             if (Directory.Exists(YAMS.Core.RootFolder + @"\apps\c10t\")) Directory.Delete(YAMS.Core.RootFolder + @"\apps\c10t\", true);
-                            Directory.Move(YAMS.Core.RootFolder + @"\apps\c10t-" + strC10tVer, YAMS.Core.RootFolder + @"\apps\c10t");
+                            string strC10tDir = YAMS.Core.RootFolder + @"\apps\c10t-" + strC10tVer + "-windows-x86";
+                            if (YAMS.Util.GetBitness() == "x64") strC10tDir += "_64";
+                            Directory.Move(strC10tDir, YAMS.Core.RootFolder + @"\apps\c10t");
                         }
                     }
 
