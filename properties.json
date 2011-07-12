@@ -1,0 +1,56 @@
+{ "options": [
+	{ "key":"hellworld",
+	  "type":"boolean",
+	  "default":"false",
+	  "description":"Server generates the whole world as the Nether",
+	  "name":"HellWorld" },
+	  
+	{ "key":"spawn-monsters",
+	  "type":"boolean",
+	  "default":"true"
+      "description":"Enable monster spawning"
+	  "name":"Monsters" },
+	  
+	{ "key":"online-mode",
+	  "type":"boolean",
+	  "default":"true"
+	  "description":"Check players against official login servers (recommended)",
+	  "name":"Online Mode" },
+	  
+	{ "key":"spawn-animals",
+	  "type":"boolean",
+	  "default":"true",
+	  "description":"Enable spawning of friendly mobs",
+	  "name":"Animals" },
+	  
+	{ "key":"max-players",
+	  "type":"integer",
+	  "default":"20",
+	  "description":"Maximum number of players allowed to connect",
+	  "name":"Max Players" },
+	  
+	{ "key":"pvp",
+	  "type":"boolean",
+	  "default":"true",
+	  "description":"Enable players to deal other players damage",
+	  "name":"PvP" },
+	  
+	{ "key":"white-list",
+	  "type":"boolean",
+	  "default":"false",
+	  "description":"Whitelist mode allows only specified players to log on",
+	  "name":"Whitelist" },
+	  
+	{ "key":"allow-flight",
+	  "type":"boolean",
+	  "default":"false",
+	  "description":"Allow the use of flight and speed mods",
+	  "name":"Allow Flight/Speed hacks" },
+	  
+	{ "key":"view-distance",
+	  "type":"integer",
+	  "default":"10",
+	  "description":"Sets the radius of terrain updates sent to players",
+	  "name":"View Distance" }
+	  
+] }
