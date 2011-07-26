@@ -62,7 +62,7 @@ namespace YAMS
                     Database.AddLog("Not all processes killed: " + e.Message);
                 }
             };
-            
+
             //Check for updates and start a timer to do it automatically
             int UpdateTick = (60 * 60 * 1000);
             if (Database.GetSetting("UpdateBranch", "YAMS") == "dev") UpdateTick = (15 * 60 * 1000);
@@ -72,6 +72,7 @@ namespace YAMS
             SqlCeDataReader readerServers = YAMS.Database.GetServers();
             while (readerServers.Read())
             {
+                Database.AddLog("Starting Server " + readerServers["ServerID"]);
                 MCServer myServer = new MCServer(Convert.ToInt32(readerServers["ServerID"]));
                 if (Convert.ToBoolean(readerServers["ServerAutostart"])) myServer.Start();
                 Servers.Add(Convert.ToInt32(readerServers["ServerID"]), myServer);
