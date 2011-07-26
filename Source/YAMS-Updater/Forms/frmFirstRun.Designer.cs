@@ -49,21 +49,10 @@
             this.label6 = new System.Windows.Forms.Label();
             this.tipYAMSUpdate = new System.Windows.Forms.ToolTip(this.components);
             this.directorySearcher1 = new System.DirectoryServices.DirectorySearcher();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.linkLabel3 = new System.Windows.Forms.LinkLabel();
-            this.chkBiomeExtractor = new System.Windows.Forms.CheckBox();
-            this.linkLabel2 = new System.Windows.Forms.LinkLabel();
-            this.chkC10t = new System.Windows.Forms.CheckBox();
-            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
-            this.chkOverviewer = new System.Windows.Forms.CheckBox();
-            this.label9 = new System.Windows.Forms.Label();
             this.btnComplete = new System.Windows.Forms.Button();
             this.timCheckUpdate = new System.Windows.Forms.Timer(this.components);
-            this.linkLabel4 = new System.Windows.Forms.LinkLabel();
-            this.chkTectonicus = new System.Windows.Forms.CheckBox();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
-            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox2
@@ -144,7 +133,7 @@
             this.label3.Size = new System.Drawing.Size(518, 13);
             this.label3.TabIndex = 0;
             this.label3.Text = "Enter the name of your first Minecraft server, more detailed configuration option" +
-                "s are available in the web app";
+    "s are available in the web app";
             // 
             // groupBox3
             // 
@@ -202,7 +191,7 @@
             this.chkRestartMC.Size = new System.Drawing.Size(420, 17);
             this.chkRestartMC.TabIndex = 9;
             this.chkRestartMC.Text = "Restart Minecraft automatically when update is available? (only when no players o" +
-                "n)";
+    "n)";
             this.chkRestartMC.UseVisualStyleBackColor = true;
             // 
             // chkUpdateAddons
@@ -256,108 +245,12 @@
             this.directorySearcher1.ServerPageTimeLimit = System.TimeSpan.Parse("-00:00:01");
             this.directorySearcher1.ServerTimeLimit = System.TimeSpan.Parse("-00:00:01");
             // 
-            // groupBox4
-            // 
-            this.groupBox4.Controls.Add(this.linkLabel4);
-            this.groupBox4.Controls.Add(this.chkTectonicus);
-            this.groupBox4.Controls.Add(this.linkLabel3);
-            this.groupBox4.Controls.Add(this.chkBiomeExtractor);
-            this.groupBox4.Controls.Add(this.linkLabel2);
-            this.groupBox4.Controls.Add(this.chkC10t);
-            this.groupBox4.Controls.Add(this.linkLabel1);
-            this.groupBox4.Controls.Add(this.chkOverviewer);
-            this.groupBox4.Controls.Add(this.label9);
-            this.groupBox4.Location = new System.Drawing.Point(12, 399);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(678, 177);
-            this.groupBox4.TabIndex = 3;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Third-party Add-Ons";
-            // 
-            // linkLabel3
-            // 
-            this.linkLabel3.AutoSize = true;
-            this.linkLabel3.Location = new System.Drawing.Point(279, 88);
-            this.linkLabel3.Name = "linkLabel3";
-            this.linkLabel3.Size = new System.Drawing.Size(301, 13);
-            this.linkLabel3.TabIndex = 16;
-            this.linkLabel3.TabStop = true;
-            this.linkLabel3.Text = "http://www.minecraftforum.net/viewtopic.php?f=1022&t=80902";
-            this.linkLabel3.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel3_LinkClicked);
-            // 
-            // chkBiomeExtractor
-            // 
-            this.chkBiomeExtractor.AutoSize = true;
-            this.chkBiomeExtractor.Checked = true;
-            this.chkBiomeExtractor.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkBiomeExtractor.Location = new System.Drawing.Point(16, 87);
-            this.chkBiomeExtractor.Name = "chkBiomeExtractor";
-            this.chkBiomeExtractor.Size = new System.Drawing.Size(188, 17);
-            this.chkBiomeExtractor.TabIndex = 15;
-            this.chkBiomeExtractor.Text = "Biome Extractor (by Donkey Kong)";
-            this.chkBiomeExtractor.UseVisualStyleBackColor = true;
-            // 
-            // linkLabel2
-            // 
-            this.linkLabel2.AutoSize = true;
-            this.linkLabel2.Location = new System.Drawing.Point(279, 68);
-            this.linkLabel2.Name = "linkLabel2";
-            this.linkLabel2.Size = new System.Drawing.Size(175, 13);
-            this.linkLabel2.TabIndex = 14;
-            this.linkLabel2.TabStop = true;
-            this.linkLabel2.Text = "http://toolchain.eu/minecraft/c10t/";
-            this.linkLabel2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
-            // 
-            // chkC10t
-            // 
-            this.chkC10t.AutoSize = true;
-            this.chkC10t.Checked = true;
-            this.chkC10t.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkC10t.Location = new System.Drawing.Point(16, 67);
-            this.chkC10t.Name = "chkC10t";
-            this.chkC10t.Size = new System.Drawing.Size(257, 17);
-            this.chkC10t.TabIndex = 13;
-            this.chkC10t.Text = "c10t: Minecraft (C)artography (T)ool (by Udoprog)";
-            this.chkC10t.UseVisualStyleBackColor = true;
-            // 
-            // linkLabel1
-            // 
-            this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(279, 49);
-            this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(247, 13);
-            this.linkLabel1.TabIndex = 12;
-            this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "https://github.com/brownan/Minecraft-Overviewer";
-            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
-            // 
-            // chkOverviewer
-            // 
-            this.chkOverviewer.AutoSize = true;
-            this.chkOverviewer.Checked = true;
-            this.chkOverviewer.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkOverviewer.Location = new System.Drawing.Point(16, 48);
-            this.chkOverviewer.Name = "chkOverviewer";
-            this.chkOverviewer.Size = new System.Drawing.Size(192, 17);
-            this.chkOverviewer.TabIndex = 11;
-            this.chkOverviewer.Text = "Minecraft Overviewer (by Brownan)";
-            this.chkOverviewer.UseVisualStyleBackColor = true;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(13, 19);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(143, 13);
-            this.label9.TabIndex = 11;
-            this.label9.Text = "Install these additional apps?";
-            // 
             // btnComplete
             // 
             this.btnComplete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.btnComplete.Location = new System.Drawing.Point(571, 582);
+            this.btnComplete.Location = new System.Drawing.Point(572, 394);
             this.btnComplete.Name = "btnComplete";
-            this.btnComplete.Size = new System.Drawing.Size(119, 34);
+            this.btnComplete.Size = new System.Drawing.Size(119, 31);
             this.btnComplete.TabIndex = 4;
             this.btnComplete.Text = "Complete Setup";
             this.btnComplete.UseVisualStyleBackColor = true;
@@ -368,37 +261,13 @@
             this.timCheckUpdate.Enabled = true;
             this.timCheckUpdate.Interval = 10000;
             // 
-            // linkLabel4
-            // 
-            this.linkLabel4.AutoSize = true;
-            this.linkLabel4.Location = new System.Drawing.Point(279, 107);
-            this.linkLabel4.Name = "linkLabel4";
-            this.linkLabel4.Size = new System.Drawing.Size(225, 13);
-            this.linkLabel4.TabIndex = 18;
-            this.linkLabel4.TabStop = true;
-            this.linkLabel4.Text = "http://www.minecraftwiki.net/wiki/Tectonicus";
-            this.linkLabel4.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel4_LinkClicked);
-            // 
-            // chkTectonicus
-            // 
-            this.chkTectonicus.AutoSize = true;
-            this.chkTectonicus.Checked = true;
-            this.chkTectonicus.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkTectonicus.Location = new System.Drawing.Point(16, 106);
-            this.chkTectonicus.Name = "chkTectonicus";
-            this.chkTectonicus.Size = new System.Drawing.Size(161, 17);
-            this.chkTectonicus.TabIndex = 17;
-            this.chkTectonicus.Text = "Tectonicus (by OrangyTang)";
-            this.chkTectonicus.UseVisualStyleBackColor = true;
-            // 
             // frmFirstRun
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(703, 619);
+            this.ClientSize = new System.Drawing.Size(703, 437);
             this.ControlBox = false;
             this.Controls.Add(this.btnComplete);
-            this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -412,8 +281,6 @@
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -437,20 +304,10 @@
         private System.Windows.Forms.CheckBox chkRestartYAMS;
         private System.Windows.Forms.CheckBox chkRestartMC;
         private System.DirectoryServices.DirectorySearcher directorySearcher1;
-        private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.LinkLabel linkLabel1;
-        private System.Windows.Forms.CheckBox chkOverviewer;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.LinkLabel linkLabel2;
-        private System.Windows.Forms.CheckBox chkC10t;
         private System.Windows.Forms.Button btnComplete;
         private System.Windows.Forms.Timer timCheckUpdate;
         private System.Windows.Forms.TextBox txtAdminPassword;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.LinkLabel linkLabel3;
-        private System.Windows.Forms.CheckBox chkBiomeExtractor;
-        private System.Windows.Forms.LinkLabel linkLabel4;
-        private System.Windows.Forms.CheckBox chkTectonicus;
 
     }
 }

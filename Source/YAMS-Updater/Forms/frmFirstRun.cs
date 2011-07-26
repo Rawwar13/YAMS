@@ -63,58 +63,6 @@ namespace YAMS_Updater
             WorkingForm.Refresh();
             AutoUpdate.UpdateIfNeeded(AutoUpdate.strMCServerURL, Core.RootFolder + @"\lib\minecraft_server.jar.UPDATE");
 
-            //Did they want any add-ons?
-            Database.SaveSetting("OverviewerInstalled", this.chkOverviewer.Checked.ToString().ToLower());
-            Database.SaveSetting("BiomeExtractorInstalled", this.chkOverviewer.Checked.ToString().ToLower());
-            Database.SaveSetting("C10tInstalled", this.chkC10t.Checked.ToString().ToLower());
-            Database.SaveSetting("TectonicusInstalled", this.chkOverviewer.Checked.ToString().ToLower());
-
-            ////Download our add-ons if we want them
-            //if (this.chkOverviewer.Checked || this.chkC10t.Checked)
-            //{
-            //    WorkingForm.lblCurrentItem.Text = "Downloading add-ons";
-            //    WorkingForm.Refresh();
-            //    AutoUpdate.UpdateIfNeeded(AutoUpdate.strYAMSVersionsURL["live"], YAMS.Core.RootFolder + @"\lib\versions.json");
-            //    string json = File.ReadAllText(YAMS.Core.RootFolder + @"\lib\versions.json");
-            //    Dictionary<string, string> dicVers = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
-                
-            //    //Grab overviewer
-            //    if (this.chkOverviewer.Checked)
-            //    {
-            //        WorkingForm.lblCurrentItem.Text = "Downloading Overviewer";
-            //        WorkingForm.Refresh();
-            //        string strOverviewerVer = dicVers["overviewer"];
-            //        if (AutoUpdate.UpdateIfNeeded(AutoUpdate.GetExternalURL("overviewer", strOverviewerVer), Core.RootFolder + @"\apps\overviewer.zip"))
-            //        {
-            //            WorkingForm.lblCurrentItem.Text = "Extracting Overviewer";
-            //            WorkingForm.Refresh();
-            //            AutoUpdate.ExtractZip(Core.RootFolder + @"\apps\overviewer.zip", Core.RootFolder + @"\apps\");
-            //            File.Delete(Core.RootFolder + @"\apps\overviewer.zip");
-            //            if (Directory.Exists(Core.RootFolder + @"\apps\overviewer\")) Directory.Delete(Core.RootFolder + @"\apps\overviewer\", true);
-            //            Directory.Move(Core.RootFolder + @"\apps\Overviewer-" + strOverviewerVer, Core.RootFolder + @"\apps\overviewer");
-            //            Database.SaveSetting("OverviewerVer", strOverviewerVer);
-            //        }
-            //    }
-
-            //    //Grab c10t
-            //    if (this.chkC10t.Checked)
-            //    {
-            //        WorkingForm.lblCurrentItem.Text = "Downloading c10t";
-            //        WorkingForm.Refresh();
-            //        string strC10tVer = dicVers["c10t"];
-            //        if (AutoUpdate.UpdateIfNeeded(AutoUpdate.GetExternalURL("c10t", strC10tVer), Core.RootFolder + @"\apps\c10t.zip"))
-            //        {
-            //            WorkingForm.lblCurrentItem.Text = "Extracting c10t";
-            //            WorkingForm.Refresh();
-            //            AutoUpdate.ExtractZip(Core.RootFolder + @"\apps\c10t.zip", Core.RootFolder + @"\apps\");
-            //            File.Delete(Core.RootFolder + @"\apps\c10t.zip");
-            //            if (Directory.Exists(Core.RootFolder + @"\apps\c10t\")) Directory.Delete(Core.RootFolder + @"\apps\c10t\", true);
-            //            Directory.Move(Core.RootFolder + @"\apps\c10t-" + strC10tVer, Core.RootFolder + @"\apps\c10t");
-            //            Database.SaveSetting("C10TVer", strC10tVer);
-            //        }
-            //    }
-            //}
-
             //Set our MC Defaults in the DB
             WorkingForm.lblCurrentItem.Text = "Creating your server";
             WorkingForm.Refresh();
