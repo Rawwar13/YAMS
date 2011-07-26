@@ -58,7 +58,9 @@ namespace YAMS
             while (readerServers.Read())
             {
                 var intServerID = readerServers["ServerID"].ToString();
+                if (!Directory.Exists(Core.StoragePath + intServerID + "\\renders\\")) Directory.CreateDirectory(Core.StoragePath + intServerID + "\\renders\\");
                 publicModule.Resources.Add(new FileResources("/servers/" + intServerID + "/renders/", Core.StoragePath + intServerID + "\\renders\\"));
+                if (!Directory.Exists(Core.StoragePath + intServerID + "\\backups\\")) Directory.CreateDirectory(Core.StoragePath + intServerID + "\\backups\\");
                 publicModule.Resources.Add(new FileResources("/servers/" + intServerID + "/backups/", Core.StoragePath + intServerID + "\\backups\\"));
             }
             publicServer.Add(publicModule);
