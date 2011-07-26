@@ -1,33 +1,58 @@
-﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
- "http://www.w3.org/TR/html4/strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>{?Y:PageTitle?}</title>
-
-<!-- Combo-handled YUI CSS files: -->
-<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.2r1/build/reset-fonts-grids/reset-fonts-grids.css&2.8.2r1/build/base/base-min.css" />
-
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="Robots" content="index,follow" />
+  <meta name="author" content="Luka Cvrk (www.solucija.com)" />
+  <meta name="description" content="Yet Another Minecraft Server is an easy way to run your Minecraft server on Windows as a service." />
+  <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" media="screen" />
+  <title>Yet Another Minecraft Server (YAMS) @ GitHub </title>
+  
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+  
 </head>
-<body class="root">
-    <div id="doc4" class="yui-t7">
-        <div id="hd">
-            <h1>{?Y:PageTitle?} - Home</h1>
-        </div>
-    <div id="bd">
-        <div class="yui-g">
-            <h2>About</h2>
-            {?Y:PageBody?}
-            <h2>Renders</h2>
-            {?Y:RenderOverviewer?}
-            {?Y:RenderTectonicus?}
-            {?Y:RenderImages?}
-            {?Y:BackupList?}
-        </div>
+<body>
+  <a href="http://github.com/richardbenson/YAMS"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>  
+  <div id="content">
+    <p id="top">The vanilla Minecraft Server (SMP) experience on Windows without the hassle</p>
+    <div id="logo">
+      <h1><a href="/"><abbr title="Yet Another Minecraft Server">YAMS</abbr></a></h1>
     </div>
-    <div id="ft">
-        <p>Powered by YAMS</p>
+    <ul id="menu">
+      <li class="current"><a href="/">Home</a></li>
+      <!--<li><a href="about.html">About</a></li>
+      <li><a href="#">Work</a></li>
+      <li><a href="#">Services</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Contact</a></li>-->
+    </ul>
+    <div class="line"></div>
+    <div id="pitch">
+      <h1>{?Y:PageTitle?}</h1>
     </div>
+    <div class="third">
+      <h3>Join</h3>
+      <a href="http://launch.minecraft.net/join.html?serverip={?Y:ServerConnectAddress?}">Join our server!</a>
     </div>
+    <div class="third">
+      {?Y:RenderImages?}
+    </div>
+    <div class="third last">
+      {?Y:BackupList?}
+    </div>
+    <div class="line"></div>
+    <div class="left">
+      <h4>About</h4>
+      <p><em>{?Y:PageBody?}</em></p>
+    </div>
+    <div class="right">
+      {?Y:RenderOverviewer?}
+      {?Y:RenderTectonicus?}
+    </div>
+    <div id="footer">
+      <p>&copy; Copyright 2011 Richard Benson &minus; Design: Luka Cvrk, <a href="http://www.solucija.com" title="Free CSS Templates">Solucija</a></p>
+    </div>  
+  </div>
+  
 </body>
 </html>
