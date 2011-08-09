@@ -502,6 +502,7 @@ YAMS.admin = {
                         if (results.biomeextractor === "true") YAMS.D.get('biomeextractor-installed').checked = true;
                         if (results.tectonicus === "true") YAMS.D.get('tectonicus-installed').checked = true;
                         if (results.nbtoolkit === "true") YAMS.D.get('nbtoolkit-installed').checked = true;
+                        if (results.bukkit === "true") YAMS.D.get('bukkit-installed').checked = true;
                     },
                     failure: function (o) {
                         YAMS.admin.about.setBody("Error getting apps data;");
