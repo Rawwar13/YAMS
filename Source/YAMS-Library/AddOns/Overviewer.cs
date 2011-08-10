@@ -32,7 +32,6 @@ namespace YAMS.AddOns
             string ServerRoot = this.Server.ServerDirectory;
             //Check the proper folders exist
             if (!Directory.Exists(ServerRoot + @"\renders\overviewer\")) Directory.CreateDirectory(ServerRoot + @"\renders\overviewer\");
-            if (!Directory.Exists(ServerRoot + @"\renders\overviewer\cache\")) Directory.CreateDirectory(ServerRoot + @"\renders\overviewer\cache\");
             if (!Directory.Exists(ServerRoot + @"\renders\overviewer\output\")) Directory.CreateDirectory(ServerRoot + @"\renders\overviewer\output\");
             string strArgs = "";
 
