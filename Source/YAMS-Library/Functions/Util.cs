@@ -143,7 +143,7 @@ namespace YAMS
             NewServer.Add(new KeyValuePair<string, string>("spawn-monsters", "true"));
             NewServer.Add(new KeyValuePair<string, string>("verify-names", "true"));
             NewServer.Add(new KeyValuePair<string, string>("white-list", "false"));
-           Database.NewServer(NewServer, "My First YAMS Server");
+            Database.NewServer(NewServer, "My First YAMS Server");
 
             //Set our YAMS Defaults
             Database.SaveSetting("UpdateJAR", "true");
