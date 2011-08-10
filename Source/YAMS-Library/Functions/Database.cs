@@ -286,16 +286,16 @@ namespace YAMS
 
             //Set up Files + Folders
             if (!Directory.Exists(Core.StoragePath + intNewID.ToString())) Directory.CreateDirectory(Core.StoragePath + intNewID.ToString());
-            if (!Directory.Exists(Core.StoragePath + intNewID.ToString() + @"\config\")) Directory.CreateDirectory(Core.StoragePath + intNewID.ToString() + @"\config\");
+            //if (!Directory.Exists(Core.StoragePath + intNewID.ToString() + @"\config\")) Directory.CreateDirectory(Core.StoragePath + intNewID.ToString() + @"\config\");
             if (!Directory.Exists(Core.StoragePath + intNewID.ToString() + @"\world\")) Directory.CreateDirectory(Core.StoragePath + intNewID.ToString() + @"\world\");
             if (!Directory.Exists(Core.StoragePath + intNewID.ToString() + @"\renders\")) Directory.CreateDirectory(Core.StoragePath + intNewID.ToString() + @"\renders\");
             if (!Directory.Exists(Core.StoragePath + intNewID.ToString() + @"\renders\overviewer\")) Directory.CreateDirectory(Core.StoragePath + intNewID.ToString() + @"\renders\overviewer\");
             if (!Directory.Exists(Core.StoragePath + intNewID.ToString() + @"\renders\overviewer\output\")) Directory.CreateDirectory(Core.StoragePath + intNewID.ToString() + @"\renders\overviewer\output\");
             if (!Directory.Exists(Core.StoragePath + intNewID.ToString() + @"\renders\tectonicus\")) Directory.CreateDirectory(Core.StoragePath + intNewID.ToString() + @"\renders\tectonicus\");
-            if (!File.Exists(Core.StoragePath + intNewID.ToString() + @"\config\banned-ips.txt")) File.Create(Core.StoragePath + intNewID.ToString() + @"\config\banned-ips.txt");
-            if (!File.Exists(Core.StoragePath + intNewID.ToString() + @"\config\banned-players.txt")) File.Create(Core.StoragePath + intNewID.ToString() + @"\config\banned-players.txt");
-            if (!File.Exists(Core.StoragePath + intNewID.ToString() + @"\config\ops.txt")) File.Create(Core.StoragePath + intNewID.ToString() + @"\config\ops.txt");
-            if (!File.Exists(Core.StoragePath + intNewID.ToString() + @"\config\white-list.txt")) File.Create(Core.StoragePath + intNewID.ToString() + @"\config\white-list.txt");
+            if (!File.Exists(Core.StoragePath + intNewID.ToString() + @"\banned-ips.txt")) File.Create(Core.StoragePath + intNewID.ToString() + @"\banned-ips.txt");
+            if (!File.Exists(Core.StoragePath + intNewID.ToString() + @"\banned-players.txt")) File.Create(Core.StoragePath + intNewID.ToString() + @"\banned-players.txt");
+            if (!File.Exists(Core.StoragePath + intNewID.ToString() + @"\ops.txt")) File.Create(Core.StoragePath + intNewID.ToString() + @"\ops.txt");
+            if (!File.Exists(Core.StoragePath + intNewID.ToString() + @"\white-list.txt")) File.Create(Core.StoragePath + intNewID.ToString() + @"\white-list.txt");
 
             //Create default config files
             BuildServerProperties(intNewID);

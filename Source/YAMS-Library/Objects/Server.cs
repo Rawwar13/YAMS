@@ -56,7 +56,24 @@ namespace YAMS
         public MCServer(int intServerID)
         {
             this.ServerID = intServerID;
-            this.strWorkingDir = Core.StoragePath + this.ServerID.ToString() + "\\config\\";
+
+            //Set this first so that we can use it right away
+            this.ServerDirectory = Core.StoragePath + this.ServerID.ToString() + @"\";
+            
+            //If server is a pre-0.2.3 then we need to move everything back to default layout to support a lot of bukkit plugins
+            if (Directory.Exists(Core.StoragePath + this.ServerID.ToString() + "\\config\\") {
+                //This is our old config and working dir, so we need everything out of it moved into the main dir
+                try {
+                    Util.Copy(Core.StoragePath + this.ServerID.ToString() + "\\config\\", this.ServerDirectory);
+                    Directory.Delete(Core.StoragePath + this.ServerID.ToString() + "\\config\\", true);
+                }
+                catch(Exception e) {
+                    Database.AddLog("Unable to move config directory, this will have to be done manually to avoid losing settings: " + e.Message, "app", "error");
+                }
+            }
+
+            //Set this here to catch any old references to it.
+            this.strWorkingDir = this.ServerDirectory;
 
             this.bolEnableJavaOptimisations = Convert.ToBoolean(Database.GetSetting(this.ServerID, "ServerEnableOptimisations"));
             this.intAssignedMem = Convert.ToInt32(Database.GetSetting(this.ServerID, "ServerAssignedMemory"));
@@ -64,7 +81,6 @@ namespace YAMS
             this.ServerType = Convert.ToString(Database.GetSetting(this.ServerID, "ServerType"));
             this.LogonMode = Convert.ToString(Database.GetSetting(this.ServerID, "ServerLogonMode"));
 
-            this.ServerDirectory = Core.StoragePath + this.ServerID.ToString() + @"\";
         }
 
         public void Start()
