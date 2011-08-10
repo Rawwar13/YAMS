@@ -1,4 +1,5 @@
 ﻿using System.ServiceProcess;
+using ExceptionManager;
 
 namespace YAMS_Service
 {
@@ -9,6 +10,8 @@ namespace YAMS_Service
         /// </summary>
         static void Main()
         {
+            UnhandledExceptionManager.AddHandler();
+
             ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[] 
 			{ 
