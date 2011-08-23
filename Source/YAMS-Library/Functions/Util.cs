@@ -364,6 +364,17 @@ namespace YAMS
                     return true;
             return false;
         }
+
+        //Search a text file for a string
+        public static bool SearchFile(string strFileName, string strSearchText)
+        {
+            StreamReader reader = new StreamReader(strFileName);
+            String text = reader.ReadToEnd();
+            reader.Close();
+
+            if (Regex.IsMatch(text, strSearchText)) return true;
+            else return false;
+        }
    
     }
 }
