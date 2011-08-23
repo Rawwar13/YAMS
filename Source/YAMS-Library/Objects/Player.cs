@@ -30,6 +30,9 @@ namespace YAMS.Objects
                 this.Level = "guest";
             }
 
+            //check the op list
+            if (Util.SearchFile(s.ServerDirectory + "ops.txt", strName)) this.Level = "op";
+
             //Emulate MOTD
             if (Database.GetSetting("motd", "MC", this.Server.ServerID) != "") this.Server.Whisper(this.Username, Database.GetSetting("motd", "MC", this.Server.ServerID));
         }
