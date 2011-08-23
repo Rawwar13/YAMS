@@ -191,9 +191,11 @@ namespace YAMS.Web
                             intServerID = Convert.ToInt32(param["serverid"]);
                             Database.UpdateServer(intServerID, "ServerTitle", param["title"]);
                             Database.UpdateServer(intServerID, "ServerType", param["type"]);
-                            Database.UpdateServer(intServerID, "ServerEnableOptimisations", Convert.ToBoolean(param["optimisations"]));
                             Database.UpdateServer(intServerID, "ServerAssignedMemory", Convert.ToInt32(param["memory"]));
-                            Database.UpdateServer(intServerID, "ServerAutoStart", Convert.ToBoolean(param["autostart"]));
+                            if (param["optimisations"] == "true") Database.UpdateServer(intServerID, "ServerEnableOptimisations", true);
+                            else Database.UpdateServer(intServerID, "ServerEnableOptimisations", false);
+                            if (param["autostart"] == "true") Database.UpdateServer(intServerID, "ServerAutoStart", true);
+                            else Database.UpdateServer(intServerID, "ServerAutoStart", false);
                             Database.SaveSetting(intServerID, "motd", param["motd"]);
                             break;
                         case "get-config-file":
