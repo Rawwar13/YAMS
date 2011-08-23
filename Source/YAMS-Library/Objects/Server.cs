@@ -61,7 +61,7 @@ namespace YAMS
             this.ServerDirectory = Core.StoragePath + this.ServerID.ToString() + @"\";
             
             //If server is a pre-0.2.3 then we need to move everything back to default layout to support a lot of bukkit plugins
-            if (Directory.Exists(Core.StoragePath + this.ServerID.ToString() + "\\config\\") {
+            if (Directory.Exists(Core.StoragePath + this.ServerID.ToString() + "\\config\\")) {
                 //This is our old config and working dir, so we need everything out of it moved into the main dir
                 try {
                     Util.Copy(Core.StoragePath + this.ServerID.ToString() + "\\config\\", this.ServerDirectory);
