@@ -22,21 +22,12 @@ namespace YAMS.Objects
             this.Server = s;
 
             this.Level = Database.GetPlayerLevel(strName, s.ServerID);
+
             if (this.Level == null)
             {
-                //Player doesn't exist on this server yet
-                if (this.Server.LogonMode == "whitelist")
-                {
-                    //If you're not on the list, you ain't coming in
-                    this.Server.Send("kick " + this.Username);
-                    return;
-                }
-                else
-                {
-                    //We're letting anyone in these days, so add to the DB
-                    Database.AddUser(this.Username, this.Server.ServerID);
-                    this.Level = "guest";
-                };
+                //We're letting anyone in these days, so add to the DB
+                Database.AddUser(this.Username, this.Server.ServerID);
+                this.Level = "guest";
             }
 
             //Emulate MOTD
