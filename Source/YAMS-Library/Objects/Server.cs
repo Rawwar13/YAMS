@@ -27,6 +27,7 @@ namespace YAMS
         private Regex regPlayerLoggedIn = new Regex(@"^([\w]+)(?: \[\/[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+\:[0-9]+\] logged in with entity id)");
         private Regex regPlayerLoggedOut = new Regex(@"^([\w]+) ?(lost connection)");
         private Regex regServerVersion = new Regex(@"^(?:Starting minecraft server version )");
+        private Regex regGameMode = new Regex(@"^(Default game type:) ([0-9])");
 
         public string ServerType = "vanilla";
 
@@ -43,6 +44,7 @@ namespace YAMS
         public string LogonMode = "blacklist";
         public bool HasChanged = false;
         public int PID;
+        public int GameMode = 0;
 
         private bool SafeStop = false;
         public bool AutoRestart = true;
@@ -321,6 +323,10 @@ namespace YAMS
                         //See if it's the server version tag
                         Match regVersion = this.regServerVersion.Match(strMessage);
                         if (regVersion.Success) this.ServerVersion = strMessage.Replace("Starting minecraft server version ", "");
+
+                        //Detect game type
+                        Match regMode = this.regGameMode.Match(strMessage);
+                        if (regMode.Success) this.GameMode = Convert.ToInt32(regMode.Groups[1].Value);
                         break;
                     case "WARNING":
                         strLevel = "warn";
