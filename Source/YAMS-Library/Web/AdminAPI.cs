@@ -70,6 +70,7 @@ namespace YAMS.Web
                                             "\"vm\" : " + s.GetVMemory() + "," +
                                             "\"restartneeded\" : \"" + s.RestartNeeded + "\"," +
                                             "\"restartwhenfree\" : \"" + s.RestartWhenFree + "\"," +
+                                            "\"gamemode\" : \"" + s.GameMode + "\"," +
                                             "\"players\" : [";
                             if (s.Players.Count > 0)
                             {
