@@ -373,6 +373,11 @@ namespace YAMS
                 }
                 else return false;
             }
+            catch (Exception e)
+            {
+                YAMS.Database.AddLog(string.Format("Failed to update " + strFile + ". Error: {0}", e.Message), "updater", "error");
+                return false;
+            }
         }
     }
 }
