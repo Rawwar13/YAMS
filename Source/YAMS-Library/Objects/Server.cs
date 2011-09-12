@@ -342,6 +342,9 @@ namespace YAMS
             this.Running = false;
             Util.RemovePID(this.PID);
 
+            //Server has stopped, so clear out any entries in the user list
+            this.Players.Clear();
+
             //Did the server stop safely?
             if (!this.SafeStop)
             {
