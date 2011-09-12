@@ -320,16 +320,6 @@ namespace YAMS
                 //Grab the response
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
 
-                //Save the etag
-                if (strType == "etag")
-                {
-                    if (response.Headers[HttpResponseHeader.ETag] != null) YAMS.Database.SaveEtag(strURL, response.Headers[HttpResponseHeader.ETag]);
-                }
-                else
-                {
-                    if (response.Headers[HttpResponseHeader.LastModified] != null) YAMS.Database.SaveEtag(strURL, response.Headers[HttpResponseHeader.LastModified]);
-                }
-
                 //Stream the file
                 Stream strm = response.GetResponseStream();
                 FileStream fs = new FileStream(strFile, FileMode.Create, FileAccess.Write, FileShare.None);
@@ -346,6 +336,16 @@ namespace YAMS
                 fs.Close();
                 strm.Close();
                 response.Close();
+
+                //Save the etag
+                if (strType == "etag")
+                {
+                    if (response.Headers[HttpResponseHeader.ETag] != null) YAMS.Database.SaveEtag(strURL, response.Headers[HttpResponseHeader.ETag]);
+                }
+                else
+                {
+                    if (response.Headers[HttpResponseHeader.LastModified] != null) YAMS.Database.SaveEtag(strURL, response.Headers[HttpResponseHeader.LastModified]);
+                }
 
                 YAMS.Database.AddLog(strFile + " update downloaded", "updater");
 
