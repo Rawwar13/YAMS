@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Net;
 using System.IO;
+using System.Diagnostics;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using ICSharpCode.SharpZipLib.Zip;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 
@@ -32,6 +34,7 @@ namespace YAMS
         public static bool bolTectonicusUpdateAvailable = false;
         public static bool bolRestartNeeded = false;
         public static bool bolBukkitUpdateAvailable = false;
+        public static bool bolLibUpdateAvailable = false;
 
         //Minecraft URLs
         public static string strMCServerURL = "http://www.minecraft.net/download/minecraft_server.jar";
@@ -41,29 +44,10 @@ namespace YAMS
         public static string strBukkitServerURL = "http://ci.bukkit.org/job/dev-CraftBukkit/promotion/latest/Recommended/artifact/target/craftbukkit-0.0.1-SNAPSHOT.jar";
 
         //YAMS URLs
-        public static Dictionary<string, string> strYAMSDLLURL = new Dictionary<string, string>() {
-            { "live", "https://github.com/richardbenson/YAMS/raw/updater/YAMS-Library.dll"},
-            { "dev", "https://github.com/richardbenson/YAMS/raw/updater/development/YAMS-Library.dll" }
-        };
-        public static Dictionary<string, string> strYAMSServiceURL = new Dictionary<string, string>() {
-            { "live", "https://github.com/richardbenson/YAMS/raw/updater/YAMS-Service.exe" },
-            { "dev", "https://github.com/richardbenson/YAMS/raw/updater/development/YAMS-Service.exe" }
-        };
-        public static Dictionary<string, string> strYAMSGUIURL = new Dictionary<string, string>() {
-            { "live", "https://github.com/richardbenson/YAMS/raw/updater/YAMS-Updater.exe" },
-            { "dev", "https://github.com/richardbenson/YAMS/raw/updater/development/YAMS-Updater.exe" }
-        };
-        public static Dictionary<string, string> strYAMSWebURL = new Dictionary<string, string>() {
-            { "live", "https://github.com/richardbenson/YAMS/raw/updater/web.zip" },
-            { "dev", "https://github.com/richardbenson/YAMS/raw/updater/development/web.zip" }
-        };
-        public static Dictionary<string, string> strYAMSVersionsURL = new Dictionary<string, string>() {
-            { "live", "https://github.com/richardbenson/YAMS/raw/updater/versions.json" },
-            { "dev", "https://github.com/richardbenson/YAMS/raw/updater/development/versions.json" }
-        };
-        public static Dictionary<string, string> strYAMSPropertiesURL = new Dictionary<string, string>() {
-            { "live", "https://github.com/richardbenson/YAMS/raw/updater/properties.json" },
-            { "dev", "https://github.com/richardbenson/YAMS/raw/updater/development/properties.json" }
+        public static Dictionary<string, string> strYAMSUpdatePath = new Dictionary<string, string>()
+        {
+            { "live", "https://github.com/richardbenson/YAMS/raw/updater/"},
+            { "dev", "https://github.com/richardbenson/YAMS/raw/updater/development/" }
         };
 
         //Third party URLS
@@ -86,6 +70,8 @@ namespace YAMS
         //Checks for available updates
         public static void CheckUpdates()
         {
+            YAMS.Database.AddLog("Running update check", "updater");
+
             if (!UpdatePaused)
             {
                 //What branch are we on?
@@ -95,7 +81,7 @@ namespace YAMS
                 if (bolUpdateJAR)
                 {
                     bolServerUpdateAvailable = UpdateIfNeeded(strMCServerURL, YAMS.Core.RootFolder + @"\lib\minecraft_server.jar.UPDATE");
-                    UpdateIfNeeded(strYAMSPropertiesURL[strBranch], YAMS.Core.RootFolder + @"\lib\properties.json");
+                    UpdateIfNeeded(strYAMSUpdatePath[strBranch] + @"\properties.json", YAMS.Core.RootFolder + @"\lib\properties.json");
                 }
 
                 //Have they opted for bukkit? If so, update that too
@@ -103,28 +89,46 @@ namespace YAMS
                 {
                     bolBukkitUpdateAvailable = UpdateIfNeeded(strBukkitServerURL, Core.RootFolder + @"\lib\craftbukkit.jar", "modified");
                 }
-                
+
+                //Grab latest version file if it needs updating
+                UpdateIfNeeded(strYAMSUpdatePath[strBranch] + @"\versions.json", YAMS.Core.RootFolder + @"\lib\versions.json");
+                string json = File.ReadAllText(YAMS.Core.RootFolder + @"\lib\versions.json");
+                //Dictionary<string, string> dicVers = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+                JObject jVers = JObject.Parse(json);
+
                 //Now update self
                 if (bolUpdateSVC)
                 {
-                    bolDllUpdateAvailable = UpdateIfNeeded(strYAMSDLLURL[strBranch], YAMS.Core.RootFolder + @"\YAMS-Library.dll.UPDATE");
-                    bolServiceUpdateAvailable = UpdateIfNeeded(strYAMSServiceURL[strBranch], YAMS.Core.RootFolder + @"\YAMS-Service.exe.UPDATE");
-                    bolWebUpdateAvailable = UpdateIfNeeded(strYAMSWebURL[strBranch], YAMS.Core.RootFolder + @"\web.zip");
-                    bolGUIUpdateAvailable = UpdateIfNeeded(strYAMSGUIURL[strBranch], YAMS.Core.RootFolder + @"\YAMS-Updater.exe");
+                    bolDllUpdateAvailable = UpdateIfNeeded(strYAMSUpdatePath[strBranch] + @"\YAMS-Library.dll", YAMS.Core.RootFolder + @"\YAMS-Library.dll.UPDATE");
+                    bolServiceUpdateAvailable = UpdateIfNeeded(strYAMSUpdatePath[strBranch] + @"\YAMS-Service.exe", YAMS.Core.RootFolder + @"\YAMS-Service.exe.UPDATE");
+                    bolWebUpdateAvailable = UpdateIfNeeded(strYAMSUpdatePath[strBranch] + @"\web.zip", YAMS.Core.RootFolder + @"\web.zip");
+                    bolGUIUpdateAvailable = UpdateIfNeeded(strYAMSUpdatePath[strBranch] + @"\YAMS-Updater.exe", YAMS.Core.RootFolder + @"\YAMS-Updater.exe");
+
+                    //Update External libs
+                    foreach (JProperty j in jVers["libs"])
+                    {
+                        if (File.Exists(Core.RootFolder + @"\lib\" + j.Name))
+                        {
+                            if (FileVersionInfo.GetVersionInfo(Core.RootFolder + @"\lib\" + j.Name).FileVersion != (string)j.Value)
+                            {
+                                bolLibUpdateAvailable = true;
+                                UpdateIfNeeded(strYAMSUpdatePath[strBranch] + @"\lib\" + j.Name, Core.RootFolder + @"\lib\" + j.Name + ".UPDATE");
+                            }
+                        }
+                        else
+                        {
+                            UpdateIfNeeded(strYAMSUpdatePath[strBranch] + @"\lib\" + j.Name, Core.RootFolder + @"\lib\" + j.Name + ".UPDATE");
+                        }
+                    }
+                    //if (FileVersionInfo.GetVersionInfo(Path.Combine(Core.RootFolder, "ExceptionManager.dll")).FileVersion != (string)jVers["apps"]["ExceptionManager.dll"]) 1 = 1;
                 }
 
                 if (bolUpdateAddons)
                 {
-                    //Grabe latest version file if it needs updating
-                    UpdateIfNeeded(strYAMSVersionsURL[strBranch], YAMS.Core.RootFolder + @"\lib\versions.json");
-
                     //Update add-ons if they have elected to have them
-                    string json = File.ReadAllText(YAMS.Core.RootFolder + @"\lib\versions.json");
-                    Dictionary<string, string> dicVers = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
-
                     //Update overviewer
                     if (Convert.ToBoolean(Database.GetSetting("OverviewerInstalled", "YAMS"))) {
-                        strOverviewerVer = dicVers["overviewer"];
+                        strOverviewerVer = (string)jVers["apps"]["overviewer"];
                         if (UpdateIfNeeded(GetExternalURL("overviewer", strOverviewerVer), YAMS.Core.RootFolder + @"\apps\overviewer.zip"))
                         {
                             bolOverviewerUpdateAvailable = true;
@@ -138,7 +142,7 @@ namespace YAMS
 
                     //Grab the biome extractor too
                     if (Convert.ToBoolean(Database.GetSetting("BiomeExtractorInstalled", "YAMS"))) {
-                        strBiomeExtractorVer = dicVers["biomeextractor"];
+                        strBiomeExtractorVer = (string)jVers["apps"]["biomeextractor"];
                         if (UpdateIfNeeded(GetExternalURL("biome-extractor", strBiomeExtractorVer), YAMS.Core.RootFolder + @"\apps\biome-extractor.zip"))
                         {
                             ExtractZip(YAMS.Core.RootFolder + @"\apps\biome-extractor.zip", YAMS.Core.RootFolder + @"\apps\");
@@ -151,7 +155,7 @@ namespace YAMS
                     //Update c10t
                     if (Convert.ToBoolean(Database.GetSetting("C10tInstalled", "YAMS")))
                     {
-                        strC10tVer = dicVers["c10t"];
+                        strC10tVer = (string)jVers["apps"]["c10t"];
                         if (UpdateIfNeeded(GetExternalURL("c10t", strC10tVer), YAMS.Core.RootFolder + @"\apps\c10t.zip", "modified"))
                         {
                             bolC10tUpdateAvailable = true;
@@ -168,7 +172,7 @@ namespace YAMS
                     if (Convert.ToBoolean(Database.GetSetting("TectonicusInstalled", "YAMS")))
                     {
                         if (!Directory.Exists(YAMS.Core.RootFolder + @"\apps\tectonicus\")) Directory.CreateDirectory(YAMS.Core.RootFolder + @"\apps\tectonicus\");
-                        strTectonicusVer = dicVers["tectonicus"];
+                        strTectonicusVer = (string)jVers["apps"]["tectonicus"];
                         if (UpdateIfNeeded(GetExternalURL("tectonicus", strTectonicusVer), YAMS.Core.RootFolder + @"\apps\tectonicus\tectonicus.jar.update", "modified"))
                         {
                             bolTectonicusUpdateAvailable = true;
@@ -293,7 +297,7 @@ namespace YAMS
             //Get our stored eTag for this URL
             string strETag = "";
             strETag = YAMS.Database.GetEtag(strURL);
-            
+
             try
             {
                 //Set up a request and include our eTag
