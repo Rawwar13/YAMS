@@ -145,6 +145,31 @@ namespace YAMS_Updater
                     File.Move(RootFolder + @"\YAMS-Service.exe.UPDATE", RootFolder + @"\YAMS-Service.exe");
                 }
 
+                if (File.Exists(RootFolder + @"\ExceptionManager.dll.UPDATE"))
+                {
+                    if (File.Exists(RootFolder + @"\ExceptionManager.dll.OLD")) File.Delete(RootFolder + @"\ExceptionManager.dll.OLD");
+                    File.Move(RootFolder + @"\ExceptionManager.dll", RootFolder + @"\ExceptionManager.dll.OLD");
+                    File.Move(RootFolder + @"\ExceptionManager.dll.UPDATE", RootFolder + @"\ExceptionManager.dll");
+                }
+                if (File.Exists(RootFolder + @"\HttpServer.dll.UPDATE"))
+                {
+                    if (File.Exists(RootFolder + @"\HttpServer.dll.OLD")) File.Delete(RootFolder + @"\HttpServer.dll.OLD");
+                    File.Move(RootFolder + @"\HttpServer.dll", RootFolder + @"\HttpServer.dll.OLD");
+                    File.Move(RootFolder + @"\HttpServer.dll.UPDATE", RootFolder + @"\HttpServer.dll");
+                }
+                if (File.Exists(RootFolder + @"\ICSharpCode.SharpZipLib.dll.UPDATE"))
+                {
+                    if (File.Exists(RootFolder + @"\ICSharpCode.SharpZipLib.dll.OLD")) File.Delete(RootFolder + @"\ICSharpCode.SharpZipLib.dll.OLD");
+                    File.Move(RootFolder + @"\ICSharpCode.SharpZipLib.dll", RootFolder + @"\ICSharpCode.SharpZipLib.dll.OLD");
+                    File.Move(RootFolder + @"\ICSharpCode.SharpZipLib.dll.UPDATE", RootFolder + @"\ICSharpCode.SharpZipLib.dll");
+                }
+                if (File.Exists(RootFolder + @"\Newtonsoft.Json.dll.UPDATE"))
+                {
+                    if (File.Exists(RootFolder + @"\Newtonsoft.Json.dll.OLD")) File.Delete(RootFolder + @"\Newtonsoft.Json.dll.OLD");
+                    File.Move(RootFolder + @"\Newtonsoft.Json.dll", RootFolder + @"\Newtonsoft.Json.dll.OLD");
+                    File.Move(RootFolder + @"\Newtonsoft.Json.dll.UPDATE", RootFolder + @"\Newtonsoft.Json.dll");
+                }
+
                 //Restart the service
                 svcYAMS.Start();
                 Console.WriteLine("Service started");
