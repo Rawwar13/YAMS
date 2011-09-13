@@ -100,7 +100,10 @@ namespace YAMS
                 if (bolUpdateSVC)
                 {
                     bolDllUpdateAvailable = UpdateIfNeeded(strYAMSUpdatePath[strBranch] + @"\YAMS-Library.dll", YAMS.Core.RootFolder + @"\YAMS-Library.dll.UPDATE");
-                    bolServiceUpdateAvailable = UpdateIfNeeded(strYAMSUpdatePath[strBranch] + @"\YAMS-Service.exe", YAMS.Core.RootFolder + @"\YAMS-Service.exe.UPDATE");
+                    if (UpdateIfNeeded(strYAMSUpdatePath[strBranch] + @"\YAMS-Service.exe", YAMS.Core.RootFolder + @"\YAMS-Service.exe.UPDATE") || UpdateIfNeeded(strYAMSUpdatePath[strBranch] + @"\YAMS-Service.exe.config", YAMS.Core.RootFolder + @"\YAMS-Service.exe.config.UPDATE"))
+                    {
+                        bolServiceUpdateAvailable = true;
+                    }
                     bolWebUpdateAvailable = UpdateIfNeeded(strYAMSUpdatePath[strBranch] + @"\web.zip", YAMS.Core.RootFolder + @"\web.zip");
                     bolGUIUpdateAvailable = UpdateIfNeeded(strYAMSUpdatePath[strBranch] + @"\YAMS-Updater.exe", YAMS.Core.RootFolder + @"\YAMS-Updater.exe");
 
@@ -190,7 +193,7 @@ namespace YAMS
                 }
 
                 //Now check if we can auto-restart anything
-                if ((bolDllUpdateAvailable || bolServiceUpdateAvailable || bolWebUpdateAvailable || bolRestartNeeded) && Convert.ToBoolean(Database.GetSetting("RestartOnSVCUpdate", "YAMS")))
+                if ((bolDllUpdateAvailable || bolServiceUpdateAvailable || bolWebUpdateAvailable || bolRestartNeeded || bolLibUpdateAvailable) && Convert.ToBoolean(Database.GetSetting("RestartOnSVCUpdate", "YAMS")))
                 {
                     //Check there are no players on the servers
                     bool bolPlayersOn = false;

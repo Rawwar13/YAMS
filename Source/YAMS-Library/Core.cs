@@ -27,6 +27,8 @@ namespace YAMS
             catch { };
             try { if (File.Exists(RootFolder + @"\YAMS-Service.exe.OLD")) File.Delete(RootFolder + @"\YAMS-Service.exe.OLD"); }
             catch { };
+            try { if (File.Exists(RootFolder + @"\YAMS-Service.exe.config.OLD")) File.Delete(RootFolder + @"\YAMS-Service.exe.config.OLD"); }
+            catch { };
 
             //Start DB Connection
             Database.init();
@@ -64,6 +66,7 @@ namespace YAMS
             };
 
             //Check for updates and start a timer to do it automatically
+            //AutoUpdate.CheckUpdates();
             int UpdateTick = (60 * 60 * 1000);
             if (Database.GetSetting("UpdateBranch", "YAMS") == "dev") UpdateTick = (15 * 60 * 1000);
             timUpdate = new Timer(new TimerCallback(timUpdate_Tick), null, 0, UpdateTick);
