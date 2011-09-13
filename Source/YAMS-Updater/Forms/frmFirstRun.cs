@@ -56,7 +56,7 @@ namespace YAMS_Updater
             //Grab latest web app
             WorkingForm.lblCurrentItem.Text = "Downloading web app";
             WorkingForm.Refresh();
-            AutoUpdate.UpdateIfNeeded(AutoUpdate.strYAMSWebURL["live"], Core.RootFolder + @"\web.zip");
+            AutoUpdate.UpdateIfNeeded(AutoUpdate.strYAMSUpdatePath["live"] + @"\web.zip", Core.RootFolder + @"\web.zip");
 
             //Grab latest server jar
             WorkingForm.lblCurrentItem.Text = "Downloading latest Minecraft Server";
