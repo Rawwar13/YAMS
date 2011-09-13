@@ -144,6 +144,12 @@ namespace YAMS_Updater
                     File.Move(RootFolder + @"\YAMS-Service.exe", RootFolder + @"\YAMS-Service.exe.OLD");
                     File.Move(RootFolder + @"\YAMS-Service.exe.UPDATE", RootFolder + @"\YAMS-Service.exe");
                 }
+                if (File.Exists(RootFolder + @"\YAMS-Service.exe.config.UPDATE"))
+                {
+                    if (File.Exists(RootFolder + @"\YAMS-Service.exe.config.OLD")) File.Delete(RootFolder + @"\YAMS-Service.exe.config.OLD");
+                    File.Move(RootFolder + @"\YAMS-Service.exe.config", RootFolder + @"\YAMS-Service.exe.config.OLD");
+                    File.Move(RootFolder + @"\YAMS-Service.exe.config.UPDATE", RootFolder + @"\YAMS-Service.exe.config");
+                }
 
                 if (File.Exists(RootFolder + @"\ExceptionManager.dll.UPDATE"))
                 {
