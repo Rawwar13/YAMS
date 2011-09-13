@@ -1,5 +1,9 @@
 ﻿using System.ServiceProcess;
-using ExceptionManager;
+using System.IO;
+using System.Reflection;
+using System;
+
+//using ExceptionManager;
 
 namespace YAMS_Service
 {
@@ -10,8 +14,18 @@ namespace YAMS_Service
         /// </summary>
         static void Main()
         {
-            UnhandledExceptionManager.AddHandler();
-
+            if (File.Exists(new System.IO.FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).DirectoryName + @"\lib\ExceptionManager.dll"))
+            {
+                //Load in the exception handler and start it up
+                Assembly assembly = Assembly.LoadFrom(new System.IO.FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).DirectoryName + @"\lib\ExceptionManager.dll");
+                Type type = assembly.GetTypes()[12];
+                //var obj = Activator.CreateInstance(type);
+                type.GetMethods()[0].Invoke(null,
+                  BindingFlags.Default | BindingFlags.InvokeMethod,
+                  null,
+                  null,
+                  null);
+            }
             ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[] 
 			{ 
