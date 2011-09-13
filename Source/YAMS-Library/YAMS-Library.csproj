@@ -84,6 +84,7 @@
     <Compile Include="Functions\Backup.cs" />
     <Compile Include="Functions\JobEngine.cs" />
     <Compile Include="Functions\Networking.cs" />
+    <Compile Include="Objects\IniParser.cs" />
     <Compile Include="Web\AdminAPI.cs" />
     <Compile Include="Web\PublicAPI.cs" />
     <Compile Include="Web\WebTemplate.cs" />
@@ -133,7 +134,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" BuildVersion_BuildVersioningStyle="None.None.Increment.TimeStamp" />
+      <UserProperties BuildVersion_BuildVersioningStyle="None.None.Increment.TimeStamp" BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
