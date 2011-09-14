@@ -1,10 +1,10 @@
 # Yet Another Minecraft Server (YAMS)
 
-YAMS is a vanilla server wrapper designed to make running a Minecraft server easier without changing the overall experience of playing Survival Multiplayer.  As it is not a wrapper, you won't have to wait for YAMS to be updated when a new Minecraft server version comes out.  Eventually I am hoping to code in an optional wrapper mode per server which can be disabled if an update breaks it.
+YAMS is a vanilla server admin tool designed to make running a Minecraft server easier without changing the overall experience of playing Survival Multiplayer.  As it is not a wrapper, you won't have to wait for YAMS to be updated when a new Minecraft server version comes out.
 
 ## Current Status
 
-YAMS is currently in development and not ready for deployment anywhere, there are no binary releases.  Source code contained here should always compile but may not do what you expect it to.  Local commits are made more frequently than they are pushed to this remote.
+YAMS is currently in development but can run your server for you, there is an installer in the download section.  Source code contained here should always compile but may not do what you expect it to.  Local commits are made more frequently than they are pushed to this remote.
 
 ## Planned Features
 
