@@ -27,7 +27,7 @@ namespace YAMS
         private Regex regPlayerLoggedIn = new Regex(@"^([\w]+)(?: \[\/[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+\:[0-9]+\] logged in with entity id)");
         private Regex regPlayerLoggedOut = new Regex(@"^([\w]+) ?(lost connection)");
         private Regex regServerVersion = new Regex(@"^(?:Starting minecraft server version )");
-        private Regex regGameMode = new Regex(@"^(Default game type:) ([0-9])");
+        private Regex regGameMode = new Regex(@"^(?:Default game type:) ([0-9])");
 
         public string ServerType = "vanilla";
 
