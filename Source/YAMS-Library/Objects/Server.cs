@@ -23,6 +23,7 @@ namespace YAMS
         private Regex regRemoveTimeStamp = new Regex(@"^([0-9]+:[0-9]+:[0-9]+ )");
         private Regex regErrorLevel = new Regex(@"^\[([A-Z]+)\]{1}");
         private Regex regPlayerChat = new Regex(@"^(\<([A-Za-z0-9])+\>){1}");
+        private Regex regConsoleChat = new Regex(@"^(\[CONSOLE\]){1}");
         private Regex regPlayerPM = new Regex(@"^(\[([\w])+\-\>(\w)+\]){1}");
         private Regex regPlayerLoggedIn = new Regex(@"^([\w]+)(?: \[\/[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+\:[0-9]+\] logged in with entity id)");
         private Regex regPlayerLoggedOut = new Regex(@"^([\w]+) ?(lost connection)");
@@ -330,23 +331,18 @@ namespace YAMS
                 {
                     case "INFO":
                         //Check if it's player chat
-                        Match regChat = this.regPlayerChat.Match(strMessage);
-                        if (regPlayerChat.Match(strMessage).Success || regPlayerPM.Match(strMessage).Success) strLevel = "chat";
+                        if (regPlayerChat.Match(strMessage).Success || regPlayerPM.Match(strMessage).Success || regConsoleChat.Match(strMessage).Success) strLevel = "chat";
                         else strLevel = "info";
                         
                         //See if it's a log in or log out event
-                        Match regLogIn = this.regPlayerLoggedIn.Match(strMessage);
-                        Match regLogOut = this.regPlayerLoggedOut.Match(strMessage);
-                        if (regLogIn.Success) this.PlayerLogin(regLogIn.Groups[1].Value); //is a login event
-                        if (regLogOut.Success) this.PlayerLogout(regLogOut.Groups[1].Value); //logout event
+                        if (regPlayerLoggedIn.Match(strMessage).Success) this.PlayerLogin(regPlayerLoggedIn.Match(strMessage).Groups[1].Value); //is a login event
+                        if (regPlayerLoggedOut.Match(strMessage).Success) this.PlayerLogout(regPlayerLoggedOut.Match(strMessage).Groups[1].Value); //logout event
 
                         //See if it's the server version tag
-                        Match regVersion = this.regServerVersion.Match(strMessage);
-                        if (regVersion.Success) this.ServerVersion = strMessage.Replace("Starting minecraft server version ", "");
+                        if (regServerVersion.Match(strMessage).Success) this.ServerVersion = strMessage.Replace("Starting minecraft server version ", "");
 
                         //Detect game type
-                        Match regMode = this.regGameMode.Match(strMessage);
-                        if (regMode.Success) this.GameMode = Convert.ToInt32(regMode.Groups[1].Value);
+                        if (regGameMode.Match(strMessage).Success) this.GameMode = Convert.ToInt32(regGameMode.Match(strMessage).Groups[1].Value);
                         break;
                     case "WARNING":
                         strLevel = "warn";
