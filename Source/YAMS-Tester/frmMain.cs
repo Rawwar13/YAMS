@@ -41,6 +41,12 @@ namespace YAMS_Gui
             watcher.Changed += new FileSystemEventHandler(OnChanged);
             watcher.EnableRaisingEvents = true;
 
+            IniParser parser = new IniParser(@"server.properties");
+            txtIniCheck.Text = parser.GetSetting("ROOT", "level-name");
+
+            parser.AddSetting("ROOT", "level-name", "world");
+            parser.SaveSettings();
+
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -122,6 +128,11 @@ namespace YAMS_Gui
             //        MessageBox.Show(name);
             //    });
             //});
+        }
+
+        private void button5_Click_1(object sender, EventArgs e)
+        {
+            Networking.OpenFirewallPort(25565, "YAMS TEST");
         }
     }
 }

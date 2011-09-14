@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using YAMS;
+using System.Reflection;
+using System.IO;
 
 namespace YAMS_Gui
 {
@@ -16,12 +18,29 @@ namespace YAMS_Gui
         [STAThread]
         static void Main()
         {
-            //YAMS.Core.StartUp();
-            Database.init();
-            Util.FirstRun();
-            WebServer.Init();
-            WebServer.StartPublic();
-            WebServer.StartAdmin();
+            if (File.Exists(new System.IO.FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).DirectoryName + @"\lib\ExceptionManager.dll"))
+            {
+                Assembly assembly = Assembly.LoadFrom(new System.IO.FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).DirectoryName + @"\lib\ExceptionManager.dll");
+                Type type = assembly.GetTypes()[12];
+                //var obj = Activator.CreateInstance(type);
+                type.GetMethods()[0].Invoke(null,
+                  BindingFlags.Default | BindingFlags.InvokeMethod,
+                  null,
+                  null,
+                  null);
+                //UnhandledExceptionManager.AddHandler();
+            }
+            else
+            {
+                MessageBox.Show("not found");
+            }
+
+            YAMS.Core.StartUp();
+            //Database.init();
+            //Util.FirstRun();
+            //WebServer.Init();
+            //WebServer.StartPublic();
+            //WebServer.StartAdmin();
         
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
