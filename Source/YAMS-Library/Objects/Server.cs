@@ -45,6 +45,7 @@ namespace YAMS
         public bool HasChanged = false;
         public int PID;
         public int GameMode = 0;
+        public int Port = 0;
 
         private bool SafeStop = false;
         public bool AutoRestart = true;
@@ -86,7 +87,14 @@ namespace YAMS
             this.ServerTitle = Convert.ToString(Database.GetSetting(this.ServerID, "ServerTitle"));
             this.ServerType = Convert.ToString(Database.GetSetting(this.ServerID, "ServerType"));
             this.LogonMode = Convert.ToString(Database.GetSetting(this.ServerID, "ServerLogonMode"));
+            this.Port = Convert.ToInt32(this.GetProperty("server-port"));
 
+        }
+
+        public string GetProperty(string strPropertyName)
+        {
+            IniParser parser = new IniParser(this.ServerDirectory + @"\server.properties");
+            return parser.GetSetting("ROOT", strPropertyName);
         }
 
         public void Start()
@@ -173,6 +181,10 @@ namespace YAMS
                 this.SafeStop = false;
                 Database.AddLog("Server Started: " + strArgs, "server", "info", false, this.ServerID);
 
+                //Try and open the firewall port
+                Networking.OpenFirewallPort(this.Port, this.ServerTitle);
+                Networking.OpenUPnP(this.Port, this.ServerTitle);
+
                 //Save the process ID so we can kill if there is a crash
                 this.PID = this.prcMinecraft.Id;
                 Util.AddPID(this.prcMinecraft.Id);
@@ -187,6 +199,10 @@ namespace YAMS
         public void Stop()
         {
             if (!Running) return;
+            //Close firewall
+            Networking.CloseFirewallPort(this.Port);
+            Networking.CloseUPnP(this.Port);
+
             this.SafeStop = true;
             this.Send("stop");
             this.prcMinecraft.WaitForExit();

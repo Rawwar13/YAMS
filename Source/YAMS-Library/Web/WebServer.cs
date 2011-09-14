@@ -79,6 +79,12 @@ namespace YAMS
             publicServerThread = new Thread(new ThreadStart(StartPublic));
             adminServerThread.Start();
             publicServerThread.Start();
+
+            //Open firewall ports and forward via UPnP
+            Networking.OpenFirewallPort(Convert.ToInt32(YAMS.Database.GetSetting("AdminListenPort", "YAMS")), "YAMS - Admin website");
+            Networking.OpenFirewallPort(Convert.ToInt32(YAMS.Database.GetSetting("PublicListenPort", "YAMS")), "YAMS - Public website");
+            Networking.OpenUPnP(Convert.ToInt32(YAMS.Database.GetSetting("AdminListenPort", "YAMS")), "YAMS - Admin website");
+            Networking.OpenUPnP(Convert.ToInt32(YAMS.Database.GetSetting("PublicListenPort", "YAMS")), "YAMS - Public website");
         }
 
         static void myServer_ErrorPageRequested(object sender, ErrorPageEventArgs e)
@@ -147,6 +153,12 @@ namespace YAMS
 
         public static void Stop()
         {
+            //Close firewall ports and forward via UPnP
+            Networking.CloseFirewallPort(Convert.ToInt32(YAMS.Database.GetSetting("AdminListenPort", "YAMS")));
+            Networking.CloseFirewallPort(Convert.ToInt32(YAMS.Database.GetSetting("PublicListenPort", "YAMS")));
+            Networking.CloseUPnP(Convert.ToInt32(YAMS.Database.GetSetting("AdminListenPort", "YAMS")));
+            Networking.CloseUPnP(Convert.ToInt32(YAMS.Database.GetSetting("PublicListenPort", "YAMS")));
+            
             adminServerThread.Abort();
             publicServerThread.Abort();
         }
