@@ -289,7 +289,7 @@ YAMS.admin = {
                       "type=" + YAMS.D.get('cfg_type').value + "&" +
                       "optimisations=" + YAMS.D.get('cfg_optimisations').checked + "&" +
                       "memory=" + YAMS.D.get('cfg_memory').value + "&" +
-                      "autostart=" + YAMS.D.get('cfg_autostart').checked +
+                      "autostart=" + YAMS.D.get('cfg_autostart').checked + "&" +
                       "motd=" + YAMS.D.get('cfg_motd').value;
         var trans = YAHOO.util.Connect.asyncRequest('POST', '/api/', {
             success: function (o) { },
