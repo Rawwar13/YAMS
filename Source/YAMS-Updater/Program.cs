@@ -8,6 +8,8 @@ using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using YAMS;
 using System.Security.Principal;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace YAMS_Updater
 {
@@ -131,6 +133,9 @@ namespace YAMS_Updater
             }
             else
             {
+                //Special case for a file that shouldn't be where it is
+                if (File.Exists(RootFolder + @"\SharpUPnP.dll")) File.Delete(RootFolder + @"\SharpUPnP.dll");
+                
                 //Apply any updates to core files, these should cope with any other updates
                 if (File.Exists(RootFolder + @"\YAMS-Library.dll.UPDATE"))
                 {
@@ -151,29 +156,18 @@ namespace YAMS_Updater
                     File.Move(RootFolder + @"\YAMS-Service.exe.config.UPDATE", RootFolder + @"\YAMS-Service.exe.config");
                 }
 
-                if (File.Exists(RootFolder + @"\ExceptionManager.dll.UPDATE"))
+                string json = File.ReadAllText(RootFolder + @"\lib\versions.json");
+                //Dictionary<string, string> dicVers = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+                JObject jVers = JObject.Parse(json);
+
+                foreach (JProperty j in jVers["libs"])
                 {
-                    if (File.Exists(RootFolder + @"\ExceptionManager.dll.OLD")) File.Delete(RootFolder + @"\ExceptionManager.dll.OLD");
-                    File.Move(RootFolder + @"\ExceptionManager.dll", RootFolder + @"\ExceptionManager.dll.OLD");
-                    File.Move(RootFolder + @"\ExceptionManager.dll.UPDATE", RootFolder + @"\ExceptionManager.dll");
-                }
-                if (File.Exists(RootFolder + @"\HttpServer.dll.UPDATE"))
-                {
-                    if (File.Exists(RootFolder + @"\HttpServer.dll.OLD")) File.Delete(RootFolder + @"\HttpServer.dll.OLD");
-                    File.Move(RootFolder + @"\HttpServer.dll", RootFolder + @"\HttpServer.dll.OLD");
-                    File.Move(RootFolder + @"\HttpServer.dll.UPDATE", RootFolder + @"\HttpServer.dll");
-                }
-                if (File.Exists(RootFolder + @"\ICSharpCode.SharpZipLib.dll.UPDATE"))
-                {
-                    if (File.Exists(RootFolder + @"\ICSharpCode.SharpZipLib.dll.OLD")) File.Delete(RootFolder + @"\ICSharpCode.SharpZipLib.dll.OLD");
-                    File.Move(RootFolder + @"\ICSharpCode.SharpZipLib.dll", RootFolder + @"\ICSharpCode.SharpZipLib.dll.OLD");
-                    File.Move(RootFolder + @"\ICSharpCode.SharpZipLib.dll.UPDATE", RootFolder + @"\ICSharpCode.SharpZipLib.dll");
-                }
-                if (File.Exists(RootFolder + @"\Newtonsoft.Json.dll.UPDATE"))
-                {
-                    if (File.Exists(RootFolder + @"\Newtonsoft.Json.dll.OLD")) File.Delete(RootFolder + @"\Newtonsoft.Json.dll.OLD");
-                    File.Move(RootFolder + @"\Newtonsoft.Json.dll", RootFolder + @"\Newtonsoft.Json.dll.OLD");
-                    File.Move(RootFolder + @"\Newtonsoft.Json.dll.UPDATE", RootFolder + @"\Newtonsoft.Json.dll");
+                    if (File.Exists(RootFolder + @"\lib\" + j.Name + ".UPDATE"))
+                    {
+                        if (File.Exists(RootFolder + @"\lib\" + j.Name + ".OLD")) File.Delete(RootFolder + @"\lib\" + j.Name + ".OLD");
+                        if (File.Exists(RootFolder + @"\lib\" + j.Name)) File.Delete(RootFolder + @"\lib\" + j.Name);
+                        File.Move(RootFolder + @"\lib\" + j.Name + ".UPDATE", RootFolder + @"\lib\" + j.Name);
+                    } 
                 }
 
                 //Restart the service
