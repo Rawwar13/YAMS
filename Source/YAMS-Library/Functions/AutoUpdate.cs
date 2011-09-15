@@ -46,8 +46,8 @@ namespace YAMS
         //YAMS URLs
         public static Dictionary<string, string> strYAMSUpdatePath = new Dictionary<string, string>()
         {
-            { "live", "https://github.com/richardbenson/YAMS/raw/updater/"},
-            { "dev", "https://github.com/richardbenson/YAMS/raw/updater/development/" }
+            { "live", "https://github.com/richardbenson/YAMS/raw/updater"},
+            { "dev", "https://github.com/richardbenson/YAMS/raw/updater/development" }
         };
 
         //Third party URLS
@@ -76,12 +76,13 @@ namespace YAMS
             {
                 //What branch are we on?
                 string strBranch = Database.GetSetting("UpdateBranch", "YAMS");
+                string strYPath = strYAMSUpdatePath[strBranch];
 
                 //Check Minecraft server first
                 if (bolUpdateJAR)
                 {
                     bolServerUpdateAvailable = UpdateIfNeeded(strMCServerURL, YAMS.Core.RootFolder + @"\lib\minecraft_server.jar.UPDATE");
-                    UpdateIfNeeded(strYAMSUpdatePath[strBranch] + @"\properties.json", YAMS.Core.RootFolder + @"\lib\properties.json");
+                    UpdateIfNeeded(strYPath + @"/properties.json", YAMS.Core.RootFolder + @"\lib\properties.json");
                 }
 
                 //Have they opted for bukkit? If so, update that too
@@ -91,7 +92,7 @@ namespace YAMS
                 }
 
                 //Grab latest version file if it needs updating
-                UpdateIfNeeded(strYAMSUpdatePath[strBranch] + @"\versions.json", YAMS.Core.RootFolder + @"\lib\versions.json");
+                UpdateIfNeeded(strYPath + @"/versions.json", YAMS.Core.RootFolder + @"\lib\versions.json");
                 string json = File.ReadAllText(YAMS.Core.RootFolder + @"\lib\versions.json");
                 //Dictionary<string, string> dicVers = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
                 JObject jVers = JObject.Parse(json);
@@ -99,13 +100,13 @@ namespace YAMS
                 //Now update self
                 if (bolUpdateSVC)
                 {
-                    bolDllUpdateAvailable = UpdateIfNeeded(strYAMSUpdatePath[strBranch] + @"\YAMS-Library.dll", YAMS.Core.RootFolder + @"\YAMS-Library.dll.UPDATE");
-                    if (UpdateIfNeeded(strYAMSUpdatePath[strBranch] + @"\YAMS-Service.exe", YAMS.Core.RootFolder + @"\YAMS-Service.exe.UPDATE") || UpdateIfNeeded(strYAMSUpdatePath[strBranch] + @"\YAMS-Service.exe.config", YAMS.Core.RootFolder + @"\YAMS-Service.exe.config.UPDATE"))
+                    bolDllUpdateAvailable = UpdateIfNeeded(strYPath + @"/YAMS-Library.dll", YAMS.Core.RootFolder + @"\YAMS-Library.dll.UPDATE");
+                    if (UpdateIfNeeded(strYPath + @"/YAMS-Service.exe", YAMS.Core.RootFolder + @"\YAMS-Service.exe.UPDATE") || UpdateIfNeeded(strYPath + @"/YAMS-Service.exe.config", YAMS.Core.RootFolder + @"\YAMS-Service.exe.config.UPDATE"))
                     {
                         bolServiceUpdateAvailable = true;
                     }
-                    bolWebUpdateAvailable = UpdateIfNeeded(strYAMSUpdatePath[strBranch] + @"\web.zip", YAMS.Core.RootFolder + @"\web.zip");
-                    bolGUIUpdateAvailable = UpdateIfNeeded(strYAMSUpdatePath[strBranch] + @"\YAMS-Updater.exe", YAMS.Core.RootFolder + @"\YAMS-Updater.exe");
+                    bolWebUpdateAvailable = UpdateIfNeeded(strYPath + @"/web.zip", YAMS.Core.RootFolder + @"\web.zip");
+                    bolGUIUpdateAvailable = UpdateIfNeeded(strYPath + @"/YAMS-Updater.exe", YAMS.Core.RootFolder + @"\YAMS-Updater.exe");
 
                     //Update External libs
                     foreach (JProperty j in jVers["libs"])
