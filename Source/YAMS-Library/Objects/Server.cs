@@ -393,6 +393,7 @@ namespace YAMS
         {
             if (this.Running)
             {
+                this.prcMinecraft.Refresh();
                 return Convert.ToInt32(this.prcMinecraft.WorkingSet64 / (1024 * 1024));
             }
             else { return 0; }
@@ -403,6 +404,7 @@ namespace YAMS
         {
             if (this.Running)
             {
+                this.prcMinecraft.Refresh();
                 return Convert.ToInt32(this.prcMinecraft.VirtualMemorySize64 / (1024 * 1024));
             } else { return 0; }
         }
