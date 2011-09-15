@@ -183,8 +183,8 @@ namespace YAMS
                 Database.AddLog("Server Started: " + strArgs, "server", "info", false, this.ServerID);
 
                 //Try and open the firewall port
-                Networking.OpenFirewallPort(this.Port, this.ServerTitle);
-                Networking.OpenUPnP(this.Port, this.ServerTitle);
+                //Networking.OpenFirewallPort(this.Port, this.ServerTitle);
+                //Networking.OpenUPnP(this.Port, this.ServerTitle);
 
                 //Save the process ID so we can kill if there is a crash
                 this.PID = this.prcMinecraft.Id;
@@ -201,8 +201,8 @@ namespace YAMS
         {
             if (!Running) return;
             //Close firewall
-            Networking.CloseFirewallPort(this.Port);
-            Networking.CloseUPnP(this.Port);
+            //Networking.CloseFirewallPort(this.Port);
+            //Networking.CloseUPnP(this.Port);
 
             this.SafeStop = true;
             this.Send("stop");
