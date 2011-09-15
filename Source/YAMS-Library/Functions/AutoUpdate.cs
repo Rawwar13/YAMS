@@ -111,20 +111,8 @@ namespace YAMS
                     //Update External libs
                     foreach (JProperty j in jVers["libs"])
                     {
-                        if (File.Exists(Core.RootFolder + @"\lib\" + j.Name))
-                        {
-                            if (FileVersionInfo.GetVersionInfo(Core.RootFolder + @"\lib\" + j.Name).FileVersion != (string)j.Value)
-                            {
-                                bolLibUpdateAvailable = true;
-                                UpdateIfNeeded(strYAMSUpdatePath[strBranch] + @"\lib\" + j.Name, Core.RootFolder + @"\lib\" + j.Name + ".UPDATE");
-                            }
-                        }
-                        else
-                        {
-                            UpdateIfNeeded(strYAMSUpdatePath[strBranch] + @"\lib\" + j.Name, Core.RootFolder + @"\lib\" + j.Name + ".UPDATE");
-                        }
+                        if (UpdateIfNeeded(strYAMSUpdatePath[strBranch] + @"/lib/" + j.Name, Core.RootFolder + @"\lib\" + j.Name + ".UPDATE")) bolLibUpdateAvailable = true;
                     }
-                    //if (FileVersionInfo.GetVersionInfo(Path.Combine(Core.RootFolder, "ExceptionManager.dll")).FileVersion != (string)jVers["apps"]["ExceptionManager.dll"]) 1 = 1;
                 }
 
                 if (bolUpdateAddons)
