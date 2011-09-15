@@ -22,7 +22,7 @@ namespace YAMS
         private Regex regRemoveDateStamp = new Regex(@"^([0-9]+\-[0-9]+\-[0-9]+ )");
         private Regex regRemoveTimeStamp = new Regex(@"^([0-9]+:[0-9]+:[0-9]+ )");
         private Regex regErrorLevel = new Regex(@"^\[([A-Z]+)\]{1}");
-        private Regex regPlayerChat = new Regex(@"^(\<([A-Za-z0-9])+\>){1}");
+        private Regex regPlayerChat = new Regex(@"^(\<([\w-])+\>){1}");
         private Regex regConsoleChat = new Regex(@"^(\[CONSOLE\]){1}");
         private Regex regPlayerPM = new Regex(@"^(\[([\w])+\-\>(\w)+\]){1}");
         private Regex regPlayerLoggedIn = new Regex(@"^([\w]+)(?: \[\/[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+\:[0-9]+\] logged in with entity id)");
