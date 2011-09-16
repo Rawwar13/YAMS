@@ -22,6 +22,7 @@ public class IniParser
     public IniParser(String iniPath)
     {
         TextReader iniFile = null;
+        Stream iniStream = null;
         String strLine = null;
         String currentRoot = null;
         String[] keyPair = null;
@@ -32,7 +33,8 @@ public class IniParser
         {
             try
             {
-                iniFile = new StreamReader(iniPath);
+                iniStream = new FileStream(iniPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                iniFile = new StreamReader(iniStream);
 
                 strLine = iniFile.ReadLine();
 
@@ -82,6 +84,8 @@ public class IniParser
             {
                 if (iniFile != null)
                     iniFile.Close();
+                if (iniStream != null)
+                    iniStream.Close();
             }
         }
         else
