@@ -1,14 +1,9 @@
 {
-  "overviewer" : "0.1.4",
-  "c10t" : "1.9",
-  "biomeextractor": "080",
-  "tectonicus":"1.38", 
   "libs":
     {
       "ExceptionManager.dll": "1.1.4217.22967",
       "HttpServer.dll": "2.0.0.0",
       "ICSharpCode.SharpZipLib.dll": "0.86.0.518",
-	  "SharpUPnP.dll":"1.0.0.0",
 	  "Interop.NATUPNPLib.dll":"1.0.0.0",
 	  "Interop.NETCONLib.dll":"1.0.0.0",
 	  "Interop.NetFwTypeLib.dll":"1.0.0.0"
