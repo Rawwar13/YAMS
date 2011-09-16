@@ -49,6 +49,10 @@
     <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ExceptionManager, Version=1.1.4217.22967, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>lib\ExceptionManager.dll</HintPath>
+    </Reference>
     <Reference Include="HttpServer, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d7063c47c583695a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>lib\HttpServer.dll</HintPath>
@@ -56,12 +60,23 @@
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>lib\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
+    <Reference Include="Interop.NATUPNPLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>lib\Interop.NATUPNPLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Interop.NETCONLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>lib\Interop.NETCONLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Interop.NetFwTypeLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>lib\Interop.NetFwTypeLib.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>lib\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpUPnP, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\SharpUPnP.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -80,6 +95,8 @@
     <Compile Include="AddOns\NBToolkit.cs" />
     <Compile Include="AddOns\Overviewer.cs" />
     <Compile Include="AddOns\Tectonicus.cs" />
+    <Compile Include="Externals\SharpUPnP.cs" />
+    <Compile Include="Externals\UPnPException.cs" />
     <Compile Include="Functions\AutoUpdate.cs" />
     <Compile Include="Core.cs" />
     <Compile Include="Functions\Backup.cs" />
@@ -124,21 +141,10 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
-  <ItemGroup>
-    <COMReference Include="NetFwTypeLib">
-      <Guid>{58FBCF7C-E7A9-467C-80B3-FC65E8FCCA08}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_BuildVersioningStyle="None.None.Increment.TimeStamp" BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" />
+      <UserProperties BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" BuildVersion_BuildVersioningStyle="None.None.Increment.TimeStamp" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
