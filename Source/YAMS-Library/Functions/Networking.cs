@@ -80,10 +80,10 @@ namespace YAMS
         public static bool OpenUPnP(int intPortNumber, string strFriendlyName)
         {
             //First check if there is a upnp device to talk to
-            if (SharpUPnP.SharpUPnP.Discover())
+            if (UPnP.Discover())
             {
                 try {
-                    SharpUPnP.SharpUPnP.ForwardPort(intPortNumber, System.Net.Sockets.ProtocolType.Tcp, strFriendlyName);
+                    UPnP.CreateForwardingRule(intPortNumber, System.Net.Sockets.ProtocolType.Tcp, strFriendlyName);
                     Database.AddLog("Forwarded port " + intPortNumber + " for " + strFriendlyName, "networking");
                     return true;
                 }
@@ -107,11 +107,11 @@ namespace YAMS
         public static bool CloseUPnP(int intPortNumber)
         {
             //First check if there is a upnp device to talk to
-            if (SharpUPnP.SharpUPnP.Discover())
+            if (UPnP.Discover())
             {
                 try
                 {
-                    SharpUPnP.SharpUPnP.DeleteForwardingRule(intPortNumber, System.Net.Sockets.ProtocolType.Tcp);
+                    UPnP.DeleteForwardingRule(intPortNumber, System.Net.Sockets.ProtocolType.Tcp);
                     Database.AddLog("Un-forwarded port " + intPortNumber, "networking");
                     return true;
                 }
