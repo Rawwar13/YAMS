@@ -235,6 +235,7 @@ namespace YAMS
         {
             if (this.Players.Count == 0)
             {
+                this.RestartWhenFree = false;
                 this.Restart();
             }
             else
