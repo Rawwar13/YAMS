@@ -16,7 +16,10 @@ namespace YAMS
         private static string strJRERegKey = "SOFTWARE\\JavaSoft\\Java Runtime Environment";
         private static string strJDKRegKey = "SOFTWARE\\JavaSoft\\Java Development Kit";
 
-        //Check for the existence to the two JVMs
+        /// <summary>
+        /// Detects if the JRE is installed using the regkey
+        /// </summary>
+        /// <returns>boolean indicating if the JRE is installed</returns>
         public static bool HasJRE()
         {
             try
@@ -31,6 +34,11 @@ namespace YAMS
                 return false;
             }
         }
+
+        /// <summary>
+        /// Detects if the JDK is installed using the regkey
+        /// </summary>
+        /// <returns>boolean indicating if the JDK is installed</returns>
         public static bool HasJDK()
         {
             try
@@ -47,12 +55,20 @@ namespace YAMS
         
         }
 
-        //Check for existence of Minecraft.jar
+        /// <summary>
+        /// Looks for the Minecraft client in the system user's profile, the service runs as LOCAL SYSTEM, so for
+        /// some of the third party apps we need to see if it is in this profile too
+        /// </summary>
+        /// <returns>boolean indicating if the minecraft client is in the SYSTEM account's AppData</returns>
         public static bool HasMCClientSystem()
         {
             if (File.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), @"config\systemprofile\AppData\Roaming\.minecraft\bin\minecraft.jar"))) return true;
             else return false;
         }
+        /// <summary>
+        /// Checks if the Minecraft client is installed locally
+        /// </summary>
+        /// <returns>boolean indicating if the Minecraft jar is in the local user's AppData</returns>
         public static bool HasMCClientLocal()
         {
             if (File.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @".minecraft\bin\minecraft.jar"))) return true;
@@ -158,6 +174,7 @@ namespace YAMS
             Database.SaveSetting("AdminListenPort", "56552"); //Use an IANA legal internal port 49152 - 65535
             Database.SaveSetting("PublicListenPort", Convert.ToString(Networking.TcpPort.FindNextAvailablePort(80))); //Find nearest open port to 80 for public site
             Database.SaveSetting("ExternalIP", GetExternalIP().ToString());
+            Database.SaveSetting("ListenIP", Networking.GetListenIP().ToString());
             Database.SaveSetting("UpdateBranch", "live");
 
             //Run an update now
@@ -168,8 +185,7 @@ namespace YAMS
 
         }
 
-
-        //What is the bitness of the system
+       //What is the bitness of the system
         public static string GetBitness()
         {
             switch (IntPtr.Size)
