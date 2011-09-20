@@ -158,7 +158,6 @@ namespace YAMS
             Database.SaveSetting("AdminListenPort", "56552"); //Use an IANA legal internal port 49152 - 65535
             Database.SaveSetting("PublicListenPort", Convert.ToString(Networking.TcpPort.FindNextAvailablePort(80))); //Find nearest open port to 80 for public site
             Database.SaveSetting("ExternalIP", GetExternalIP().ToString());
-            Database.SaveSetting("ListenIP", GetListenIP().ToString());
             Database.SaveSetting("UpdateBranch", "live");
 
             //Run an update now
@@ -169,34 +168,6 @@ namespace YAMS
 
         }
 
-        //Uses WhatIsMyIP.com to determine the user's external IP
-        public static IPAddress GetExternalIP()
-        {
-            string strExternalIPChecker = "http://icanhazip.com/";
-            WebClient wcGetIP = new WebClient();
-            UTF8Encoding utf8 = new UTF8Encoding();
-            string strResponse = "";
-            try
-            {
-                strResponse = utf8.GetString(wcGetIP.DownloadData(strExternalIPChecker));
-                strResponse = strResponse.Replace("\n", "");
-            }
-            catch (WebException e)
-            {
-                YAMS.Database.AddLog("Unable to determine external IP: " + e.Data, "utils", "warn");
-            }
-
-            IPAddress ipExternal = null;
-            ipExternal = IPAddress.Parse(strResponse);
-            return ipExternal;
-        }
-
-        //Get an IP Address to bind to
-        public static IPAddress GetListenIP()
-        {
-            IPHostEntry ipListen = Dns.GetHostEntry(Dns.GetHostName());
-            return ipListen.AddressList[0];
-        }
 
         //What is the bitness of the system
         public static string GetBitness()

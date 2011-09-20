@@ -100,7 +100,7 @@ namespace YAMS_Updater
             Database.SaveSetting("AdminListenPort", "56552"); //Use an IANA legal internal port 49152 - 65535
             Database.SaveSetting("PublicListenPort", Convert.ToString(Networking.TcpPort.FindNextAvailablePort(80))); //Find nearest open port to 80 for public site
             Database.SaveSetting("ExternalIP", Util.GetExternalIP().ToString());
-            Database.SaveSetting("ListenIP", Util.GetListenIP().ToString());
+            Database.SaveSetting("ListenIP", Networking.GetListenIP().ToString());
             Database.SaveSetting("UpdateBranch", "live");
             Database.SaveSetting("AdminPassword", txtAdminPassword.Text);
             

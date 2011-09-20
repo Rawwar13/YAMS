@@ -14,6 +14,39 @@ namespace YAMS
     {
 
         /// <summary>
+        /// Get the first IP address on the system
+        /// </summary>
+        /// <returns>IP Address</returns>
+        public static IPAddress GetListenIP()
+        {
+            IPHostEntry ipListen = Dns.GetHostEntry(Dns.GetHostName());
+            return ipListen.AddressList[0];
+        }
+
+        /// <summary>
+        /// Grab the external IP address using icanhazip.com
+        /// </summary>
+        /// <returns>IPAddress</returns>
+        public static IPAddress GetExternalIP()
+        {
+            string strExternalIPChecker = "http://icanhazip.com/";
+            WebClient wcGetIP = new WebClient();
+            UTF8Encoding utf8 = new UTF8Encoding();
+            string strResponse = "";
+            try
+            {
+                strResponse = utf8.GetString(wcGetIP.DownloadData(strExternalIPChecker));
+                strResponse = strResponse.Replace("\n", "");
+            }
+            catch (WebException e)
+            {
+                YAMS.Database.AddLog("Unable to determine external IP: " + e.Data, "utils", "warn");
+            }
+
+            IPAddress ipExternal = null;
+            ipExternal = IPAddress.Parse(strResponse);
+            return ipExternal;
+        }        
         /// Open a port on the Windows firewall
         /// </summary>
         /// <param name="intPortNumber">The port to open</param>
