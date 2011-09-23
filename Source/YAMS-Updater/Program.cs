@@ -134,7 +134,7 @@ namespace YAMS_Updater
             else
             {
                 //Special case for a file that shouldn't be where it is
-                if (File.Exists(RootFolder + @"\SharpUPnP.dll")) File.Delete(RootFolder + @"\SharpUPnP.dll");
+                if (!File.Exists(RootFolder + @"\SharpUPnP.dll") && File.Exists(RootFolder + @"\lib\SharpUPnP.dll")) File.Copy(RootFolder + @"\lib\SharpUPnP.dll", RootFolder + @"\SharpUPnP.dll");
                 
                 //Apply any updates to core files, these should cope with any other updates
                 if (File.Exists(RootFolder + @"\YAMS-Library.dll.UPDATE"))
