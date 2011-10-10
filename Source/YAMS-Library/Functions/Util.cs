@@ -284,16 +284,9 @@ namespace YAMS
         {
             try
             {
-                StreamWriter twPids;
-                if (!File.Exists(Core.RootFolder + "\\pids"))
-                {
-                    twPids = File.CreateText(Core.RootFolder + "\\pids");
-                }
-                else
-                {
-                    twPids = File.AppendText(Core.RootFolder + "\\pids");
-                }
+                StreamWriter twPids = new StreamWriter(Core.RootFolder + "\\pids.txt", true);
                 twPids.WriteLine(intID);
+                twPids.Flush();
                 twPids.Close();
             } catch (Exception e) {
                 Database.AddLog("Adding PID: " + e.Message, "pids", "warn");
@@ -305,11 +298,11 @@ namespace YAMS
         {
             try
             {
-                if (!File.Exists(Core.RootFolder + "\\pids")) return;
+                if (!File.Exists(Core.RootFolder + "\\pids.txt")) return;
             
                 //Read all pids into an array, except the one we want
                 ArrayList lines = new ArrayList();
-                StreamReader trPids = new StreamReader(Core.RootFolder + "\\pids");
+                StreamReader trPids = new StreamReader(Core.RootFolder + "\\pids.txt");
                 string line;
                 while ((line = trPids.ReadLine()) != null)
                 {
@@ -318,20 +311,13 @@ namespace YAMS
                 trPids.Close();
 
                 //delete pids file and recreate
-                File.Delete(Core.RootFolder + "\\pids");
-                StreamWriter twPids;
-                if (!File.Exists(Core.RootFolder + "\\pids"))
-                {
-                    twPids = File.CreateText(Core.RootFolder + "\\pids");
-                }
-                else
-                {
-                    twPids = File.AppendText(Core.RootFolder + "\\pids");
-                }
+                File.Delete(Core.RootFolder + "\\pids.txt");
+                StreamWriter twPids = new StreamWriter(Core.RootFolder + "\\pids.txt", true);
                 foreach (string l in lines)
                 {
                     twPids.WriteLine(l);
                 }
+                twPids.Flush();
                 twPids.Close();
             }
             catch (Exception e)

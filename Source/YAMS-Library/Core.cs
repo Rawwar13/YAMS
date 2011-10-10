@@ -46,23 +46,23 @@ namespace YAMS
             StoragePath = Database.GetSetting("StoragePath", "YAMS");
 
             //Are there any PIDs we previously started still running?
-            if (File.Exists(Core.RootFolder + "\\pids"))
+            if (File.Exists(Core.RootFolder + "\\pids.txt"))
             {
                 try
                 {
-                    StreamReader trPids = new StreamReader(Core.RootFolder + "\\pids");
+                    StreamReader trPids = new StreamReader(Core.RootFolder + "\\pids.txt");
                     string line;
                     while ((line = trPids.ReadLine()) != null)
                     {
                         Process.GetProcessById(Convert.ToInt32(line)).Kill();
                     }
                     trPids.Close();
-                    File.Delete(Core.RootFolder + "\\pids");
                 }
                 catch (Exception e)
                 {
                     Database.AddLog("Not all processes killed: " + e.Message);
                 }
+                File.Delete(Core.RootFolder + "\\pids.txt");
             };
 
             //Check for updates and start a timer to do it automatically
