@@ -372,8 +372,8 @@ YAMS.admin = {
 
             var l = YAMS.D.get('console');
             var c = YAMS.D.get('chat');
-            //if (l.scrollTop == l.scrollHeight || l.scrollTop == 0) var bolScrollL = true;
-            //if (c.scrollTop == c.scrollHeight || c.scrollTop == 0) var bolScrollC = true;
+            if (l.scrollTop + parseInt(YAMS.D.getStyle(l, 'height').replace("px", "")) == l.scrollHeight || l.scrollTop == 0) var bolScrollL = true;
+            if (c.scrollTop + parseInt(YAMS.D.getStyle(c, 'height').replace("px", "")) == c.scrollHeight || c.scrollTop == 0) var bolScrollC = true;
             for (var i = 0, len = results.Table.length - 1; len >= i; --len) {
                 var r = results.Table[len];
                 var s = document.createElement('div');
@@ -390,8 +390,8 @@ YAMS.admin = {
 
                 YAMS.admin.lastServerLogId = r.LogID;
             }
-            l.scrollTop = l.scrollHeight;
-            c.scrollTop = c.scrollHeight;
+            if (bolScrollL) l.scrollTop = l.scrollHeight;
+            if (bolScrollC) c.scrollTop = c.scrollHeight;
             YAMS.admin.loading.cfg.setProperty('visible', false);
             YAMS.admin.serverUpdateInProgress = false;
         },
@@ -410,7 +410,7 @@ YAMS.admin = {
             catch (x) { YAMS.admin.log('JSON Parse Failed'); return; }
 
             var l = YAMS.admin.layout.getUnitByPosition('bottom').body;
-            //if (l.scrollTop == l.scrollHeight) var bolScroll = true;
+            if (l.scrollTop + parseInt(YAMS.D.getStyle(l, 'height').replace("px", "")) == l.scrollHeight) var bolScroll = true;
             for (var i = 0, len = results.Table.length - 1; len >= i; --len) {
                 var r = results.Table[len];
                 var s = document.createElement('div');
@@ -421,7 +421,7 @@ YAMS.admin = {
                 l.appendChild(s);
                 YAMS.admin.lastLogId = r.LogID;
             }
-            l.scrollTop = l.scrollHeight;
+            if (bolScroll) l.scrollTop = l.scrollHeight;
         },
         failure: function (o) {
             YAMS.admin.log('updateGlobalLog failed');
