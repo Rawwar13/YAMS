@@ -130,6 +130,9 @@ namespace YAMS
                 case "bukkit":
                     strFile = "craftbukkit.jar";
                     break;
+                case "pre":
+                    strFile = "minecraft_server_pre.jar";
+                    break;
                 default:
                     strFile = "minecraft_server.jar";
                     break;
@@ -195,6 +198,7 @@ namespace YAMS
 
                 //Try and open the firewall port
                 Networking.OpenFirewallPort(this.Port, this.ServerTitle);
+                Networking.OpenUPnP(this.Port, this.ServerTitle);
 
                 //Save the process ID so we can kill if there is a crash
                 this.PID = this.prcMinecraft.Id;

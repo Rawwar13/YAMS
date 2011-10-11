@@ -25,6 +25,7 @@ namespace YAMS
 
         //Update booleans
         public static bool bolServerUpdateAvailable = false;
+        public static bool bolPreUpdateAvailable = false;
         public static bool bolDllUpdateAvailable = false;
         public static bool bolServiceUpdateAvailable = false;
         public static bool bolGUIUpdateAvailable = false;
@@ -78,11 +79,18 @@ namespace YAMS
                 string strBranch = Database.GetSetting("UpdateBranch", "YAMS");
                 string strYPath = strYAMSUpdatePath[strBranch];
 
+                //Grab latest version file if it needs updating
+                UpdateIfNeeded(strYPath + @"/versions.json", YAMS.Core.RootFolder + @"\lib\versions.json");
+                string json = File.ReadAllText(YAMS.Core.RootFolder + @"\lib\versions.json");
+                //Dictionary<string, string> dicVers = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+                JObject jVers = JObject.Parse(json);
+                
                 //Check Minecraft server first
                 if (bolUpdateJAR)
                 {
                     bolServerUpdateAvailable = UpdateIfNeeded(strMCServerURL, YAMS.Core.RootFolder + @"\lib\minecraft_server.jar.UPDATE");
                     UpdateIfNeeded(strYPath + @"/properties.json", YAMS.Core.RootFolder + @"\lib\properties.json");
+                    bolPreUpdateAvailable = UpdateIfNeeded((string)jVers["pre"], YAMS.Core.RootFolder + @"\lib\minecraft_server_pre.jar.UPDATE");
                 }
 
                 //Have they opted for bukkit? If so, update that too
@@ -90,12 +98,6 @@ namespace YAMS
                 {
                     bolBukkitUpdateAvailable = UpdateIfNeeded(strBukkitServerURL, Core.RootFolder + @"\lib\craftbukkit.jar", "modified");
                 }
-
-                //Grab latest version file if it needs updating
-                UpdateIfNeeded(strYPath + @"/versions.json", YAMS.Core.RootFolder + @"\lib\versions.json");
-                string json = File.ReadAllText(YAMS.Core.RootFolder + @"\lib\versions.json");
-                //Dictionary<string, string> dicVers = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
-                JObject jVers = JObject.Parse(json);
 
                 //Now update self
                 if (bolUpdateSVC)
@@ -203,7 +205,7 @@ namespace YAMS
                 }
 
                 //Restart individual servers?
-                if ((bolServerUpdateAvailable || bolBukkitUpdateAvailable) && Convert.ToBoolean(Database.GetSetting("RestartOnJarUpdate", "YAMS")))
+                if ((bolServerUpdateAvailable || bolBukkitUpdateAvailable || bolPreUpdateAvailable) && Convert.ToBoolean(Database.GetSetting("RestartOnJarUpdate", "YAMS")))
                 {
                     foreach (KeyValuePair<int, MCServer> kvp in Core.Servers)
                     {
