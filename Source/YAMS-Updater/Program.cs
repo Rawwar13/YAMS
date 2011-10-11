@@ -10,6 +10,7 @@ using YAMS;
 using System.Security.Principal;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using ExceptionManager;
 
 namespace YAMS_Updater
 {
@@ -25,6 +26,8 @@ namespace YAMS_Updater
         
         static void Main(string[] args)
         {
+            UnhandledExceptionManager.AddHandler();
+            
             //We need Admin for almost everything in here
             // Needs UAC elevation for webmin to run
             WindowsPrincipal principal = new WindowsPrincipal(WindowsIdentity.GetCurrent());

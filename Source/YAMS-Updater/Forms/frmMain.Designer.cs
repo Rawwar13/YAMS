@@ -62,14 +62,35 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.btnChangePath = new System.Windows.Forms.Button();
             this.txtStoragePath = new System.Windows.Forms.TextBox();
+            this.btnChangePath = new System.Windows.Forms.Button();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.tblPortForwards = new System.Windows.Forms.DataGridView();
+            this.PFName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PFPort = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PFStatus = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.lblAdminURL = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.lblPublicURL = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.lblExternalIP = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.progToolStrip = new System.Windows.Forms.ToolStripProgressBar();
+            this.lblPortStatus = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lblListenIP = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
+            this.groupBox7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tblPortForwards)).BeginInit();
+            this.groupBox8.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -390,6 +411,13 @@
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Change Storage Path";
             // 
+            // txtStoragePath
+            // 
+            this.txtStoragePath.Location = new System.Drawing.Point(10, 39);
+            this.txtStoragePath.Name = "txtStoragePath";
+            this.txtStoragePath.Size = new System.Drawing.Size(193, 20);
+            this.txtStoragePath.TabIndex = 1;
+            // 
             // btnChangePath
             // 
             this.btnChangePath.Location = new System.Drawing.Point(209, 39);
@@ -400,18 +428,174 @@
             this.btnChangePath.UseVisualStyleBackColor = true;
             this.btnChangePath.Click += new System.EventHandler(this.btnChangePath_Click);
             // 
-            // txtStoragePath
+            // groupBox7
             // 
-            this.txtStoragePath.Location = new System.Drawing.Point(10, 39);
-            this.txtStoragePath.Name = "txtStoragePath";
-            this.txtStoragePath.Size = new System.Drawing.Size(193, 20);
-            this.txtStoragePath.TabIndex = 1;
+            this.groupBox7.Controls.Add(this.tblPortForwards);
+            this.groupBox7.Location = new System.Drawing.Point(312, 13);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(351, 314);
+            this.groupBox7.TabIndex = 8;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "Port Forwarding";
+            // 
+            // tblPortForwards
+            // 
+            this.tblPortForwards.AllowUserToAddRows = false;
+            this.tblPortForwards.AllowUserToDeleteRows = false;
+            this.tblPortForwards.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            this.tblPortForwards.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.tblPortForwards.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.PFName,
+            this.PFPort,
+            this.PFStatus});
+            this.tblPortForwards.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.tblPortForwards.Location = new System.Drawing.Point(10, 19);
+            this.tblPortForwards.MultiSelect = false;
+            this.tblPortForwards.Name = "tblPortForwards";
+            this.tblPortForwards.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            this.tblPortForwards.RowHeadersVisible = false;
+            this.tblPortForwards.Size = new System.Drawing.Size(335, 286);
+            this.tblPortForwards.TabIndex = 13;
+            // 
+            // PFName
+            // 
+            this.PFName.HeaderText = "Name";
+            this.PFName.Name = "PFName";
+            this.PFName.ReadOnly = true;
+            // 
+            // PFPort
+            // 
+            this.PFPort.HeaderText = "Port";
+            this.PFPort.Name = "PFPort";
+            this.PFPort.ReadOnly = true;
+            // 
+            // PFStatus
+            // 
+            this.PFStatus.HeaderText = "Status";
+            this.PFStatus.Name = "PFStatus";
+            this.PFStatus.ReadOnly = true;
+            // 
+            // groupBox8
+            // 
+            this.groupBox8.Controls.Add(this.lblListenIP);
+            this.groupBox8.Controls.Add(this.label13);
+            this.groupBox8.Controls.Add(this.lblAdminURL);
+            this.groupBox8.Controls.Add(this.label14);
+            this.groupBox8.Controls.Add(this.lblPublicURL);
+            this.groupBox8.Controls.Add(this.label12);
+            this.groupBox8.Controls.Add(this.lblExternalIP);
+            this.groupBox8.Controls.Add(this.label11);
+            this.groupBox8.Location = new System.Drawing.Point(312, 331);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Size = new System.Drawing.Size(351, 157);
+            this.groupBox8.TabIndex = 9;
+            this.groupBox8.TabStop = false;
+            this.groupBox8.Text = "Addresses";
+            // 
+            // lblAdminURL
+            // 
+            this.lblAdminURL.AutoSize = true;
+            this.lblAdminURL.Location = new System.Drawing.Point(81, 45);
+            this.lblAdminURL.Name = "lblAdminURL";
+            this.lblAdminURL.Size = new System.Drawing.Size(16, 13);
+            this.lblAdminURL.TabIndex = 12;
+            this.lblAdminURL.Text = "...";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(7, 45);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(60, 13);
+            this.label14.TabIndex = 11;
+            this.label14.Text = "Admin Site:";
+            // 
+            // lblPublicURL
+            // 
+            this.lblPublicURL.AutoSize = true;
+            this.lblPublicURL.Location = new System.Drawing.Point(80, 31);
+            this.lblPublicURL.Name = "lblPublicURL";
+            this.lblPublicURL.Size = new System.Drawing.Size(16, 13);
+            this.lblPublicURL.TabIndex = 10;
+            this.lblPublicURL.Text = "...";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(6, 31);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(60, 13);
+            this.label12.TabIndex = 9;
+            this.label12.Text = "Public Site:";
+            // 
+            // lblExternalIP
+            // 
+            this.lblExternalIP.AutoSize = true;
+            this.lblExternalIP.Location = new System.Drawing.Point(80, 16);
+            this.lblExternalIP.Name = "lblExternalIP";
+            this.lblExternalIP.Size = new System.Drawing.Size(16, 13);
+            this.lblExternalIP.TabIndex = 8;
+            this.lblExternalIP.Text = "...";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(6, 16);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(61, 13);
+            this.label11.TabIndex = 7;
+            this.label11.Text = "External IP:";
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.progToolStrip,
+            this.lblPortStatus});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 494);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(675, 22);
+            this.statusStrip1.SizingGrip = false;
+            this.statusStrip1.TabIndex = 10;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // progToolStrip
+            // 
+            this.progToolStrip.Name = "progToolStrip";
+            this.progToolStrip.Size = new System.Drawing.Size(100, 16);
+            this.progToolStrip.Step = 1;
+            // 
+            // lblPortStatus
+            // 
+            this.lblPortStatus.Name = "lblPortStatus";
+            this.lblPortStatus.Size = new System.Drawing.Size(140, 17);
+            this.lblPortStatus.Text = "Checking port forwards...";
+            // 
+            // lblListenIP
+            // 
+            this.lblListenIP.AutoSize = true;
+            this.lblListenIP.Location = new System.Drawing.Point(81, 58);
+            this.lblListenIP.Name = "lblListenIP";
+            this.lblListenIP.Size = new System.Drawing.Size(16, 13);
+            this.lblListenIP.TabIndex = 14;
+            this.lblListenIP.Text = "...";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(7, 58);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(51, 13);
+            this.label13.TabIndex = 13;
+            this.label13.Text = "Listen IP:";
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(319, 500);
+            this.ClientSize = new System.Drawing.Size(675, 516);
+            this.Controls.Add(this.statusStrip1);
+            this.Controls.Add(this.groupBox8);
+            this.Controls.Add(this.groupBox7);
             this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
@@ -424,6 +608,7 @@
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "YAMS Control";
+            this.Shown += new System.EventHandler(this.frmMain_Shown);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -435,7 +620,14 @@
             this.groupBox5.PerformLayout();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
+            this.groupBox7.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.tblPortForwards)).EndInit();
+            this.groupBox8.ResumeLayout(false);
+            this.groupBox8.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -475,6 +667,23 @@
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.Button btnChangePath;
         private System.Windows.Forms.TextBox txtStoragePath;
+        private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.DataGridView tblPortForwards;
+        private System.Windows.Forms.GroupBox groupBox8;
+        private System.Windows.Forms.Label lblAdminURL;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label lblPublicURL;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label lblExternalIP;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PFName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PFPort;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn PFStatus;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel lblPortStatus;
+        private System.Windows.Forms.ToolStripProgressBar progToolStrip;
+        private System.Windows.Forms.Label lblListenIP;
+        private System.Windows.Forms.Label label13;
 
     }
 }

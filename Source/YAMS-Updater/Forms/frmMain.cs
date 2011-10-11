@@ -3,6 +3,10 @@ using System.Diagnostics;
 using System.IO;
 using System.ServiceProcess;
 using System.Windows.Forms;
+using System.Net;
+using System.Net.NetworkInformation;
+using NATUPNPLib;
+using System.Data.SqlServerCe;
 
 namespace YAMS_Updater
 {
@@ -29,6 +33,15 @@ namespace YAMS_Updater
             lblStoragePath.Text = YAMS.Database.GetSetting("StoragePath", "YAMS");
             txtStoragePath.Text = YAMS.Database.GetSetting("StoragePath", "YAMS");
 
+            //Addresses
+            IPAddress externalIP = YAMS.Networking.GetExternalIP();
+            lblExternalIP.Text = externalIP.ToString();
+            lblPublicURL.Text = "http://" + externalIP.ToString();
+            if (YAMS.Database.GetSetting("PublicListenPort", "YAMS") != "80") lblPublicURL.Text += ":" + YAMS.Database.GetSetting("PublicListenPort", "YAMS");
+            lblPublicURL.Text += "/";
+            lblAdminURL.Text = "http://" + externalIP.ToString() + ":" + YAMS.Database.GetSetting("AdminListenPort", "YAMS") + "/admin/";
+            lblListenIP.Text = YAMS.Networking.GetListenIP().ToString();
+
             //Set current update branch
             switch (YAMS.Database.GetSetting("UpdateBranch", "YAMS")) {
                 case "live":
@@ -41,7 +54,50 @@ namespace YAMS_Updater
                     selUpdateBranch.SelectedIndex = 0;
                     break;
             }
+        }
 
+        private void frmMain_Shown(Object sender, EventArgs e)
+        {
+            new MethodInvoker(UpdatePortForwards).BeginInvoke(null, null);
+        }
+
+        private void UpdatePortForwards()
+        {
+            lblPortStatus.Text = "Checking port forwards...";
+            try
+            {
+                tblPortForwards.Rows.Clear();
+                IPAddress externalIP = YAMS.Networking.GetExternalIP();
+                lblExternalIP.Text = externalIP.ToString();
+                
+                UPnPNATClass upnpnat = new UPnPNATClass();
+                IStaticPortMappingCollection mappings = upnpnat.StaticPortMappingCollection;
+
+                progToolStrip.Maximum = mappings.Count;
+                
+                foreach (IStaticPortMapping p in mappings)
+                {
+                    //This lists all available port mappings on the device, which could be an awful lot
+                    if (p.Description.IndexOf("YAMS") > -1) {
+                        //Check the port is open
+                        bool portOpen = YAMS.Networking.CheckExternalPort(externalIP, p.ExternalPort);
+
+                        //Add the port forward to the table
+                        DataGridViewRow row = new DataGridViewRow();
+                        row.CreateCells(tblPortForwards);
+                        row.Cells[0].Value = p.Description;
+                        row.Cells[1].Value = p.ExternalPort;
+                        row.Cells[2].Value = portOpen;
+                        tblPortForwards.Rows.Add(row);
+                    }
+                    progToolStrip.PerformStep();
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+            lblPortStatus.Text = "Done";
         }
 
         void timStatus_Tick(object sender, EventArgs e)
