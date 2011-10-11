@@ -146,7 +146,7 @@ namespace YAMS_Updater
                     btnStop.Enabled = false;
                     break;
             }
-            this.Refresh();
+            lblStatus.Refresh();
         }
 
         private void btnStart_Click(object sender, EventArgs e)
