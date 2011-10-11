@@ -95,8 +95,6 @@
     <Compile Include="AddOns\NBToolkit.cs" />
     <Compile Include="AddOns\Overviewer.cs" />
     <Compile Include="AddOns\Tectonicus.cs" />
-    <Compile Include="Externals\SharpUPnP.cs" />
-    <Compile Include="Externals\UPnPException.cs" />
     <Compile Include="Functions\AutoUpdate.cs" />
     <Compile Include="Core.cs" />
     <Compile Include="Functions\Backup.cs" />
@@ -141,10 +139,11 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" BuildVersion_BuildVersioningStyle="None.None.Increment.TimeStamp" />
+      <UserProperties BuildVersion_BuildVersioningStyle="None.None.Increment.TimeStamp" BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
