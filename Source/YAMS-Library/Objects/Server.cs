@@ -373,6 +373,7 @@ namespace YAMS
             Util.RemovePID(this.PID);
             //Close firewall
             Networking.CloseFirewallPort(this.Port);
+            Networking.CloseUPnP(this.Port);
 
             //Server has stopped, so clear out any entries in the user list
             this.Players.Clear();

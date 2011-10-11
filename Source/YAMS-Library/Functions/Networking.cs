@@ -6,11 +6,13 @@ using System.Net;
 using System.Net.NetworkInformation;
 using NetFwTypeLib;
 using YAMS;
-using SharpUPnP;
 
 namespace YAMS
 {
-    public class Networking
+    /// <summary>
+    /// Static class that gathers together networking functions for firewall, UPnP and IP addresses.
+    /// </summary>
+    public static class Networking
     {
 
         /// <summary>
@@ -46,7 +48,42 @@ namespace YAMS
             IPAddress ipExternal = null;
             ipExternal = IPAddress.Parse(strResponse);
             return ipExternal;
-        }        
+        }
+
+        /// <summary>
+        /// Check if a port is open to the world using a port checker
+        /// </summary>
+        /// <param name="externalIP">IP addrress to probe</param>
+        /// <param name="intPortNumber">Port number to check</param>
+        /// <returns>boolean indicating if the port is accesible from the outside world</returns>
+        public static bool CheckExternalPort(IPAddress externalIP, int intPortNumber)
+        {
+            string strUrl = "http://richardbenson.co.uk/yams/check-port.php?s=" + externalIP.ToString() + "&p=" + intPortNumber.ToString();
+            WebClient wcCheckPort = new WebClient();
+            UTF8Encoding utf8 = new UTF8Encoding();
+            string strResponse = "";
+            try
+            {
+                strResponse = utf8.GetString(wcCheckPort.DownloadData(strUrl));
+                switch (strResponse)
+                {
+                    case "open":
+                        return true;
+                    case "closed":
+                        return false;
+                    default:
+                        return false;
+                }
+            }
+            catch (WebException e)
+            {
+                YAMS.Database.AddLog("Unable to check open port: " + e.Data, "utils", "warn");
+                return false;
+            }
+
+        }
+
+        /// <summary>
         /// Open a port on the Windows firewall
         /// </summary>
         /// <param name="intPortNumber">The port to open</param>
@@ -59,7 +96,7 @@ namespace YAMS
                 INetFwOpenPorts portList;
                 Type TportClass = Type.GetTypeFromProgID("HNetCfg.FWOpenPort");
                 INetFwOpenPort port = (INetFwOpenPort)Activator.CreateInstance(TportClass);
-                port.Name = strFriendlyName;
+                port.Name = "YAMS - " + strFriendlyName;
                 port.Port = intPortNumber;
                 port.Enabled = true;
 
@@ -105,58 +142,44 @@ namespace YAMS
         }
 
         /// <summary>
-        /// Use SharpUPnPLib to try and open a port forward
+        /// Use NATUPNPLib to try and open a port forward
         /// </summary>
         /// <param name="intPortNumber">The port to open</param>
         /// <param name="strFriendlyName">Friendly name for the service</param>
         /// <returns>Boolean indicating whether the forward worked</returns>
         public static bool OpenUPnP(int intPortNumber, string strFriendlyName)
         {
-            //First check if there is a upnp device to talk to
-            if (UPnP.Discover())
-            {
-                try {
-                    UPnP.CreateForwardingRule(intPortNumber, System.Net.Sockets.ProtocolType.Tcp, strFriendlyName);
-                    Database.AddLog("Forwarded port " + intPortNumber + " for " + strFriendlyName, "networking");
-                    return true;
-                }
-                catch (Exception e) {
-                    Database.AddLog("Unable to forward port " + intPortNumber + " for " + strFriendlyName + ": Exception - " + e.Message, "networking", "warn");
-                    return false;
-                }
+            try {
+                NATUPNPLib.UPnPNATClass upnpnat = new NATUPNPLib.UPnPNATClass();
+                upnpnat.StaticPortMappingCollection.Add(intPortNumber, "TCP", intPortNumber, GetListenIP().ToString(), true, "YAMS - " + strFriendlyName);
+            
+                Database.AddLog("Forwarded port " + intPortNumber + " for " + strFriendlyName, "networking");
+                return true;
             }
-            else
-            {
-                Database.AddLog("Unable to forward port " + intPortNumber + " for " + strFriendlyName + ": No UPnP device detected", "networking", "warn");
+            catch(Exception e) {
+                Database.AddLog("Unable foward port " + intPortNumber + " for " + strFriendlyName + ": Exception - " + e.Message, "networking", "warn");
                 return false;
             }
         }
 
         /// <summary>
-        /// Use SharpUPnPLib to try and close a previously set port forward
+        /// Use NATUPNPLib to try and close a previously set port forward
         /// </summary>
         /// <param name="intPortNumber">The port to open</param>
         /// <returns>Boolean indicating whether the forward worked</returns>
         public static bool CloseUPnP(int intPortNumber)
         {
-            //First check if there is a upnp device to talk to
-            if (UPnP.Discover())
+            try 
             {
-                try
-                {
-                    UPnP.DeleteForwardingRule(intPortNumber, System.Net.Sockets.ProtocolType.Tcp);
-                    Database.AddLog("Un-forwarded port " + intPortNumber, "networking");
-                    return true;
-                }
-                catch (Exception e)
-                {
-                    Database.AddLog("Unable to un-forward port " + intPortNumber + ": Exception - " + e.Message, "networking", "warn");
-                    return false;
-                }
+                NATUPNPLib.UPnPNATClass upnpnat = new NATUPNPLib.UPnPNATClass();
+                upnpnat.StaticPortMappingCollection.Remove(intPortNumber, "TCP");
+            
+                Database.AddLog("Un-forwarded port " + intPortNumber, "networking");
+                return true;
             }
-            else
+            catch (Exception e)
             {
-                Database.AddLog("Unable to un-forward port " + intPortNumber + ": No UPnP device detected", "networking", "warn");
+                Database.AddLog("Unable to un-forward port " + intPortNumber + ": Exception - " + e.Message, "networking", "warn");
                 return false;
             }
         }
