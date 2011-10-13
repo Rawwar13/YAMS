@@ -431,6 +431,35 @@ namespace YAMS
             this.gmap.Start();
         }
 
+        /// <summary>
+        /// Wipes the world for this server and optionally resets the seed in the server.properties
+        /// </summary>
+        /// <param name="bolRandomSeed">Boolean indicating if a new seed is required</param>
+        public void ClearWorld(bool bolRandomSeed)
+        {
+            bool bolWasRunning = false;
+            if (this.Running)
+            {
+                bolWasRunning = true;
+                this.Stop();
+            }
+            Backup.BackupNow(this);
+
+            Directory.Delete(this.ServerDirectory + "\\world", true);
+            Database.AddLog(DateTime.Now, "World Deleted", "server", "info", false, this.ServerID);
+            Directory.CreateDirectory(this.ServerDirectory + "\\world");
+
+            if (bolRandomSeed)
+            {
+                Random random = new Random();
+                string strRandomSeed = random.Next(-2147483648, 2147483647).ToString();  //These are the upper and lower limits for a seed number in Minecraft
+                this.SaveProperty("level-seed", strRandomSeed);
+                Database.AddLog(DateTime.Now, "Seed Changed to " + strRandomSeed, "server", "info", false, this.ServerID);
+            }
+
+            if (bolWasRunning) this.Start();
+        }
+
         //Read contents of a config file into a list
         public List<string> ReadConfig(string strFile)
         {

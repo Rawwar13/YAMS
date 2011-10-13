@@ -206,6 +206,12 @@ namespace YAMS.Web
                         case "upload-world":
                             var test = context.Request.Files["new-world"];
                             break;
+                        case "delete-world":
+                            bool bolRandomSeed = false;
+                            if (param["randomseed"] == "true") bolRandomSeed = true;
+                            Core.Servers[Convert.ToInt32(context.Request.Parameters["serverid"])].ClearWorld(bolRandomSeed);
+                            strResponse = "{ \"result\" : \"sent\" }";
+                            break;
                         case "about":
                             Dictionary<string, string> dicAbout = new Dictionary<string, string> {
                                 { "dll" , FileVersionInfo.GetVersionInfo(Path.Combine(Core.RootFolder, "YAMS-Library.dll")).FileVersion },
