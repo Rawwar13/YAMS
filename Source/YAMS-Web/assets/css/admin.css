@@ -22,8 +22,9 @@ h1 { margin: 0 0 0.5em 0; }
 
 .app-label { clear: both; }
 
-.bd fieldset { border: 1px solid #999; text-align: left; }
-.bd legend { margin: 0px 5px; padding: 0px 2px; font-size: 80%; }
+fieldset { border: 1px solid #999; text-align: left; padding: 10px; }
+legend { margin: 0px 5px; padding: 0px 2px; font-size: 80%; }
+label { width: 150px; float: left; text-align: right; padding-right: 10px; }
 
 /* Menu */
 em#yamslabel { text-indent: -6em; display: block; background: url(../images/YAMS-Icon.png) center center no-repeat; width: 2em; overflow: hidden; }
