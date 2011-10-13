@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using YAMS;
 using System.Reflection;
 using System.IO;
+using System.Data.SqlServerCe;
 
 namespace YAMS_Gui
 {
@@ -18,29 +19,29 @@ namespace YAMS_Gui
         [STAThread]
         static void Main()
         {
-            if (File.Exists(new System.IO.FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).DirectoryName + @"\lib\ExceptionManager.dll"))
+
+            //Start DB Connection
+            Database.init();
+            Database.AddLog("Starting Up");
+
+            //Is this the first run?
+            YAMS.Util.FirstRun();
+            Database.SaveSetting("AdminPassword", "password");
+
+            SqlCeDataReader readerServers = YAMS.Database.GetServers();
+            while (readerServers.Read())
             {
-                Assembly assembly = Assembly.LoadFrom(new System.IO.FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).DirectoryName + @"\lib\ExceptionManager.dll");
-                Type type = assembly.GetTypes()[12];
-                //var obj = Activator.CreateInstance(type);
-                type.GetMethods()[0].Invoke(null,
-                  BindingFlags.Default | BindingFlags.InvokeMethod,
-                  null,
-                  null,
-                  null);
-                //UnhandledExceptionManager.AddHandler();
-            }
-            else
-            {
-                MessageBox.Show("not found");
+                Database.AddLog("Starting Server " + readerServers["ServerID"]);
+                MCServer myServer = new MCServer(Convert.ToInt32(readerServers["ServerID"]));
+                if (Convert.ToBoolean(readerServers["ServerAutostart"])) myServer.Start();
+                Core.Servers.Add(Convert.ToInt32(readerServers["ServerID"]), myServer);
             }
 
-            YAMS.Core.StartUp();
-            //Database.init();
-            //Util.FirstRun();
-            //WebServer.Init();
-            //WebServer.StartPublic();
-            //WebServer.StartAdmin();
+            //Start job engine
+            JobEngine.Init();
+
+            //Start Webserver
+            WebServer.Init();
         
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
