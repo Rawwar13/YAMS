@@ -93,7 +93,7 @@ namespace YAMS
             Database.AddLog(e.Exception.Message, "web", "error");
             e.Response.Reason = "Error - YAMS";
             e.Response.Connection.Type = ConnectionType.Close;
-            byte[] buffer = Encoding.UTF8.GetBytes("<h1>500 Internal Server Error</h1><p>" + e.Exception.Message + "</p><p>" + e.Exception.Source + "</p><p>" + e.Exception.StackTrace + "</p>");
+            byte[] buffer = Encoding.UTF8.GetBytes("<h1>500 Internal Server Error</h1><p>" + e.Exception.Message + "</p><p>" + e.Exception.Source + "</p><p>" + e.Exception.StackTrace + "</p><p>" + e.Exception.InnerException.StackTrace + "</p>");
             e.Response.Body.Write(buffer, 0, buffer.Length);
         }
 
