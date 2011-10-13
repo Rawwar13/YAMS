@@ -55,11 +55,11 @@ YAMS.admin = {
             onSuccess: function () {
                 YAMS.admin.layout = new YAHOO.widget.Layout({
                     units: [
-						{ position: 'top', height: 30, body: 'header', collapse: false, resize: false, scroll: null, zIndex: 2 },
-						{ position: 'right', header: 'Server Status', width: 300, resize: false, gutter: '0px 5px', collapse: true, scroll: false, body: 'server-status', animate: true },
-						{ position: 'bottom', header: 'Global Log', height: 200, resize: true, body: 'yams-log', gutter: '5px', collapse: true, scroll: true },
-						{ position: 'center', body: 'main', gutter: '0px 0px 0px 5px' }
-					]
+                        { position: 'top', height: 30, body: 'header', collapse: false, resize: false, scroll: null, zIndex: 2 },
+                        { position: 'right', header: 'Server Status', width: 300, resize: false, gutter: '0px 5px', collapse: true, scroll: false, body: 'server-status', animate: true },
+                        { position: 'bottom', header: 'Global Log', height: 200, resize: true, body: 'yams-log', gutter: '5px', collapse: true, scroll: true },
+                        { position: 'center', body: 'main', gutter: '0px 0px 0px 5px' }
+                    ]
                 });
                 YAMS.admin.layout.on('render', function () {
                     //Build Menu
