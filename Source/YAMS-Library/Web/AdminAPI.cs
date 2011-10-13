@@ -14,6 +14,7 @@ using HttpServer.Modules;
 using HttpServer.Resources;
 using HttpServer.Tools;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Data.SqlServerCe;
 using HttpListener = HttpServer.HttpListener;
 using YAMS;
@@ -174,19 +175,67 @@ namespace YAMS.Web
                                               "\"memory\" : \"" + Database.GetSetting(intServerID, "ServerAssignedMemory") + "\"," +
                                               "\"autostart\" : \"" + Database.GetSetting(intServerID, "ServerAutoStart") + "\"," +
                                               "\"type\" : \"" + Database.GetSetting(intServerID, "ServerType") + "\"," +
-                                              "\"motd\" : \"" + Database.GetSetting("motd", "MC", intServerID) + "\",";
-                            //Minecraft Settings
-                            strResponse += "\"hellworld\" : \"" + Database.GetSetting("hellworld", "MC", intServerID) + "\"," +
-                                           "\"spawnmonsters\" : \"" + Database.GetSetting("spawn-monsters", "MC", intServerID) + "\"," +
-                                           "\"onlinemode\" : \"" + Database.GetSetting("online-mode", "MC", intServerID) + "\"," +
-                                           "\"spawnanimals\" : \"" + Database.GetSetting("spawn-animals", "MC", intServerID) + "\"," +
-                                           "\"maxplayers\" : \"" + Database.GetSetting("max-players", "MC", intServerID) + "\"," +
-                                           "\"serverip\" : \"" + Database.GetSetting("server-ip", "MC", intServerID) + "\"," +
-                                           "\"pvp\" : \"" + Database.GetSetting("pvp", "MC", intServerID) + "\"," +
-                                           "\"serverport\" : \"" + Database.GetSetting("server-port", "MC", intServerID) + "\"," +
-                                           "\"whitelist\" : \"" + Database.GetSetting("white-list", "MC", intServerID) + "\"";
-
+                                              "\"motd\" : \"" + Database.GetSetting("motd", "MC", intServerID) + "\"";
                             strResponse += "}";
+                            break;
+                        case "get-mc-settings":
+                            //retrieve all server settings as JSON
+                            intServerID = Convert.ToInt32(param["serverid"]);
+                            
+                            string json = File.ReadAllText(YAMS.Core.RootFolder + @"\lib\properties.json");
+                            JObject jProps = JObject.Parse(json);
+
+                            strResponse = "";
+                            
+                            foreach(JObject option in jProps["options"]) {
+                                strResponse += "<p><label for=\"" + (string)option["key"] + "\" title=\"" + (string)option["description"] + "\">" + (string)option["name"] + "</label>";
+
+                                string strValue = Core.Servers[Convert.ToInt32(context.Request.Parameters["serverid"])].GetProperty((string)option["key"]);
+
+                                switch ((string)option["type"])
+                                {
+                                    case "string":
+                                        strResponse += "<input type=\"text\" id=\"" + (string)option["key"] + "\" value=\"" + strValue + "\" />";
+                                        break;
+                                    case "boolean":
+                                        strResponse += "<select id=\"" + (string)option["key"] + "\">";
+                                        strResponse += "<option value=\"true\"";
+                                        if (strValue == "true") strResponse += " selected";
+                                        strResponse += ">True</option>";
+                                        strResponse += "<option value=\"false\"";
+                                        if (strValue == "false") strResponse += " selected";
+                                        strResponse += ">False</option>";
+                                        strResponse += "</select>";
+                                        break;
+                                    case "integer":
+                                        strResponse += "<select id=\"" + (string)option["key"] + "\">";
+                                        int intValue = Convert.ToInt32(strValue);
+                                        for (var i = Convert.ToInt32((string)option["min"]); i <= Convert.ToInt32((string)option["max"]); i++)
+                                        {
+                                            strResponse += "<option value=\"" + i.ToString() + "\"";
+                                            if (intValue == i) strResponse += " selected";
+                                            strResponse += ">" + i.ToString() + "</option>";
+                                        }
+                                        strResponse += "</select>";
+                                        break;
+                                    case "array":
+                                        strResponse += "<select id=\"" + (string)option["key"] + "\">";
+                                        string strValues = (string)option["values"];
+                                        string[] elements = strValues.Split(',');
+                                        foreach (string values in elements)
+                                        {
+                                            string[] options = values.Split('|');
+                                            strResponse += "<option value=\"" + options[0] + "\"";
+                                            if (strValue == options[0]) strResponse += " selected";
+                                            strResponse += ">" + options[1] + "</option>";
+                                        }
+                                        strResponse += "</select>";
+                                        break;
+                                }
+
+                                strResponse += "</p>";
+                            }
+
                             break;
                         case "save-server-settings":
                             intServerID = Convert.ToInt32(param["serverid"]);

@@ -277,6 +277,14 @@ YAMS.admin = {
                         YAMS.admin.log('getServerSettings failed');
                     }
                 }, 'action=get-server-settings&serverid=' + YAMS.admin.selectedServer);
+                var transaction2 = YAHOO.util.Connect.asyncRequest('POST', '/api/', {
+                    success: function (o) {
+                        YAMS.D.get('server-properties-div').innerHTML = o.responseText;
+                    },
+                    failure: function (o) {
+                        YAMS.admin.log('getMCSettings failed');
+                    }
+                }, 'action=get-mc-settings&serverid=' + YAMS.admin.selectedServer);
             },
             failure: function (o) { YAMS.admin.log("Couldn't get settings part") }
         });
@@ -351,7 +359,6 @@ YAMS.admin = {
     delayedRestartServer: function () { var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.statusCommand_callback, 'action=delayed-restart&delay=' + YAMS.D.get('delay-time').value + '&serverid=' + YAMS.admin.selectedServer); },
     restartServerWhenFree: function () { var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.statusCommand_callback, 'action=delete-world&serverid=' + YAMS.admin.selectedServer); },
     deleteWorld: function () { var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.statusCommand_callback, 'action=restart-when-free&serverid=' + YAMS.admin.selectedServer); },
-    restartServerWhenFree: function () { var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.statusCommand_callback, 'action=restart-when-free&serverid=' + YAMS.admin.selectedServer); },
     statusCommand_callback: { success: function (o) { }, failure: function (o) { YAMS.admin.log('Status Command Failed'); } },
 
     consoleSend: function () { var transaction = YAHOO.util.Connect.asyncRequest('POST', '/api/', YAMS.admin.consoleSend_callback, 'action=command&serverid=' + YAMS.admin.selectedServer + '&message=' + escape(YAMS.D.get('console-input').value)); },
@@ -541,7 +548,7 @@ YAMS.admin = {
         }
     },
 
-    forceUpdate: function() {
+    forceUpdate: function () {
         var trans = YAHOO.util.Connect.asyncRequest('POST', '/api/', {
             success: function (o) {
             },
