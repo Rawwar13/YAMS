@@ -25,7 +25,7 @@ namespace YAMS_Gui
             Database.AddLog("Starting Up");
 
             //Is this the first run?
-            YAMS.Util.FirstRun();
+            if (Database.GetSetting("FirstRun", "YAMS") != "true") YAMS.Util.FirstRun();
             Database.SaveSetting("AdminPassword", "password");
 
             SqlCeDataReader readerServers = YAMS.Database.GetServers();
