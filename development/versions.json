@@ -10,9 +10,10 @@
     },
   "apps":
     {
-      "overviewer" : "0.1.4",
+      "overviewer" : "0.3.0",
       "c10t" : "1.9",
       "biomeextractor": "080",
       "tectonicus":"1.38"
-    }
+    },
+	"pre": "http://assets.minecraft.net/1_9-pre4/minecraft_server.jar"
 }
