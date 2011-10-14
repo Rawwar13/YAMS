@@ -27,6 +27,8 @@ namespace YAMS.Web
         {
             int intServerID = 0;
             MCServer s;
+            string json;
+            JObject jProps;
 
             if (context.Request.Uri.AbsoluteUri.Contains(@"/api/"))
             {
@@ -182,8 +184,8 @@ namespace YAMS.Web
                             //retrieve all server settings as JSON
                             intServerID = Convert.ToInt32(param["serverid"]);
                             
-                            string json = File.ReadAllText(YAMS.Core.RootFolder + @"\lib\properties.json");
-                            JObject jProps = JObject.Parse(json);
+                            json = File.ReadAllText(YAMS.Core.RootFolder + @"\lib\properties.json");
+                            jProps = JObject.Parse(json);
 
                             strResponse = "";
                             
@@ -195,10 +197,10 @@ namespace YAMS.Web
                                 switch ((string)option["type"])
                                 {
                                     case "string":
-                                        strResponse += "<input type=\"text\" id=\"" + (string)option["key"] + "\" value=\"" + strValue + "\" />";
+                                        strResponse += "<input type=\"text\" name=\"" + (string)option["key"] + "\" value=\"" + strValue + "\" />";
                                         break;
                                     case "boolean":
-                                        strResponse += "<select id=\"" + (string)option["key"] + "\">";
+                                        strResponse += "<select name=\"" + (string)option["key"] + "\">";
                                         strResponse += "<option value=\"true\"";
                                         if (strValue == "true") strResponse += " selected";
                                         strResponse += ">True</option>";
@@ -208,7 +210,7 @@ namespace YAMS.Web
                                         strResponse += "</select>";
                                         break;
                                     case "integer":
-                                        strResponse += "<select id=\"" + (string)option["key"] + "\">";
+                                        strResponse += "<select name=\"" + (string)option["key"] + "\">";
                                         int intValue = Convert.ToInt32(strValue);
                                         for (var i = Convert.ToInt32((string)option["min"]); i <= Convert.ToInt32((string)option["max"]); i++)
                                         {
@@ -219,7 +221,7 @@ namespace YAMS.Web
                                         strResponse += "</select>";
                                         break;
                                     case "array":
-                                        strResponse += "<select id=\"" + (string)option["key"] + "\">";
+                                        strResponse += "<select name=\"" + (string)option["key"] + "\">";
                                         string strValues = (string)option["values"];
                                         string[] elements = strValues.Split(',');
                                         foreach (string values in elements)
@@ -246,7 +248,23 @@ namespace YAMS.Web
                             else Database.UpdateServer(intServerID, "ServerEnableOptimisations", false);
                             if (param["autostart"] == "true") Database.UpdateServer(intServerID, "ServerAutoStart", true);
                             else Database.UpdateServer(intServerID, "ServerAutoStart", false);
-                            Database.SaveSetting(intServerID, "motd", param["motd"]);
+                            Database.SaveSetting(intServerID, "motd", param["message"]);
+
+                            //Save the server's MC settings
+                            MCServer thisServer = Core.Servers[Convert.ToInt32(context.Request.Parameters["serverid"])];
+
+                            json = File.ReadAllText(YAMS.Core.RootFolder + @"\lib\properties.json");
+                            jProps = JObject.Parse(json);
+
+                            strResponse = "";
+
+                            foreach (JObject option in jProps["options"])
+                            {
+                                thisServer.SaveProperty((string)option["key"], param[(string)option["key"]]);
+                            }
+
+                            if (thisServer.Running) thisServer.RestartIfEmpty();
+
                             break;
                         case "get-config-file":
                             List<string> listConfig = Core.Servers[Convert.ToInt32(context.Request.Parameters["serverid"])].ReadConfig(param["file"]);

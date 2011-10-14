@@ -58,7 +58,7 @@ YAMS.admin = {
                         { position: 'top', height: 30, body: 'header', collapse: false, resize: false, scroll: null, zIndex: 2 },
                         { position: 'right', header: 'Server Status', width: 300, resize: false, gutter: '0px 5px', collapse: true, scroll: false, body: 'server-status', animate: true },
                         { position: 'bottom', header: 'Global Log', height: 200, resize: true, body: 'yams-log', gutter: '5px', collapse: true, scroll: true },
-                        { position: 'center', body: 'main', gutter: '0px 0px 0px 5px' }
+                        { position: 'center', body: 'main', gutter: '0px 0px 0px 5px', scroll: true }
                     ]
                 });
                 YAMS.admin.layout.on('render', function () {
@@ -291,14 +291,8 @@ YAMS.admin = {
     },
 
     saveServerSettings: function () {
-        var strVars = "serverid=" + YAMS.admin.selectedServer + "&" +
-                      "action=save-server-settings&" +
-                      "title=" + YAMS.D.get('cfg_title').value + "&" +
-                      "type=" + YAMS.D.get('cfg_type').value + "&" +
-                      "optimisations=" + YAMS.D.get('cfg_optimisations').checked + "&" +
-                      "memory=" + YAMS.D.get('cfg_memory').value + "&" +
-                      "autostart=" + YAMS.D.get('cfg_autostart').checked + "&" +
-                      "motd=" + YAMS.D.get('cfg_motd').value;
+        var strVars = "serverid=" + YAMS.admin.selectedServer + "&action=save-server-settings";
+        YAHOO.util.Connect.setForm('settings-form');
         var trans = YAHOO.util.Connect.asyncRequest('POST', '/api/', {
             success: function (o) { },
             failure: function (o) { }
