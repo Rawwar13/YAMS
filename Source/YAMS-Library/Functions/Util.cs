@@ -146,7 +146,7 @@ namespace YAMS
             NewServer.Add(new KeyValuePair<string, string>("admin-slot", "true"));
             NewServer.Add(new KeyValuePair<string, string>("enable-health", "true"));
             NewServer.Add(new KeyValuePair<string, string>("hellworld", "false"));
-            NewServer.Add(new KeyValuePair<string, string>("level-name", @"..\\world"));
+            NewServer.Add(new KeyValuePair<string, string>("level-name", @"world"));
             NewServer.Add(new KeyValuePair<string, string>("max-players", "20"));
             NewServer.Add(new KeyValuePair<string, string>("motd", "Welcome to a YAMS server!"));
             NewServer.Add(new KeyValuePair<string, string>("online-mode", "true"));
