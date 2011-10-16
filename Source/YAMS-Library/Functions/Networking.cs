@@ -21,8 +21,13 @@ namespace YAMS
         /// <returns>IP Address</returns>
         public static IPAddress GetListenIP()
         {
-            IPHostEntry ipListen = Dns.GetHostEntry(Dns.GetHostName());
-            return ipListen.AddressList[0];
+            IPHostEntry ipListen = Dns.GetHostEntry("");
+            int i = 0;
+            while (ipListen.AddressList[i].AddressFamily == System.Net.Sockets.AddressFamily.InterNetworkV6)
+            {
+                i++;
+            }
+            return ipListen.AddressList[i];
         }
 
         /// <summary>
