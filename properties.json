@@ -1,21 +1,16 @@
 { "options": [
-	{ "key":"hellworld",
-	  "type":"boolean",
-	  "default":"false",
-	  "description":"Server generates the whole world as the Nether",
-	  "name":"HellWorld" },
-	  
-	{ "key":"spawn-monsters",
-	  "type":"boolean",
-	  "default":"true"
-      "description":"Enable monster spawning"
-	  "name":"Monsters" },
 	  
 	{ "key":"online-mode",
 	  "type":"boolean",
-	  "default":"true"
+	  "default":"true",
 	  "description":"Check players against official login servers (recommended)",
 	  "name":"Online Mode" },
+
+	{ "key":"spawn-monsters",
+	  "type":"boolean",
+	  "default":"true",
+      "description":"Enable monster spawning",
+	  "name":"Monsters" },
 	  
 	{ "key":"spawn-animals",
 	  "type":"boolean",
@@ -26,6 +21,8 @@
 	{ "key":"max-players",
 	  "type":"integer",
 	  "default":"20",
+      "min": "0",
+      "max": "999",
 	  "description":"Maximum number of players allowed to connect",
 	  "name":"Max Players" },
 	  
@@ -38,7 +35,7 @@
 	{ "key":"white-list",
 	  "type":"boolean",
 	  "default":"false",
-	  "description":"Whitelist mode allows only specified players to log on",
+	  "description":"Whitelist mode allows only specified players to log on. Use whitelist add <username> to allow a new player on",
 	  "name":"Whitelist" },
 	  
 	{ "key":"allow-flight",
@@ -51,6 +48,34 @@
 	  "type":"integer",
 	  "default":"10",
 	  "description":"Sets the radius of terrain updates sent to players",
-	  "name":"View Distance" }
-	  
+      "min": "3",
+      "max": "15",
+	  "name":"View Distance" },
+      
+    { "key":"level-seed",
+      "type": "string",
+      "default": "",
+      "description":"The seed determines the way your world looks",
+      "name":"World Seed" },
+      
+    { "key":"gamemode",
+      "type":"array",
+      "values":"0|Survival,1|Creative",
+      "default": "0",
+      "description":"Game mode for the server; Survival or Creative",
+      "name":"Game Mode" },
+    
+    { "key":"difficulty",
+      "type":"array",
+      "values": "0|Peaceful,1|Easy,2|Normal,3|Hard",
+      "default": "1",
+      "description":"Difficulty of game, damage and huger effects",
+      "name":"Difficulty" },
+      
+    { "key":"motd",
+      "type":"string",
+      "default":"A YAMS powered server",
+      "description":"Message that is displayed in the client server browser",
+      "name":"Server Message" }      
+      
 ] }
