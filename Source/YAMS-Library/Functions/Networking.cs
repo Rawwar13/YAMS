@@ -96,7 +96,7 @@ namespace YAMS
                 INetFwOpenPorts portList;
                 Type TportClass = Type.GetTypeFromProgID("HNetCfg.FWOpenPort");
                 INetFwOpenPort port = (INetFwOpenPort)Activator.CreateInstance(TportClass);
-                port.Name = "YAMS - " + strFriendlyName;
+                port.Name = "[YAMS] " + strFriendlyName;
                 port.Port = intPortNumber;
                 port.Enabled = true;
 
@@ -151,7 +151,7 @@ namespace YAMS
         {
             try {
                 NATUPNPLib.UPnPNATClass upnpnat = new NATUPNPLib.UPnPNATClass();
-                upnpnat.StaticPortMappingCollection.Add(intPortNumber, "TCP", intPortNumber, GetListenIP().ToString(), true, "YAMS - " + strFriendlyName);
+                upnpnat.StaticPortMappingCollection.Add(intPortNumber, "TCP", intPortNumber, GetListenIP().ToString(), true, "[YAMS] " + strFriendlyName);
             
                 Database.AddLog("Forwarded port " + intPortNumber + " for " + strFriendlyName, "networking");
                 return true;
