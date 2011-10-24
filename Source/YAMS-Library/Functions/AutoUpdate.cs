@@ -69,7 +69,7 @@ namespace YAMS
         private static string strTectonicusVer = "1.38";
 
         //Checks for available updates
-        public static void CheckUpdates()
+        public static void CheckUpdates(bool bolForce = false)
         {
             YAMS.Database.AddLog("Running update check", "updater");
 
@@ -84,6 +84,15 @@ namespace YAMS
                 string json = File.ReadAllText(YAMS.Core.RootFolder + @"\lib\versions.json");
                 //Dictionary<string, string> dicVers = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
                 JObject jVers = JObject.Parse(json);
+
+                //Reset all the JAR etags so we re-download them
+                if (bolForce)
+                {
+                    YAMS.Database.AddLog("Forced re-download of JAR files", "updater", "warn");
+                    YAMS.Database.SaveEtag(strMCServerURL, "");
+                    YAMS.Database.SaveEtag((string)jVers["pre"], "");
+                    YAMS.Database.SaveEtag(strBukkitServerURL, "");
+                }
                 
                 //Check Minecraft server first
                 if (bolUpdateJAR)

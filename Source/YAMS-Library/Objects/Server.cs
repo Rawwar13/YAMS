@@ -366,6 +366,14 @@ namespace YAMS
             }
             else { strLevel = "error"; }
 
+            if (strMessage.IndexOf("Invalid or corrupt jarfile ") > -1)
+            {
+                //We have downloaded a corrupt jar, clear the download cache and force a re-download now
+                this.SafeStop = true;
+                AutoUpdate.CheckUpdates(true);
+                this.Start();
+            }
+
             Database.AddLog(datTimeStamp, strMessage, "server", strLevel, false, this.ServerID);
         }
 
