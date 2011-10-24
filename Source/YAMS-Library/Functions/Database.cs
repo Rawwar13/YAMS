@@ -167,7 +167,9 @@ namespace YAMS
             }
 
             //Save it as our update file in case the current is in use
-            File.WriteAllText(Core.StoragePath + intServerID.ToString() + @"\server.properties.UPDATE", sb.ToString());
+            string strFile = @"\server.properties";
+            if (File.Exists(Core.StoragePath + intServerID.ToString() + strFile)) strFile = @"\server.properties.UPDATE";
+            File.WriteAllText(Core.StoragePath + intServerID.ToString() + strFile, sb.ToString());
         }
 
         //Get and set settings
