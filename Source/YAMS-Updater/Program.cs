@@ -54,6 +54,9 @@ namespace YAMS_Updater
 
             Console.WriteLine("*** YAMS Updater ***");
 
+            YAMS.Database.init();
+            YAMS.Database.AddLog("YAMS-Updater run on local machine");
+            
             if (args.Contains<string>("/restart"))
             {
                 //We're just here to restart the service safely after some updates
@@ -82,9 +85,6 @@ namespace YAMS_Updater
                 catch { }
 
                 System.Windows.Forms.Application.EnableVisualStyles();
-
-                YAMS.Database.init();
-                YAMS.Database.AddLog("YAMS-Updater run on local machine");
 
                 //Have they run the app before?
                 if (YAMS.Database.GetSetting("FirstRun", "YAMS") != "true")
@@ -167,9 +167,16 @@ namespace YAMS_Updater
                 {
                     if (File.Exists(RootFolder + @"\lib\" + j.Name + ".UPDATE"))
                     {
-                        if (File.Exists(RootFolder + @"\lib\" + j.Name + ".OLD")) File.Delete(RootFolder + @"\lib\" + j.Name + ".OLD");
-                        if (File.Exists(RootFolder + @"\lib\" + j.Name)) File.Delete(RootFolder + @"\lib\" + j.Name);
-                        File.Move(RootFolder + @"\lib\" + j.Name + ".UPDATE", RootFolder + @"\lib\" + j.Name);
+                        try
+                        {
+                            if (File.Exists(RootFolder + @"\lib\" + j.Name + ".OLD")) File.Delete(RootFolder + @"\lib\" + j.Name + ".OLD");
+                            if (File.Exists(RootFolder + @"\lib\" + j.Name)) File.Delete(RootFolder + @"\lib\" + j.Name);
+                            File.Move(RootFolder + @"\lib\" + j.Name + ".UPDATE", RootFolder + @"\lib\" + j.Name);
+                        }
+                        catch (Exception e)
+                        {
+                            Database.AddLog("Unable to update " + j.Name + ". Please manually rename " + j.Name + ".UPDATE to " + j.Name + " in the libs folder whilst the service is stopped.", "updater", "error");
+                        }
                     } 
                 }
 
