@@ -54,15 +54,30 @@ namespace YAMS
                     string line;
                     while ((line = trPids.ReadLine()) != null)
                     {
-                        Process.GetProcessById(Convert.ToInt32(line)).Kill();
+                        try
+                        {
+                            Process.GetProcessById(Convert.ToInt32(line)).Kill();
+                        }
+                        catch (Exception e)
+                        {
+                            Database.AddLog("Process " + line + " not killed: " + e.Message);
+                        }
                     }
+                   
                     trPids.Close();
                 }
                 catch (Exception e)
                 {
                     Database.AddLog("Not all processes killed: " + e.Message);
                 }
-                File.Delete(Core.RootFolder + "\\pids.txt");
+                try
+                {
+                    File.Delete(Core.RootFolder + "\\pids.txt");
+                }
+                catch (Exception e)
+                {
+                    Database.AddLog("Unable to delete the pids.txt file: " + e.Message);
+                }
             };
 
             //Check for updates and start a timer to do it automatically
