@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="Robots" content="index,follow" />
+  <meta name="author" content="Luka Cvrk (www.solucija.com)" />
+  <meta name="description" content="Yet Another Minecraft Server is an easy way to run your Minecraft server on Windows as a service." />
+  <link rel="stylesheet" type="text/css" href="assets/css/screen.css" media="screen" />
+  <title>Yet Another Minecraft Server (YAMS) @ GitHub </title>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>  
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(getData);
+      
+      function getData() {
+          $.getJSON('http://richardbenson.co.uk/yams/usage-stats.php?jsoncallback=?', function(data){
+              drawChart(data);              
+          })
+      }
+      
+      function drawChart(jsonData) {
+        console.log(jsonData);
+        var tblData = new google.visualization.DataTable(jsonData);
+                
+        var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+        chart.draw(tblData, {
+            width: 550,
+            height: 240
+        });         
+          
+      }
+    </script>
+  
+</head>
+<body>
+  <a href="http://github.com/richardbenson/YAMS"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>  
+  <div id="content">
+    <p id="top">The vanilla Minecraft Server (SMP) experience on Windows without the hassle</p>
+    <div id="logo">
+      <h1><a href="index.html"><abbr title="Yet Another Minecraft Server">YAMS</abbr></a></h1>
+    </div>
+    <ul id="menu">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li class="current"><a href="usage.html">Usage</a></li>
+      <!--<li><a href="#">Services</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Contact</a></li>-->
+    </ul>
+    <div class="line"></div>
+    <div class="left">
+      <h4>What is this?</h4>
+      <p><em>This represents the number of current installs that were running at midday local time (to the install) and the number of players that were connected at that exact moment.  There is no error checking or recovery, and if YAMS isn't running at midday, nothing is logged for that install that day.  Therefore the number of installs is likely higher, this is just for fun really!</em></p>
+    </div>
+    <div class="right">
+        <div id="chart_div"></div>
+    </div>    
+    <div id="footer">
+      <p>&copy; Copyright 2011 Richard Benson &minus; Design: Luka Cvrk, <a href="http://www.solucija.com" title="Free CSS Templates">Solucija</a></p>
+    </div>  
+  </div>
+  
+</body>
+</html>
